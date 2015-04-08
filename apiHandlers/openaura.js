@@ -2,6 +2,7 @@ var rest = require('restler');
 var openaura = {};
 var api_key = 'e92932b80a618686be74f8c720e39384ac04df55';
 var _ = require('lodash');
+var artist_social_media = require('../controllers/artist_social_media');
 
 openaura.getArtistImage = function(artist, cb){
     // Use decibel to get all genres for a given artist
@@ -44,7 +45,6 @@ openaura.getSocialFeed = function(artist, limit, offset, cb){
 
 var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook' ];
 
-
 openaura.getFollowers = function( artist, cb ) {
   rest.get( 'http://api.openaura.com/v1/search/artists', {
     query: { 'q': artist, 'limit': 1, 'api_key': api_key }
@@ -67,23 +67,32 @@ openaura.getFollowers = function( artist, cb ) {
         } );
 
         // Build output object
-        var output = [];
+        var output = {};
+        output.musicbrainz_id = musicbrainz_id;
+
         _.forEach( sources, function( source ) {
+          // Set artists name
+          if (!output.name && source.name){
+            output.name = source.name;
+          }
           // TODO: Determine what we actually want here
-          var current = {};
-          current.type = source.provider_name;
-          current.followers = source.follower_count;
-          current.url = source.url;
-          current.thumbnail = source.profile_thumb_url;
-          output.push( current );
+          var followersKey = source.provider_name + "_followers";
+          var urlKey = source.provider_name + "_url";
+
+          output[followersKey.toLowerCase()] = source.follower_count;
+          output[urlKey.toLowerCase()] = source.url;
+
+
         } )
 
-        cb( output );
-        return 0;
+        artist_social_media.addArtist(output, function(row){
+          cb( output );
+          return 0;
+        })
+
+
 
       } );
-      //  cb(data.profile_image.url);
-      //})
     }
     catch( e ) {
       console.log( e );
@@ -95,3 +104,7 @@ openaura.getFollowers = function( artist, cb ) {
 
 
 module.exports = openaura;
+
+//artist_social_media.getArtist('20244d07-534f-4eff-b4d4-930878889970', 'musicbrainz_id', function(res){
+//  console.log(res);
+//});

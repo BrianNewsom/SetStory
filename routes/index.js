@@ -8,7 +8,7 @@ var unified = require('../apiHandlers/unified');
 var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var echonest = require('../apiHandlers/echonest')
-
+var artist_social_media = require('../controllers/artist_social_media');
 
 var jf = require('jsonfile')
 
@@ -20,6 +20,19 @@ setmine.init(function() {
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
+
+router.get('/api/artist/social_media', function(req, res, next){
+  artist_social_media.getArtist(req.query.id, req.query.id_type, function(data){
+    res.json(data);
+  })
+})
+
+router.get('/api/artist/social_media/add', function(req, res, next){
+  // TODO: I don't think should be a get - but this is a simple way to add artists for now.
+  openaura.getFollowers(req.query.artist_name, function(data){
+    res.json(data);
+  })
+})
 
 router.get('/api/search/:name', function(req, res, next) {
 
@@ -114,5 +127,6 @@ router.get('/api/popularity/artist/:artistName', function(req,res,next){
         res.json(data);
     })
 })
+
 
 module.exports = router;
