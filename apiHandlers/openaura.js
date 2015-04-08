@@ -85,6 +85,11 @@ openaura.getFollowers = function( artist, cb ) {
 
         } )
 
+        // If we didn't get a solid name from the sources, use the users input as name
+        if(!output.name){
+          output.name = artist;
+        }
+
         artist_social_media.addArtist(output, function(row){
           cb( output );
           return 0;
