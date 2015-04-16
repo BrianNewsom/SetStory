@@ -2,8 +2,8 @@
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
-var openaura = require('../apiHandlers/openaura.js');
-
+var openaura = require('../apiHandlers/openaura');
+var _ = require('lodash');
 var artists = {};
 
 artists.getByMBID = function(id, cb) {
@@ -26,7 +26,7 @@ artists.getByMBID = function(id, cb) {
     });
 };
 
-artists.getIdByName = function(artistName, cb) {
+artists.getMBIDByName = function(artistName, cb) {
   connection.query('SELECT * FROM artists WHERE artist="'+artistName + '"', function(err, rows) {
     if (err){
       console.log(err);
@@ -34,6 +34,7 @@ artists.getIdByName = function(artistName, cb) {
     else{
       if (rows[0]){
         console.log('found match w/ name');
+        console.log(rows[0 ].musicbrainz_id);
         cb(rows[0 ].musicbrainz_id);
       } else {
         // No data -> No matching column - call openaura and get id
@@ -46,8 +47,35 @@ artists.getIdByName = function(artistName, cb) {
   });
 };
 
+artists.updateMBID = function(artistName, cb) {
+  openaura.getMBID(artistName, function(musicbrainz_id){
+    console.log("For " + artistName + " got mbid " + musicbrainz_id);
+    connection.query("UPDATE artists SET musicbrainz_id='" + musicbrainz_id + "' WHERE artist='" + artistName + "'", function(err, rows){
+      if(err) console.log(err);
+      else {
+        cb(rows);
+      }
+    });
+  })
+};
 
-//artists.addMBID = function(id, cb){
-//
-//}
+artists.forEach = function(cb){
+  connection.query('SELECT * FROM artists', function(err, rows){
+    if(err) console.log(err);
+    else {
+      _.forEach(rows, function(row) {
+          cb( row );
+      });
+    }
+  })
+};
+
+
 module.exports = artists;
+
+// TODO: Populate Musicbrainz_ids in artists table
+//artists.forEach(function(row){
+//  artists.updateMBID(row.artist, function(data){
+//    console.log(data);
+//  })
+//})

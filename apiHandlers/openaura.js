@@ -48,10 +48,10 @@ var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook' ];
 openaura.getMBID = function( artist, cb ) {
   rest.get( 'http://api.openaura.com/v1/search/artists', {
     query: { 'q': artist, 'limit': 1, 'api_key': api_key }
-  } ).on( 'complete', function( artists ) {
+  } ).on( 'complete', function( res ) {
     try {
       // Found matching artist
-      var musicbrainz_id = artist[0].musicbrainz_id;
+      var musicbrainz_id = res[0].musicbrainz_id;
       cb(musicbrainz_id);
     }
     catch( e ) {
@@ -116,6 +116,3 @@ openaura.getFollowers = function( musicbrainz_id, cb ) {
 
 module.exports = openaura;
 
-//artist_social_media.getArtist('20244d07-534f-4eff-b4d4-930878889970', 'musicbrainz_id', function(res){
-//  console.log(res);
-//});

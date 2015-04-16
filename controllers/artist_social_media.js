@@ -25,11 +25,10 @@ artist_social_media.updateArtistById = function(musicbrainz_id, cb) {
         }
       });
   })
-
 }
 
 artist_social_media.updateArtistByName = function(artistName, cb){
-  artists.getIdByName(artistName, function(musicbrainz_id){
+  artists.getMBIDByName(artistName, function(musicbrainz_id){
     console.log(musicbrainz_id);
     artist_social_media.updateArtistById(musicbrainz_id, cb)
   })
@@ -54,7 +53,3 @@ artist_social_media.getArtist = function(id, id_type, cb) {
 }
 
 module.exports = artist_social_media;
-
-artist_social_media.updateArtistByName('12th planet', function(data){
-  console.log(data);
-});
