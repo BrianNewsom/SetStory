@@ -45,23 +45,30 @@ openaura.getSocialFeed = function(artist, limit, offset, cb){
 
 var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook' ];
 
-openaura.getFollowers = function( artist, cb ) {
+openaura.getMBID = function( artist, cb ) {
   rest.get( 'http://api.openaura.com/v1/search/artists', {
     query: { 'q': artist, 'limit': 1, 'api_key': api_key }
   } ).on( 'complete', function( artists ) {
     try {
-      var musicbrainz_id = artists[ 0 ].musicbrainz_id;
+      // Found matching artist
+      var musicbrainz_id = artist[0].musicbrainz_id;
+      cb(musicbrainz_id);
+    }
+    catch( e ) {
+      console.log( e );
+      cb( null );
+    }
+  } )
+
+};
+
+openaura.getFollowers = function( musicbrainz_id, cb ) {
+    try {
       rest.get( 'http://api.openaura.com/v1/source/artists/' + musicbrainz_id, {
         query: { 'id_type': 'musicbrainz:gid', 'api_key': api_key }
       } ).on( 'complete', function( basicSocialMediaData ) {
         // Extract data of type included in relevantMediaProviders.
         var sources = _.filter( basicSocialMediaData.sources, function( source ) {
-          if ( source.name ) {
-            // Only include if name matches to avoid fan groups.
-            if ( source.name.toLowerCase() != artist.toLowerCase() ) {
-              return false;
-            }
-          }
           return (_.contains( relevantMediaProviders, source.provider_name ));
 
         } );
@@ -86,15 +93,15 @@ openaura.getFollowers = function( artist, cb ) {
         } )
 
         // If we didn't get a solid name from the sources, use the users input as name
-        if(!output.name){
-          output.name = artist;
-        }
+        //if(!output.name){
+        //  output.name = artist;
+        //}
 
-        artist_social_media.addArtist(output, function(row){
-          cb( output );
-          return 0;
-        })
-
+        //artist_social_media.addArtist(output, function(row){
+        //  cb( output );
+        //  return 0;
+        //})
+      cb(output);
 
 
       } );
@@ -104,7 +111,6 @@ openaura.getFollowers = function( artist, cb ) {
       cb( null );
       return 1;
     }
-  } )
 }
 
 
