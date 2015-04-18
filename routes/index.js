@@ -25,14 +25,31 @@ router.get('/api/artist/social_media', function(req, res, next){
   artist_social_media.getArtist(req.query.id, req.query.id_type, function(data){
     res.json(data);
   })
+});
+
+router.get('/api/artist/social_media/:artistName', function(req, res, next){
+    /* TODO: Get MBID from artists table once it's populated - this should always work but often requires two calls to openaura. */
+    openaura.getMBID(req.params.artistName, function(musicbrainz_id){
+        artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
+            console.log(data);
+            res.json(data);
+        })
+    });
 })
 
-router.get('/api/artist/social_media/add', function(req, res, next){
-  // TODO: I don't think should be a get - but this is a simple way to add artists for now.
-  openaura.getFollowers(req.query.artist_name, function(data){
-    res.json(data);
-  })
+router.get('/api/artist/getMBID', function(req, res, next){
+    if(!req.query.artist_name){
+        res.send("Please include artist_name query parameter");
+    }
+    var artist_name = req.query.artist_name;
+    artists.getMBIDByName(artist_name, function(musicbrainz_id){
+        if (!musicbrainz_id){
+            res.send("No matching musicbrainz_id for artist in table artists");
+        }
+        res.json({"artist_name": artist_name, "musicbrainz_id": musicbrainz_id })
+    });
 })
+
 
 router.get('/api/search/:name', function(req, res, next) {
 

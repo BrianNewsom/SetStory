@@ -2,7 +2,6 @@ var rest = require('restler');
 var openaura = {};
 var api_key = 'e92932b80a618686be74f8c720e39384ac04df55';
 var _ = require('lodash');
-var artist_social_media = require('../controllers/artist_social_media');
 
 openaura.getArtistImage = function(artist, cb){
     // Use decibel to get all genres for a given artist
@@ -34,18 +33,17 @@ openaura.getSocialFeed = function(artist, limit, offset, cb){
         } else {
             var oa_artist_id = data[0].oa_artist_id;
             rest.get('http://api.openaura.com/v1/particles/artists/' + oa_artist_id, {
-                // TODO: Get a particles api_key not jacked from their website example
                 query: {'id_type' : 'oa:artist_id','limit' : limit, 'offset' : offset, 'api_key' : 'zlA809tV1FCxCb55n5ei0mSmbtHgvpJe' }}).on('complete', function(data){
                 cb(data);
             })
         }
-
     })
 };
 
 var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook' ];
 
 openaura.getMBID = function( artist, cb ) {
+  // TODO - BIG: Often gives back fan pages rather than authentic pages, find max followers and assume that is official
   rest.get( 'http://api.openaura.com/v1/search/artists', {
     query: { 'q': artist, 'limit': 1, 'api_key': api_key }
   } ).on( 'complete', function( res ) {
@@ -82,7 +80,6 @@ openaura.getFollowers = function( musicbrainz_id, cb ) {
           if (!output.name && source.name){
             output.name = source.name;
           }
-          // TODO: Determine what we actually want here
           var followersKey = source.provider_name + "_followers";
           var urlKey = source.provider_name + "_url";
 
@@ -109,7 +106,6 @@ openaura.getFollowers = function( musicbrainz_id, cb ) {
     catch( e ) {
       console.log( e );
       cb( null );
-      return 1;
     }
 }
 
