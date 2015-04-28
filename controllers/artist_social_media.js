@@ -12,11 +12,9 @@ artist_social_media.updateArtistById = function(musicbrainz_id, cb) {
   openaura.getFollowers(musicbrainz_id, function(data){
     console.log(data);
     connection.query("INSERT INTO artist_social_media SET musicbrainz_id = ?, facebook_followers = ?, facebook_url = ?, twitter_followers = ?," +
-                     " twitter_url = ?, instagram_followers = ?, instagram_url = ? ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), musicbrainz_id = " +
-                     "?, facebook_followers = ?, facebook_url = ?, twitter_followers = ?, twitter_url = ?, instagram_followers = ?, instagram_url = ?",
+                     " twitter_url = ?, instagram_followers = ?, instagram_url = ?",
       [data.musicbrainz_id, data.facebook_followers, data.facebook_url, data.twitter_followers, data.twitter_url, data.instagram_followers,
-        data.instagram_url, data.musicbrainz_id, data.facebook_followers, data.facebook_url, data.twitter_followers, data.twitter_url,
-        data.instagram_followers, data.instagram_url], function(err, rows) {
+        data.instagram_url], function(err, rows) {
         if (err){
           console.log(err);
           cb(null);
@@ -40,11 +38,14 @@ artist_social_media.updateArtistByName = function(artistName, cb){
 
 
 artist_social_media.getArtist = function(id, id_type, cb) {
-  // TODO: Logic to update if results are too old
+
   var query = "SELECT * FROM artist_social_media WHERE ";
   // Default to setstory id
   query += (id_type) ? (id_type) : 'id';
   query += "='" + id + "'";
+
+  // Get most recent data
+  query += " ORDER BY timestamp DESC LIMIT 1"
   connection.query(query, function( err, res ) {
       if ( err ) {
         console.log( err );
