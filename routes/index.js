@@ -27,11 +27,17 @@ router.get('/api/artist/social_media', function(req, res, next){
   })
 });
 
+/* Endpoint so we can update artists by hitting a url.  Probably shouldn't be on prod. */
+router.get('/api/artist/social_media/updateById', function(req, res, next){
+    artist_social_media.updateArtistById(req.query.id, function(data){
+        res.json(data);
+    })
+})
+
 router.get('/api/artist/social_media/:artistName', function(req, res, next){
     /* TODO: Get MBID from artists table once it's populated - this should always work but often requires two calls to openaura. */
     openaura.getMBID(req.params.artistName, function(musicbrainz_id){
         artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
-            console.log(data);
             res.json(data);
         })
     });
