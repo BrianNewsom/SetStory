@@ -30,17 +30,11 @@ soundcloud.getUserFromPermalink = function(url, cb){
 
 soundcloud.getUserFromPermalink('https://soundcloud.com/alt-j', function(user){
     var user_id = user.id;
+    cb(user);
     soundcloud.getTotalPlays(user_id, function(plays){
-        console.log('alt-j has ' + plays);
+        console.log(user.username + ' has ' + plays);
     });
 });
-
-/*
-soundcloud.getTotalPlays(3207, function(data){
-    console.log(data);
-});
-*/
-
 
 
 module.exports = soundcloud;
