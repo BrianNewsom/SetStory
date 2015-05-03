@@ -166,7 +166,7 @@ myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$r
 		$http.get(url).success(function(data) {
 			
 			for (var i = 0; i < data.lineup.length; i++) {
-				if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
+				if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
 				{
 					 data.lineup[i].artistimageURL ='';
 				}
@@ -258,8 +258,25 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
             
         };
         $scope.addArtists = function(c){	
-        	console.log(c);
-        	$scope.detail.lineup.push(c);
-        };
+        	var url = "api/search/" + c;
+
+	        $http.get(url).success(function(data) {
+	            processArtistImage(data[0]);
+	            $scope.detail.lineup.push(data[0]);
+	            console.log(data[0]);
+	        });
+		};
 
 });
+
+
+function processArtistImage(artist){
+	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
+	{
+		 artist.imageURL ='';
+	}
+	else {
+		artist.imageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  artist.imageURL;	
+	}
+
+}
