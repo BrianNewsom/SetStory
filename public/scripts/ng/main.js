@@ -17,6 +17,11 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/events.html', 
       controller: 'EventsController'
     });
+   $routeProvider.when('/lineup/builder', 
+    {
+      templateUrl: '/scripts/ng/partials/lineup-builder.html', 
+      controller: 'LineupBuilderController'
+    });
 }]);
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
@@ -29,9 +34,10 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
         // gives another movie array on changez
         $scope.updateArtists = function(typed){
             // MovieRetriever could be some service returning a promise
-            var url = '/api/search/' + typed;
+            var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
+            	console.log(data);
 		    	$scope.artists = data;
 		    });
             
@@ -42,7 +48,7 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 
         $scope.updateEvents = function(typed){
             // MovieRetriever could be some service returning a promise
-            var url = '/api/search/' + typed;
+            var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
 		    	$scope.events = data;
@@ -160,7 +166,7 @@ myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$r
 		$http.get(url).success(function(data) {
 			
 			for (var i = 0; i < data.lineup.length; i++) {
-				if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
+				if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
 				{
 					 data.lineup[i].artistimageURL ='';
 				}
@@ -192,5 +198,68 @@ myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$r
         };
 	}
 
+
+});
+myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+	
+
+	$scope.detail = {
+		lineup:[]
+	};
+	// var loadData = function(url){
+	// 	$http.get(url).success(function(data) {
+			
+	// 		for (var i = 0; i < data.lineup.length; i++) {
+	// 			if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
+	// 			{
+	// 				 data.lineup[i].artistimageURL ='';
+	// 			}
+	// 			else {
+	// 				 data.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  data.lineup[i].artistimageURL;	
+	// 			}
+
+						
+	// 		};
+	// 		$scope.detail = data;
+	// 		$scope.calculateEventScore();
+	// 		console.log(data);
+	// 	});
+	// }
+	// if($routeParams.name.toLowerCase().indexOf('coachella') > -1) {
+	// 	loadData('coachella2015.json');
+	// } else {
+	// 	loadData('umf2015.json');
+	// }
+
+	// $scope.calculateEventScore = function() {
+	// 	$scope.eventScore = $scope.detail.lineup.length * 1300
+	// }
+
+	// $scope.gotoArtist = function(artist){
+	// 	var encoded = encodeURIComponent(artist.artist);
+	// 	$scope.gotoArtist = function(c){	
+ //        	$location.path("/artists/" + encoded);
+ //        };
+	// }
+
+		$rootScope.main = true;
+    	$rootScope.detail = false;
+        $scope.artists = [];
+        $scope.events = [];
+
+        // gives another movie array on changez
+        $scope.updateArtists = function(typed){
+            // MovieRetriever could be some service returning a promise
+            var url = '/api/autocomplete/' + typed;
+            
+            $http.get(url).success(function(data) {
+		    	$scope.artists = data;
+		    });
+            
+        };
+        $scope.addArtists = function(c){	
+        	console.log(c);
+        	$scope.detail.lineup.push(c);
+        };
 
 });

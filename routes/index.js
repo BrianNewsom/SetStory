@@ -65,6 +65,22 @@ router.get('/api/search/:name', function(req, res, next) {
         var artists = setmine.artists
         for (var i = 0; i < artists.length; i++) {
             if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+                result.push(artists[i])
+            }
+        };
+    }
+    res.json(result)
+
+
+});
+router.get('/api/autocomplete/:name', function(req, res, next) {
+
+    var result = [];
+
+    if(req.params.name.length > 2) {
+        var artists = setmine.artists
+        for (var i = 0; i < artists.length; i++) {
+            if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
                 result.push(artists[i].artist)
             }
         };

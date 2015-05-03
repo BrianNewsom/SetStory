@@ -9,21 +9,19 @@ setmine.artists = []
 
 setmine.init = function(callback) {
 
-    rest.get('http://setmine.com/api/t/artists', {
+    rest.get('http://setmine.com/api/v/7/artist', {
         query : {}
     }).on('complete', function(data) {
-    	for(var i in data.artists) {
-    		setmine.artists.push(data.artists[i])
-    	}
+        setmine.artists = data.payload.artist;
         //TODO: Hard fix for events
         setmine.artists.push({artist:'Coachella 2015'});
         setmine.artists.push({artist:'Lollapalooza 2015'});
         setmine.artists.push({artist:'Ultra Music Festival 2015'});
         setmine.artists.push({artist:'SXSW 2015'});
         if(callback) {
-        	callback()
+            callback()
         }
-    })
+    });
 
 }
 
