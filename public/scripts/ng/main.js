@@ -265,6 +265,15 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 	            $scope.detail.lineup.push(data[0]);
 	            console.log(data[0]);
 	        });
+	        $scope.choice = '';
+
+		};
+		$scope.calculateEventScore = function() {
+			return $scope.detail.lineup.length * 1300
+		};
+
+		$scope.removeArtitst = function(i,a){
+			 $scope.detail.lineup.splice(i, 1);
 		};
 
 });
