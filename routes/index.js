@@ -14,7 +14,10 @@ var stubhub = require('../apiHandlers/stubhub')
 
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
+<<<<<<< HEAD
 var artist_media_plays = require('../controllers/artist_media_plays');
+=======
+>>>>>>> scripts environment
 var scripts = require('../controllers/scripts')
 
 var jf = require('jsonfile')
