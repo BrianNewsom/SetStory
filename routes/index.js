@@ -9,6 +9,7 @@ var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
+var scripts = require('../controllers/scripts')
 
 var jf = require('jsonfile')
 
@@ -148,6 +149,12 @@ router.get('/api/popularity/track/:trackTitle', function(req, res, next){
 router.get('/api/popularity/artist/:artistName', function(req,res,next){
     echonest.getArtistPopularity(req.params.artistName, function(data){
         res.json(data);
+    })
+})
+
+router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
+    scripts.startTimedSocialMedia(function() {
+        res.json({"response": "Script finished."});
     })
 })
 
