@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['autocomplete', 'infinite-scroll','angularMoment','ngRoute']).
+var myApp = angular.module('myApp', ['autocomplete', 'ngAnimate', 'infinite-scroll','angularMoment','ngRoute']).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', 
     {
@@ -206,41 +206,13 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 	$scope.detail = {
 		lineup:[]
 	};
-	// var loadData = function(url){
-	// 	$http.get(url).success(function(data) {
-			
-	// 		for (var i = 0; i < data.lineup.length; i++) {
-	// 			if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
-	// 			{
-	// 				 data.lineup[i].artistimageURL ='';
-	// 			}
-	// 			else {
-	// 				 data.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  data.lineup[i].artistimageURL;	
-	// 			}
 
-						
-	// 		};
-	// 		$scope.detail = data;
-	// 		$scope.calculateEventScore();
-	// 		console.log(data);
-	// 	});
-	// }
-	// if($routeParams.name.toLowerCase().indexOf('coachella') > -1) {
-	// 	loadData('coachella2015.json');
-	// } else {
-	// 	loadData('umf2015.json');
-	// }
-
-	// $scope.calculateEventScore = function() {
-	// 	$scope.eventScore = $scope.detail.lineup.length * 1300
-	// }
-
-	// $scope.gotoArtist = function(artist){
-	// 	var encoded = encodeURIComponent(artist.artist);
-	// 	$scope.gotoArtist = function(c){	
- //        	$location.path("/artists/" + encoded);
- //        };
-	// }
+	$scope.gotoArtist = function(artist){
+		var encoded = encodeURIComponent(artist.artist);
+		$scope.gotoArtist = function(c){	
+        	$location.path("/artists/" + encoded);
+        };
+	}
 
 		$rootScope.main = true;
     	$rootScope.detail = false;
@@ -261,16 +233,46 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
         	var url = "api/search/" + c;
 
 	        $http.get(url).success(function(data) {
+	            var artist = data[0];
 	            processArtistImage(data[0]);
 	            $scope.detail.lineup.push(data[0]);
-	            console.log(data[0]);
+	            var socialMediaURL = "api/artist/social_media/" + c;
+	            (function(smURL,item){
+	            	$http.get(smURL).success(function(data) {
+	            		item.socialMedia = data;
+	            	});
+	            })(socialMediaURL,artist);
+	            
+	            
 	        });
 	        $scope.choice = '';
+	        $scope.artists= [];
 
 		};
-		$scope.calculateEventScore = function() {
-			return $scope.detail.lineup.length * 1300
+		$scope.detail.calculateEventScore = function() {
+			return $scope.detail.lineup.length * 1300;
 		};
+		$scope.detail.twitterReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.twitter_followers ? a.socialMedia.twitter_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
+		$scope.detail.facebookReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.facebook_followers ? a.socialMedia.facebook_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
+		$scope.detail.youtubeReach = function(){
+			return $scope.detail.lineup.length * 10;
+		}
 
 		$scope.removeArtitst = function(i,a){
 			 $scope.detail.lineup.splice(i, 1);
