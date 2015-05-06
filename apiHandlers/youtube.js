@@ -15,11 +15,15 @@ youtube.getVideoStatsById = function(id, cb) {
 }
 
 youtube.getStatsForChannelByName = function(name, cb){
+  // TODO: There's lots of nice info in snippet if we want it
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&forUsername=' + name).on( 'complete', function( res ) {
     if ( res instanceof(Error) ) {
       console.log( JSON.stringify( res ) );
     }
     else {
+      var stats = res.items[0 ].statistics;
+      stats.channelName = name;
+      stats.channelId = res.items[0 ].id;
       cb(res.items[0 ].statistics);
     }
   } )
@@ -31,7 +35,7 @@ module.exports = youtube;
 //youtube.getVideoStatsById('V2VmcuOEqEg', function(stats){
 //    console.log(stats);
 //  });
-
+//
 //youtube.getStatsForChannelByName('TheOfficialSkrillex', function(data){
-  //console.log(data);
+//  console.log(data);
 //});

@@ -5,7 +5,8 @@ soundcloud.client_id = '66b598e554ce0083e7c7b55e983062b0';
 
 
 soundcloud.getUserTracks = function(user_id, cb){
-    // Return all tracks of a given user.  TODO: Check limit
+    // Return all tracks of a given user.
+    // TODO: Stop getting rate limited :/
     rest.get('http://api.soundcloud.com/users/' + user_id + '/tracks.json?client_id=' + soundcloud.client_id)
             .on('complete', function(data){
         cb(data);
@@ -30,7 +31,6 @@ soundcloud.getUserFromPermalink = function(url, cb){
 
 soundcloud.getUserFromPermalink('https://soundcloud.com/alt-j', function(user){
     var user_id = user.id;
-    cb(user);
     soundcloud.getTotalPlays(user_id, function(plays){
         console.log(user.username + ' has ' + plays);
     });
