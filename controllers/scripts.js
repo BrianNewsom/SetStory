@@ -23,7 +23,7 @@ scripts.startTimedSocialMedia = function(cb) {
 
 	cb();
 
-	function getSocialMedia
+	//function getSocialMedia
 }
 
 module.exports = scripts;

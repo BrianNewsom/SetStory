@@ -1,15 +1,37 @@
-var google = require('googleapis');
-var OAuth2 = google.auth.OAuth2;
+var rest = require('restler');
+var youtube = {};
 
-var oauth2Client = new OAuth2('713443745464-o6kbgqrqk841u2p00b1hs1ldaco350nb.apps.googleusercontent.com','xZ5xR4Gf9eRvtwNP7IAnVMT6', '');
+youtube.key = 'AIzaSyDWyNgADlT_d1ZnBu0FzKK2Qo6KMTeiRIA';
 
-// generate a url that asks permissions for Google+ and Google Calendar scopes
-var scopes = [
-  'https://www.googleapis.com/auth/plus.me',
-  'https://www.googleapis.com/auth/calendar'
-];
+youtube.getVideoStatsById = function(id, cb) {
+  rest.get( 'https://www.googleapis.com/youtube/v3/videos?part=statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
+    if ( res instanceof(Error) ) {
+      console.log( JSON.stringify( res ) );
+    }
+    else {
+      cb(res.items[0 ].statistics);
+    }
+  } )
+}
 
-var url = oauth2Client.generateAuthUrl({
-  access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
-  scope: scopes // If you only need one scope you can pass it as string
-});
+youtube.getStatsForChannelByName = function(name, cb){
+  rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&forUsername=' + name).on( 'complete', function( res ) {
+    if ( res instanceof(Error) ) {
+      console.log( JSON.stringify( res ) );
+    }
+    else {
+      cb(res.items[0 ].statistics);
+    }
+  } )
+}
+
+module.exports = youtube;
+
+/* Examples */
+//youtube.getVideoStatsById('V2VmcuOEqEg', function(stats){
+//    console.log(stats);
+//  });
+
+//youtube.getStatsForChannelByName('TheOfficialSkrillex', function(data){
+  //console.log(data);
+//});
