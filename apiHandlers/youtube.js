@@ -3,7 +3,8 @@ var youtube = {};
 
 youtube.key = 'AIzaSyDWyNgADlT_d1ZnBu0FzKK2Qo6KMTeiRIA';
 
-youtube.getVideoStatsById = function(id, cb) {
+youtube.getVideoStatsById = function(id, cb)
+  // Get video stats for an individual video by id
   rest.get( 'https://www.googleapis.com/youtube/v3/videos?part=statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
     if ( res instanceof(Error) ) {
       console.log( JSON.stringify( res ) );
@@ -15,6 +16,7 @@ youtube.getVideoStatsById = function(id, cb) {
 }
 
 youtube.getStatsForChannelByName = function(name, cb){
+  // Get stats for a users channel by username (unique)
   // TODO: There's lots of nice info in snippet if we want it
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&forUsername=' + name).on( 'complete', function( res ) {
     if ( res instanceof(Error) ) {
