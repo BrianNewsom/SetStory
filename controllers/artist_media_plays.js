@@ -16,27 +16,50 @@ var soundcloud = require('../apiHandlers/soundcloud');
    Then update using apiHandler functions
 
  */
-artist_media_plays.updatePlays = function(soundcloud_url, youtube_channel, cb){
-  console.log('updating plays for artist');
-  soundcloud.getUserFromPermalink(soundcloud_url, function(user){
-    var user_id = user.id;
-    soundcloud.getTotalPlays(user_id, function(plays){
-      var soundcloud_plays = plays;
-      // Now get YT data
-      youtube.getStatsForChannelByName(youtube_channel, function(youtube_stats){
-        connection.query("INSERT INTO artist_media_plays SET soundcloud_url = ?, soundcloud_total_plays = ?, youtube_id = ?, youtube_url =?, youtube_total_plays = ?",
-        [soundcloud_url, soundcloud_plays, youtube_stats.channelId, youtube_stats.channelName, youtube_stats.viewCount ], function(err, rows) {
-            if (err) {
-              console.log(err);
-              cb(null);
-            } else {
-              cb("Successfully added data into table");
-            }
-          })
-      })
-    });
-  });
-}
+
+artist_media_plays.updatePlaysByMBId = function(musicbrainz_id, cb){
+  artists.getByMBID(musicbrainz_id, function(artist){
+    artist_media_plays.updatePlays(artist.soundcloud_id, artist.youtube_name, cb);
+  })
+};
+
+artist_media_plays.updatePlays = function( soundcloud_id, youtube_name, cb ) {
+  console.log( 'updating plays for artist' );
+  soundcloud.getTotalPlays( soundcloud_id, function( soundcloud_plays ) {
+    youtube.getStatsForChannelByName( youtube_name, function( youtube_stats ) {
+      connection.query( "INSERT INTO artist_media_plays SET soundcloud_total_plays = ?, youtube_total_plays = ?",
+        [ soundcloud_plays, youtube_stats.viewCount ], function( err, rows ) {
+          if ( err ) {
+            console.log( err );
+            cb( null );
+          }
+          else {
+            cb( "Successfully added data into table" );
+          }
+        } )
+    } )
+  } )
+};
+
+  //soundcloud.getUserFromPermalink(soundcloud_url, function(user){
+  //  var user_id = user.id;
+  //  soundcloud.getTotalPlays(user_id, function(plays){
+  //    var soundcloud_plays = plays;
+  //    // Now get YT data
+  //    youtube.getStatsForChannelByName(youtube_channel, function(youtube_stats){
+  //      connection.query("INSERT INTO artist_media_plays SET soundcloud_url = ?, soundcloud_total_plays = ?, youtube_id = ?, youtube_url =?, youtube_total_plays = ?",
+  //      [soundcloud_url, soundcloud_plays, youtube_stats.channelId, youtube_stats.channelName, youtube_stats.viewCount ], function(err, rows) {
+  //          if (err) {
+  //            console.log(err);
+  //            cb(null);
+  //          } else {
+  //            cb("Successfully added data into table");
+  //          }
+  //        })
+  //    })
+  //  });
+  //});
+
 
 module.exports = artist_media_plays;
 
