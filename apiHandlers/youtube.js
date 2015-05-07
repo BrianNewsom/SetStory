@@ -3,7 +3,7 @@ var youtube = {};
 
 youtube.key = 'AIzaSyDWyNgADlT_d1ZnBu0FzKK2Qo6KMTeiRIA';
 
-youtube.getVideoStatsById = function(id, cb)
+youtube.getVideoStatsById = function(id, cb){
   // Get video stats for an individual video by id
   rest.get( 'https://www.googleapis.com/youtube/v3/videos?part=statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
     if ( res instanceof(Error) ) {
