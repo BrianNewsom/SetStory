@@ -35,10 +35,12 @@ artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtub
     } )
   } )
 };
+
 /* Update plays for 3LAU */
-artist_media_plays.updatePlaysByMBId('6461d3e3-2886-4ad4-90c9-a43e3202ebaf', function(data){
-  console.log(data);
-})
+//artist_media_plays.updatePlaysByMBId('6461d3e3-2886-4ad4-90c9-a43e3202ebaf', function(data){
+//  console.log(data);
+//})
+
   //soundcloud.getUserFromPermalink(soundcloud_url, function(user){
   //  var user_id = user.id;
   //  soundcloud.getTotalPlays(user_id, function(plays){

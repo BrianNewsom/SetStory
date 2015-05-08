@@ -71,6 +71,6 @@ module.exports = youtube;
 //youtube.getStatsForChannelByName('TheOfficialSkrillex', function(data){
 //  console.log(data);
 //});
-youtube.getIdFromName('TheOfficialSkrillex', function(data){
-  console.log(data);
-});
+//youtube.getIdFromName('TheOfficialSkrillex', function(data){
+//  console.log(data);
+//});
