@@ -270,6 +270,24 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 			}
 			return Math.round(sum / $scope.detail.lineup.length) ;
 		}
+		$scope.detail.instagramReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.instagram_followers ? a.socialMedia.instagram_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
+		$scope.detail.soundcloudReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.soundcloud_followers ? a.socialMedia.soundcloud_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
 		$scope.detail.youtubeReach = function(){
 			return $scope.detail.lineup.length * 10;
 		}

@@ -14,23 +14,46 @@
 
 
 			    <div class="data-container">
-			    	<div class="data-title">SetStory Score</div>
+			    	<div class="data-title">
+			    		<span>SetStory Score</span></div>
 			    	<div class="raw-score-container flex-column">
 			    		<div class="buffer"></div>
 			    		<div class="raw-score" >{{detail.calculateEventScore()}}</div>
 			    		<div class="buffer"></div>
-			    		<div class="data-title lineup-total">{{detail.lineup.length}} Artists</div>
+			    		<div class="data-title lineup-total">
+			    			<span>{{detail.lineup.length}} Artists</span></div>
 			    	</div>
 			    </div>
 			    <div class="data-container">		
-					<div class="data-title">Social Media Reach</div>			
 					<div class="data-title">
+						<span>Social Media Reach</span>
+					</div>			
+					<div class="data-title">
+						<div class="description"> <span class="hide-sm"><i class="fa fa-twitter fa-4"></i>&nbsp;&nbsp;</span></div>
 						<div class="number">{{detail.twitterReach()}} </div> 
-						<div class="description"> Twitter</div>
 					</div>
-					<div class="data-title">{{detail.facebookReach()}} Facebook</div>
-					<div class="data-title">{{detail.youtubeReach()}} Youtube</div>
-					<div class="data-title"></div>
+					<div class="data-title">
+						
+						<div class="description"> <span class="hide-sm"><i class="fa fa-facebook fa-4"></i>&nbsp;&nbsp;</span></div>
+						<div class="number">{{detail.facebookReach()}} </div> 
+					</div>
+					<div class="data-title">
+						
+						<div class="description"> <span class="hide-sm"><i class="fa fa-youtube fa-4"></i>&nbsp;&nbsp;</span></div>
+						<div class="number">{{detail.youtubeReach()}} </div> 
+					</div>
+					<div class="data-title">
+						
+						<div class="description"> <span>
+							<img src="https://cdn4.iconfinder.com/data/icons/social-web-icons/128/soundcloud.png">
+						</span></div>
+						<div class="number">{{detail.soundcloudReach()}} </div> 
+					</div>
+					<div class="data-title">
+						
+						<div class="description"> <span class="hide-sm"><i class="fa fa-instagram fa-4"></i>&nbsp;&nbsp;</span></div>
+						<div class="number">{{detail.instagramReach()}} </div> 
+					</div>
 			    </div>
 
 
@@ -41,7 +64,7 @@
 		<br>
 		<autocomplete class="search-bar" 
 			ng-model="choice"
-			attr-placeholder="search artists..." 
+			attr-placeholder="Add artists to your lineup.." 
 			click-activation="true" 
 			data="artists" 
 			on-type="updateArtists" 
