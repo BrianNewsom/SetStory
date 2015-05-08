@@ -9,6 +9,7 @@ var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
+var artist_media_plays = require('../controllers/artist_media_plays');
 var scripts = require('../controllers/scripts')
 
 var jf = require('jsonfile')
@@ -26,6 +27,13 @@ router.get('/api/artist/social_media', function(req, res, next){
   artist_social_media.getArtist(req.query.id, req.query.id_type, function(data){
     res.json(data);
   })
+});
+
+/* Get plays data for an artist (Returns an array of data in order */
+router.get('/api/artist/media_plays', function(req, res, next){
+    artist_media_plays.getArtist(req.query.id, req.query.id_type, function(data){
+        res.json(data);
+    })
 });
 
 /* Endpoint so we can update artists by hitting a url.  Probably shouldn't be on prod. */

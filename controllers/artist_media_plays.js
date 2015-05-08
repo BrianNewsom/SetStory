@@ -9,6 +9,27 @@ var artists = require('../controllers/artists');
 var youtube = require('../apiHandlers/youtube');
 var soundcloud = require('../apiHandlers/soundcloud');
 
+artist_media_plays.getArtist = function(id, id_type, cb) {
+  var limit = "10";
+  var query = "SELECT * FROM artist_media_plays WHERE ";
+  // Default to setstory id
+  query += (id_type) ? (id_type) : 'id';
+  query += "='" + id + "'";
+
+  // Get most recent data
+  query += " ORDER BY timestamp DESC LIMIT " + limit;
+  connection.query(query, function( err, res ) {
+    if ( err ) {
+      console.log( err );
+    }
+    else {
+      if(res[0] && res != []){
+        console.log("Data pulled from artist_media_plays successfully.");
+        cb( res );
+      }
+    }
+  } );
+}
 
 artist_media_plays.updatePlaysByMBId = function(musicbrainz_id, cb){
   // Update plays for an artist based on MBIDs (MUST HAVE ids in artists table)
