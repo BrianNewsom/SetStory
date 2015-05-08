@@ -19,9 +19,12 @@ youtube.getStatsForChannelByName = function(name, cb){
   // Get stats for a users channel by username (unique)
   // TODO: There's lots of nice info in snippet if we want it
   // TODO: Maybe it's better to have this as Id rather than name
+  console.log(name);
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&forUsername=' + name).on( 'complete', function( res ) {
-    if ( res instanceof(Error) ) {
-      console.log( JSON.stringify( res ) );
+    console.log(res);
+    if ( res instanceof(Error) || !res.items[0] ) {
+      console.log( JSON.stringify( res ));
+      cb(null);
     }
     else {
       var stats = res.items[0 ].statistics;
@@ -32,6 +35,32 @@ youtube.getStatsForChannelByName = function(name, cb){
   } )
 }
 
+youtube.getStatsForChannelById = function(id, cb){
+  // Get stats for a users channel by username (unique)
+  // TODO: There's lots of nice info in snippet if we want it
+  rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
+    if ( res instanceof(Error) ) {
+      console.log( JSON.stringify( res ) );
+    }
+    else {
+      var stats = res.items[0 ].statistics;
+      stats.channelId = res.items[0 ].id;
+      cb(res.items[0 ].statistics);
+    }
+  } )
+}
+
+youtube.getIdFromName = function(name, cb){
+  // Get a Youtube Id from a username to populate table
+  rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet&key=' + youtube.key + '&forUsername=' + name ).on('complete', function( res){
+    if ( res instanceof(Error) ) {
+      console.log( JSON.stringify( res ) );
+    }
+    else {
+      cb(res.items[0 ].id);
+    }
+  })
+}
 module.exports = youtube;
 
 /* Examples */
@@ -42,3 +71,6 @@ module.exports = youtube;
 //youtube.getStatsForChannelByName('TheOfficialSkrillex', function(data){
 //  console.log(data);
 //});
+youtube.getIdFromName('TheOfficialSkrillex', function(data){
+  console.log(data);
+});

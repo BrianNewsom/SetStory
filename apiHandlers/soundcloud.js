@@ -11,7 +11,7 @@ soundcloud.getUserTracks = function(user_id, cb){
             .on('complete', function(data){
         cb(data);
     });
-}
+};
 
 soundcloud.getTotalPlays = function(user_id, cb){
     // Sum all plays across tracks for a given user
@@ -19,24 +19,24 @@ soundcloud.getTotalPlays = function(user_id, cb){
         var total = 0;
         _.forEach(data, function(track){
             total += Number(track.playback_count);
-        })
+        });
         cb(total);
     })
-}
+};
 
 soundcloud.getUserFromPermalink = function(url, cb) {
     // Get a users info from soundcloud url
     rest.get('http://api.soundcloud.com/resolve?client_id=' + soundcloud.client_id + '&url=' + url).on('complete', function(user){
         cb(user);
     })
-}
+};
 
 soundcloud.getUserFromName = function(name, cb){
     // Search users for 'name' and return first result's id
     rest.get('http://api.soundcloud.com/users.json?q=' + name + '&client_id=' + soundcloud.client_id).on('complete', function(user){
-        cb(user[0 ].id);
+        cb(user[0]);
     })
-}
+};
 
 /* Examples */
 //soundcloud.getUserFromName('Alt-J', function(data){

@@ -9,26 +9,21 @@ var artists = require('../controllers/artists');
 var youtube = require('../apiHandlers/youtube');
 var soundcloud = require('../apiHandlers/soundcloud');
 
-/* TODO For table
-
-   Move soundcloud_id, url, youtube_id, youtube_url to another table
-   Look up artist by musicbrainz_id in artists table, grab necessary data so we don't need it as an input.
-   Then update using apiHandler functions
-
- */
 
 artist_media_plays.updatePlaysByMBId = function(musicbrainz_id, cb){
+  // Update plays for an artist based on MBIDs (MUST HAVE ids in artists table)
   artists.getByMBID(musicbrainz_id, function(artist){
-    artist_media_plays.updatePlays(artist.soundcloud_id, artist.youtube_name, cb);
+    artist_media_plays.updatePlays(musicbrainz_id, artist.soundcloud_id, artist.youtube_id, cb);
   })
 };
 
-artist_media_plays.updatePlays = function( soundcloud_id, youtube_name, cb ) {
+artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtube_id, cb ) {
+  // Update plays for a given artist based on ids
   console.log( 'updating plays for artist' );
   soundcloud.getTotalPlays( soundcloud_id, function( soundcloud_plays ) {
-    youtube.getStatsForChannelByName( youtube_name, function( youtube_stats ) {
-      connection.query( "INSERT INTO artist_media_plays SET soundcloud_total_plays = ?, youtube_total_plays = ?",
-        [ soundcloud_plays, youtube_stats.viewCount ], function( err, rows ) {
+    youtube.getStatsForChannelById( youtube_id, function( youtube_stats ) {
+      connection.query( "INSERT INTO artist_media_plays SET musicbrainz_id = ?, soundcloud_total_plays = ?, youtube_total_plays = ?",
+        [ musicbrainz_id, soundcloud_plays, youtube_stats.viewCount ], function( err, rows ) {
           if ( err ) {
             console.log( err );
             cb( null );
@@ -40,7 +35,10 @@ artist_media_plays.updatePlays = function( soundcloud_id, youtube_name, cb ) {
     } )
   } )
 };
-
+/* Update plays for 3LAU */
+artist_media_plays.updatePlaysByMBId('6461d3e3-2886-4ad4-90c9-a43e3202ebaf', function(data){
+  console.log(data);
+})
   //soundcloud.getUserFromPermalink(soundcloud_url, function(user){
   //  var user_id = user.id;
   //  soundcloud.getTotalPlays(user_id, function(plays){
