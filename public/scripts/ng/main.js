@@ -22,7 +22,21 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/lineup-builder.html', 
       controller: 'LineupBuilderController'
     });
+   $routeProvider.when('/new/landingpage', 
+    {
+      templateUrl: '/scripts/ng/partials/new-landing-page.html', 
+      controller: 'newLandingPage'
+    });
 }]);
+
+myApp.controller('newLandingPage', function($scope,$rootScope,$location, $http){
+
+    $rootScope.main = true;
+    $rootScope.detail = false;
+        $scope.artists = [];
+        $scope.events = [];
+      
+});
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
 
