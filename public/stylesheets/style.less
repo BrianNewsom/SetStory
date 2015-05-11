@@ -125,6 +125,29 @@ a {
   color:black; 
 }
 
+.autocomplete input{
+    font-size: 1.6em;
+  width: 100%;
+  padding: 0.1em;
+  border: 0;
+  background-color: #19B5FE;
+  color: white;
+    
+ }
+.autocomplete input::-webkit-input-placeholder { /* WebKit browsers */
+    color:    white;
+}
+.autocomplete input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    white;
+   opacity:  1;
+}
+.autocomplete input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    white;
+   opacity:  1;
+}
+.autocomplete input:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color:    white;
+}
 .real-buffer {
   .flex(0)!important;
 }
@@ -527,7 +550,7 @@ path.color1 {
   color: white;
 }
 .bigger-text {
-  font-size: 4.3em;
+   font-size: 3.2em;
   color: white;
   letter-spacing: 2px;
 }

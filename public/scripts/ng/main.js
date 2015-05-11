@@ -239,10 +239,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
             var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
-            	if (data.event){
-	            	for (var i = 0; i < $scope.event.length; i++) {
-	            		$scope.event[i]
-	            	};
+            	if (data){
 			    	$scope.artists = data;
 		    	}
 		    });
