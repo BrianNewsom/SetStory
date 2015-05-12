@@ -69,17 +69,14 @@ a {
 .artist-lineup-container {
   .flex(0);
   > .artist-lineup {
-    // height: 27.5vh;
-    // width: 27.5vh;
     border-radius: 10000px; 
     background-color: rgba(46,204,116,1);
-    // border: 3px solid #00b16a;
-    max-width: 175px;
-    min-height: 175px;
-    min-width: 175px;
-    overflow: hidden;
-    max-height: 175px;
-    position:relative;
+      max-width: 150px;
+      min-height: 150px;
+      min-width: 150px;
+      overflow: hidden;
+      max-height: 150px;
+      position: relative;
   }
 }
 .artist-lineup img{
@@ -93,6 +90,12 @@ a {
 }
 .artist-row{
   display: inline-block;
+  padding: 0.4em;
+  .centered{
+        padding-top: 1em;
+        padding-bottom: 1em;
+        width:100%;
+    }
 }
 .artist-lineup-text {
   .flex(); 
@@ -419,7 +422,6 @@ h3 {
   font-size: 2em;
   padding-bottom: 1vh;
   padding-top: 1vh; 
-  display:inherit;
   img{
         max-width: 42px;
   /* padding-left: 1em; */
@@ -441,6 +443,11 @@ h3 {
       }
 
 }
+
+.data-title.data-social{
+       display:inherit;
+}
+
 .summary-data-body {
   .flex(); 
   .flexContainer(); 
@@ -562,4 +569,11 @@ path.color1 {
 }
 .horizontal-padding {
   padding: 0vh 1vw;
+}
+
+
+
+
+.centered{
+  text-align: center;
 }
