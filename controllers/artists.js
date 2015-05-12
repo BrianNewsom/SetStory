@@ -95,39 +95,36 @@ artists.updateSoundCloud = function(id, cb){
   });
 };
 
-artists.updateYoutube = function(id, youtube_name, cb){
+artists.updateYoutube = function(id, cb){
   // Update youtube info for given artist with musicbrainz id - id, and youtube channel name youtube_name.
-  // TODO: Would be great to remove dependency on youtube_name
   artists.getByMBID(id, function(artist){
-    youtube.getStatsForChannelByName(youtube_name, function(youtube_user){
-      if(youtube_user) {
-        console.log(youtube_user)
-        connection.query( "UPDATE artists " +
-                          "SET youtube_link = ?, " +
-                          "youtube_id = ? " +
-                          "WHERE musicbrainz_id = ?;",
-          [ 'https://www.youtube.com/user/' + youtube_user.channelName, youtube_user.channelId, id ],
-          function( err, rows ) {
-            if ( err ) {
-              console.log( "error in updating youtube" );
-              console.log( err );
-              cb( null );
-            }
-            else {
-              console.log( "successfully updated youtube data for artist" );
-              cb( rows );
-            }
-          } );
-      } else {
-        console.log('No youtube channel found');
-        cb(null);
-      }
+    youtube.getChannelFromArtistName(artist.artist, function(youtube_channel) {
+        if ( youtube_channel ) {
+          console.log( youtube_channel )
+          connection.query( "UPDATE artists " +
+                            "SET youtube_link = ?, " +
+                            "youtube_id = ? " +
+                            "WHERE musicbrainz_id = ?;",
+            [ 'https://www.youtube.com/user/' + youtube_channel.channelTitle, youtube_channel.channelId, id ],
+            function( err, rows ) {
+              if ( err ) {
+                console.log( "error in updating youtube" );
+                console.log( err );
+                cb( null );
+              }
+              else {
+                console.log( "successfully updated youtube data for artist" );
+                cb( rows );
+              }
+            } );
+        }
+        else {
+          console.log( 'No youtube channel found' );
+          cb( null );
+        }
     });
   });
 };
-
-
-
 
 module.exports = artists;
 

@@ -39,7 +39,7 @@ youtube.getStatsForChannelById = function(id, cb){
   // Get stats for a users channel by username (unique)
   // TODO: There's lots of nice info in snippet if we want it
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
-    if ( res instanceof(Error) ) {
+    if ( res instanceof(Error) || !res.items[0] ) {
       console.log( JSON.stringify( res ) );
     }
     else {
@@ -60,7 +60,22 @@ youtube.getIdFromName = function(name, cb){
       cb(res.items[0 ].id);
     }
   })
+};
+
+youtube.getChannelFromArtistName = function(name, cb){
+  // Experimental feature to find a youtube channel id based on artist's name
+  // Not to be trusted wholly, but should be accurate often.
+  rest.get('https://www.googleapis.com/youtube/v3/search?part=snippet&key=' + youtube.key + '&type=channel' +
+        '&q=' + name ).on('complete', function(res){
+    if ( res instanceof(Error) || !res.items[0 ]) { console.log( JSON.stringify( res ) ); }
+    else {
+      // Give back top channel
+      var channel = res.items[0];
+      cb(channel.snippet);
+    }
+  })
 }
+
 module.exports = youtube;
 
 /* Examples */
