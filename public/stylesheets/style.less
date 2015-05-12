@@ -91,10 +91,18 @@ a {
 .artist-row{
   display: inline-block;
   padding: 0.4em;
+  
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
   .centered{
         padding-top: 1em;
         padding-bottom: 1em;
-        width:100%;
+       width: 150px;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 }
 .artist-lineup-text {
