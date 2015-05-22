@@ -86,11 +86,15 @@ setmine.getEventLineupByName = function(eventName, callback) {
     
 }
 
-
-// First parameter 'data' must be an array with elements that look like this:
-// {
-//     "twitter_link": "https://twitter.com/Anonymuzkilla"
-// }
+setmine.getAVAScore = function(artistName, callback) {
+    console.log(artist)
+    var score = 0;
+    var data = {
+      artist: artist,
+      ava_score: score
+    }
+    cb(data)
+}
 
 setmine.socialmedia = socialmedia; // >> /models/socialmedia.js
 
