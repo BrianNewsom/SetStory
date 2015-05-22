@@ -198,6 +198,8 @@ router.get('/api/popularity/artist/:artistName', function(req,res,next){
 
 router.get('/api/artist/avascore/:artistName', function(req, res, next) {
     console.log(setmine.artists);  // Log the initiated setmine artist models
+    console.log("test")
+    //console.log(req.params.artistName)
 
     setmine.getAVAScore(req.params.artistName, function(data) {
         res.json(data);

@@ -87,13 +87,14 @@ setmine.getEventLineupByName = function(eventName, callback) {
 }
 
 setmine.getAVAScore = function(artistName, callback) {
-    console.log(artist)
+    console.log("getavascore function")
+    console.log(artistName)
     var score = 0;
     var data = {
-      artist: artist,
+      artist: artistName,
       ava_score: score
     }
-    cb(data)
+    callback(data)
 }
 
 setmine.socialmedia = socialmedia; // >> /models/socialmedia.js
