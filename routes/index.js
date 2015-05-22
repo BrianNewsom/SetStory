@@ -9,7 +9,6 @@ var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
-var scripts = require('../controllers/scripts')
 
 var jf = require('jsonfile')
 
@@ -37,7 +36,7 @@ router.get('/api/artist/social_media/updateById', function(req, res, next){
 
 router.get('/api/artist/social_media/:artistName', function(req, res, next){
     /* TODO: Get MBID from artists table once it's populated - this should always work but often requires two calls to openaura. */
-    openaura.getMBID(req.params.artistName, function(musicbrainz_id) {
+    openaura.getMBID(req.params.artistName, function(musicbrainz_id){
         artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
             res.json(data);
         })
@@ -64,8 +63,22 @@ router.get('/api/search/:name', function(req, res, next) {
 
     if(req.params.name.length > 2) {
         var artists = setmine.artists
-        console.log(artists)
+        for (var i = 0; i < artists.length; i++) {
+            if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+                result.push(artists[i])
+            }
+        };
+    }
+    res.json(result)
 
+
+});
+router.get('/api/autocomplete/:name', function(req, res, next) {
+
+    var result = [];
+
+    if(req.params.name.length > 2) {
+        var artists = setmine.artists
         for (var i = 0; i < artists.length; i++) {
             if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
                 result.push(artists[i].artist)
@@ -154,9 +167,11 @@ router.get('/api/popularity/artist/:artistName', function(req,res,next){
     })
 })
 
-router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
-    scripts.startTimedSocialMedia(function() {
-        res.json({"response": "Script finished."});
+router.get('/api/artist/avascore/:artistName', function(req, res, next) {
+    console.log(setmine.artists);  // Log the initiated setmine artist models
+
+    setmine.getAVAScore(req.params.artistName, function(data) {
+        res.json(data);
     })
 })
 

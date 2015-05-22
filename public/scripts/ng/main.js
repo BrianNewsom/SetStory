@@ -84,16 +84,13 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 
 
     $scope.getArtistScore = function() {
-    	var url = '/coachellaPopularity.json';
+    	var url = '/api/artist/avascore/' + $scope.choice;
+
+    	console.log(url);
 
     	$http.get(url).success(function(metadata) {
-    		$scope.artistScore = " - ";
-    		for(var i in metadata) {
-    			if(metadata[i].artist_name == $scope.choice) {
-    				var score = Math.floor(metadata[i].popularity*10000);
-    				$scope.artistScore = score;
-    			}
-    		}
+    		console.log(metadata);
+    		$scope.artistScore = metadata.ava_score || 12345;
     	});
     }
 

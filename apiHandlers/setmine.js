@@ -37,4 +37,14 @@ setmine.popularity = function(artist, event, callback) {
 
 }
 
+setmine.getAVAScore = function(artistName, callback) {
+    console.log(artist)
+    var score = 0;
+    var data = {
+      artist: artist,
+      ava_score: score
+    }
+    cb(data)
+}
+
 module.exports = setmine;
