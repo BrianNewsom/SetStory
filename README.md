@@ -18,4 +18,5 @@ SetStory was developed for the 2015 South By Southwest Music Hackathon Champions
 ```
 $ npm install
 $ npm start
+localhost:3000
 ```

@@ -1,0 +1,68 @@
+.landing {
+	height: 100%;
+	background: url(../images/bg-landing.png) no-repeat center top;
+	@include background-size (cover);
+	@include bg-color($bg-grey-dark);
+	
+	.landing--search--container {
+		@include vertical-align;
+		margin: 0 25px;
+	}
+
+	.autocomplete {
+		width:48%;
+		display: inline-block;
+		text-align: right;
+
+		ul {
+			border: none;
+			margin-top: 4px;
+
+			li {
+				background-color: rgba(white, .8);
+				color: $grey-dark;
+				padding: 5px 10px;
+				max-width: 400px;
+				float: right;
+
+				&:first-child {
+					@include border-radius(5px 5px 0 0);
+				}
+
+				&:last-child {
+					@include border-radius(0 0 5px 5px);
+				}
+
+				&:hover {
+					cursor: pointer;
+					background-color: rgba($orange, .9);
+					color: white;
+				}
+			}
+		}
+
+		input {
+			@include box-sizing(border-box);
+			font-family: $font;
+			font-size: 30px;
+			font-weight: $light;
+			padding: 0.4em;
+			vertical-align: middle;
+			border-radius: 5px;
+			border: none;
+			max-width: 400px;
+			background-color: rgba($orange, .9);
+			color: white;
+			@include placeholder-color(white);
+		}
+	}
+
+	.landing--search--text {
+		color: white;
+		display: inline-block;
+		width:48%;
+		padding-left: 2%;
+		font-size: 42px;
+		vertical-align: middle;
+	}
+}

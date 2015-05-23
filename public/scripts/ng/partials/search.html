@@ -1,17 +1,7 @@
-<div class="page" id="new-landing-page">
-	<div class="page intro-container">
-		<div class="flex-row real-buffer center">
-			<autocomplete class="search-bar" 
-			ng-model="search" 
-			attr-placeholder="Festival name"
-			click-activation="true" 
-			data="events" 
-			on-type="updateEvents" 
-			on-select="gotoEvent"></autocomplete>
-				
-			<div class="bigger-text wow fadeIn horizontal-padding">will take place at</div>			
-			<div class="bigger-text horizontal-padding">venue</div>
-		</div>		
+<div class="landing" id="new-landing-page">
+	<div class="landing--search--container">
+		<autocomplete class="search-bar" ng-model="search" attr-placeholder="Festival name" click-activation="true" data="events" on-type="updateEvents" on-select="gotoEvent"></autocomplete>
+		<div class="landing--search--text wow fadeIn">will take place at venue</div>	
 	</div>
 </div>
 
