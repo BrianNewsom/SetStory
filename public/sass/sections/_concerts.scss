@@ -2,11 +2,19 @@
 	background: $bg-grey-dark;
 	
 	.header {
-		
+
 		.button-white {
 			position: absolute;
 			bottom: 25px;
 			right: 25px;
 		}
+	}
+
+	.score-page {
+		width: 40%;
+	}
+
+	.outlook {
+		width: 60%;
 	}
 }

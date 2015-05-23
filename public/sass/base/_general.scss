@@ -1,11 +1,31 @@
 html, body {
 	font-family: $font;
+	color: white;
 	height:100%;
 	width:100%;
 }
 
 strong {
 	font-weight: $bold;
+}
+
+h1, h2, h3 {
+	position: relative;
+	color: white;
+}
+
+h1 {
+	font-weight: $bold;
+}
+
+h2 {
+	font-weight: $light;
+	font-size: 16px;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+}
+h3 {
+	font-weight: $regular;
 }
 
 .ng-scope {
@@ -29,36 +49,13 @@ strong {
 	}
 }
 
-.header {
-	position: relative;
-	min-height: 380px;
-	width: 100%;
-	background: transparent;
-
-	.header--top {
-		height:60px;
-		@include bg-color($orange);
-	}
-
-	.header--picture {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		@include background-size(cover !important);
-		z-index: 0;
-	}
-
-	.header--content {
-		position: absolute;
-		height: 100%;
-		z-index: 1;
-		top: 0;
-		width: 100%;
-	}
-}
-
 .modules--wrapper {
 	@include clearfix;
+}
+
+.module {
+	margin: 0;
+	padding: 0;
+	height: 304px;
+	float:left;
 }

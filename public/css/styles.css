@@ -2323,12 +2323,33 @@ table {
 
 html, body {
   font-family: "Nunito", sans-serif;
+  color: white;
   height: 100%;
   width: 100%;
 }
 
 strong {
   font-weight: 700;
+}
+
+h1, h2, h3 {
+  position: relative;
+  color: white;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+h3 {
+  font-weight: 400;
 }
 
 .ng-scope {
@@ -2355,6 +2376,19 @@ strong {
   color: white;
 }
 
+.modules--wrapper:before, .modules--wrapper:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+
+.module {
+  margin: 0;
+  padding: 0;
+  height: 304px;
+  float: left;
+}
+
 .header {
   position: relative;
   min-height: 380px;
@@ -2362,7 +2396,7 @@ strong {
   background: transparent;
 }
 .header .header--top {
-  height: 60px;
+  padding: 25px;
   position: relative;
 }
 .header .header--top:before {
@@ -2372,7 +2406,7 @@ strong {
   -khtml-opacity: 0.8;
   -moz-opacity: 0.8;
   filter: alpha(opacity=80);
-  background-color: #f57a58;
+  background-color: #f65e59;
   width: 100%;
   height: 100%;
   top: 0;
@@ -2398,10 +2432,37 @@ strong {
   width: 100%;
 }
 
-.modules--wrapper:before, .modules--wrapper:after {
-  content: " ";
-  display: table;
-  clear: both;
+.score-page ul li {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 30px;
+}
+.score-page ul li:nth-child(2n) {
+  background: #333333;
+}
+.score-page .score {
+  float: right;
+  color: #f57a58;
+}
+
+.outlook {
+  background: #f65e59;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f65e59 0%, #f57a58 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f65e59), color-stop(100%, #f57a58));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #f65e59 0%, #f57a58 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f65e59 0%, #f57a58 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f65e59 0%, #f57a58 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f65e59 0%, #f57a58 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$red', endColorstr='$orange',GradientType=0 );
+  /* IE6-9 */
 }
 
 .landing {
@@ -2510,4 +2571,10 @@ strong {
   position: absolute;
   bottom: 25px;
   right: 25px;
+}
+.concerts .score-page {
+  width: 40%;
+}
+.concerts .outlook {
+  width: 60%;
 }
