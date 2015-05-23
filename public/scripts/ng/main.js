@@ -17,6 +17,11 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/events.html', 
       controller: 'EventsController'
     });
+   $routeProvider.when('/concerts', 
+    {
+      templateUrl: '/scripts/ng/partials/concerts.html', 
+      controller: 'ConcertsController'
+    });
    $routeProvider.when('/lineup/builder', 
     {
       templateUrl: '/scripts/ng/partials/lineup-builder.html', 
@@ -317,6 +322,9 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 
 });
 
+myApp.controller('ConcertsController', function($scope){
+
+});
 
 function processArtistImage(artist){
 	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')

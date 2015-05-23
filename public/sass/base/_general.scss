@@ -11,3 +11,54 @@ strong {
 .ng-scope {
 	height: 100%;
 }
+
+.button-white{
+	@include transition( background $animation-time ease-in-out, color $animation-time ease-in-out);
+	@include border-radius(25px);
+	text-transform: uppercase;
+	background: white;
+	color: $orange;
+	font-weight: $light;
+	text-decoration: none;
+	padding: 10px 25px;
+	font-size: 14px;
+
+	&:hover {
+		background: $orange;
+		color: white;
+	}
+}
+
+.header {
+	position: relative;
+	min-height: 380px;
+	width: 100%;
+	background: transparent;
+
+	.header--top {
+		height:60px;
+		@include bg-color($orange);
+	}
+
+	.header--picture {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		@include background-size(cover !important);
+		z-index: 0;
+	}
+
+	.header--content {
+		position: absolute;
+		height: 100%;
+		z-index: 1;
+		top: 0;
+		width: 100%;
+	}
+}
+
+.modules--wrapper {
+	@include clearfix;
+}
