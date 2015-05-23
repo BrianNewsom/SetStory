@@ -2414,18 +2414,18 @@ strong {
   color: white;
 }
 .landing .autocomplete input::-webkit-input-placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
 }
 .landing .autocomplete input:-moz-placeholder {
   /* Firefox 18- */
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
 }
 .landing .autocomplete input::-moz-placeholder {
   /* Firefox 19+ */
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
 }
 .landing .autocomplete input:-ms-input-placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
 }
 .landing .landing--search--text {
   color: white;
