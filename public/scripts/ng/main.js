@@ -32,8 +32,21 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/new-landing-page.html', 
       controller: 'newLandingPage'
     });
+   $routeProvider.when('/new/viztest', 
+    {
+      templateUrl: '/scripts/ng/partials/new-datviz.html', 
+      controller: 'vizTestController'
+    });
 }]);
 
+myApp.controller('vizTestController', function($scope,$rootScope,$location, $http){
+
+    $rootScope.main = true;
+    $rootScope.detail = false;
+        $scope.artists = [];
+        $scope.events = [];
+      
+});
 myApp.controller('newLandingPage', function($scope,$rootScope,$location, $http){
 
     $rootScope.main = true;
