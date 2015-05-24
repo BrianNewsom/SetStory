@@ -184,5 +184,12 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
     })
 })
 
+router.get('/api/temp/twitter', function(req,res,next){
+    setmine.socialmedia("https://twitter.com/SetMineApp", function(response) {
+        
+        res.json(response);
+    })
+})
+
 
 module.exports = router;
