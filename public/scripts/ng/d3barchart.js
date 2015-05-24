@@ -14,22 +14,12 @@ angular.module('myApp')
       dataset: '=dataset'
     },
     link: function(scope, element, attrs) {
-      scope.$watch('dataset', function(dataset) {
-        
-          
-      });
-
-      var data = [{"number":1, "value":8},{"number":2, "value":16},{"number":3, "value":32},{"number":4, "value":64}];
+      var chartData = [];
       var w = 515;
       var h = 660;
-      var x = d3.scale.linear()
-        .domain([0, d3.max(data, function(d) { return d.value; })])
-        .range([0, w]);
-      var y = d3.scale.ordinal()
-        .domain(d3.range(data.length))
-        .rangeBands([0, h], 0.1);
-      var color = d3.scale.ordinal()
-        .range(["red", "blue"]);
+      
+
+    
 
       //initial svg creation
       var svg = d3.select("#test-chart")
@@ -40,34 +30,51 @@ angular.module('myApp')
           .attr("transform", "translate(20,0)");
 
       //bars
-      var bars = svg.selectAll(".bar")
-          .data(data)
+      var ready = false;
+      var x,y,color;
+      var drawChart = function(){
+        if (ready){return;}
+        ready = true;
+      x = d3.scale.linear()
+        .domain([0, d3.max(chartData, function(d) { return d.value; })])
+        .range([0, w]);
+      y = d3.scale.ordinal()
+        .domain(d3.range(chartData.length))
+        .rangeBands([0, h], 0.1);
+      color = d3.scale.ordinal()
+        .range(["red", "blue"]);
+        var bars = svg.selectAll(".bar")
+        .data(chartData, function(d,i){ return i;})
         .enter().append("g")
           .attr("class", "bar")
           .attr("transform", function(d, i) 
             { return "translate(" + 0 + "," + y(i+1) + ")"; });
-      //bar rectangles
-      bars.append("rect")
-        .attr("fill", function(d, i) { return color(i%2); })
-        .attr("width", function(d) { return x(d.value); })
-        .attr("height", y.rangeBand());
-      //bar labels
-      bars.append("text")
-        .attr("x", function(d) { return x(d.value); })
-        .attr("y", 0 + y.rangeBand() / 2)
-        .attr("dx", -6)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .text(function(d) { return d.value; });
+        //bar rectangles
+        bars.append("rect")
+          .attr("fill", function(d, i) { return color(i%2); })
+          .attr("width", function(d) { return x(d.value); })
+          .attr("height", y.rangeBand());
+        //bar labels
+        bars.append("text")
+          .attr("x", function(d) { return x(d.value); })
+          .attr("y", 0 + y.rangeBand() / 2)
+          .attr("dx", -6)
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(function(d) { return d.value; });
 
-      //button press
-      $("#transition").click(function(event) {
-          data = [];
-          for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*64)});
-          }
-          var rect = svg.selectAll(".bar rect").data(data);
-          var text = svg.selectAll(".bar text").data(data);
+        
+      }
+
+
+
+        scope.$watch('dataset', function(dataset) {
+          console.log(dataset);
+
+          chartData = dataset;
+          drawChart();
+           var rect = svg.selectAll(".bar rect").data(dataset);
+          var text = svg.selectAll(".bar text").data(dataset);
           var delay = function(d, i) { return i * 50; };
           rect.transition().duration(750)
             .delay(delay)
@@ -76,8 +83,11 @@ angular.module('myApp')
             .delay(delay)
             .attr("x", function(d) { return x(d.value); })
             .text(function(d) { return d.value; });
-
+          
       });
+
+     
+        
     }
   }
 

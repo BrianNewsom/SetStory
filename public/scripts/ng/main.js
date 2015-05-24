@@ -39,12 +39,29 @@ config(['$routeProvider', function($routeProvider) {
     });
 }]);
 
-myApp.controller('vizTestController', function($scope,$rootScope,$location, $http){
+myApp.controller('vizTestController', function($scope,$rootScope,$location,$interval, $http){
 
     $rootScope.main = true;
     $rootScope.detail = false;
         $scope.artists = [];
         $scope.events = [];
+
+        $scope.dataset =
+        [{"number":1, "value":8},
+        {"number":2, "value":16},
+        {"number":3, "value":32},
+        {"number":4, "value":64}];
+
+  $interval(function(){
+ 		  var data = [];
+          for(var i = 0; i < 4; i++) {
+            data.push({"number":i, "value": Math.floor(Math.random()*64)});
+          }
+          $scope.dataset = data;
+
+  }, 3000);
+
+      
       
 });
 myApp.controller('newLandingPage', function($scope,$rootScope,$location, $http){
