@@ -1,0 +1,78 @@
+<div class="page" id="lineup-page">
+		<div class="white wow fadeIn ">		
+			<div class="summary-title">
+					{{detail.event}}
+				</div>
+			<div class="summary-data-body">
+				<div class="data-container">
+					<div class="data-row">
+						<div class="data-title"></div>
+						<d3percentage dataset="0"> </d3percentage>
+						<div class="data-title"></div>
+					</div>
+				</div>
+
+
+			    <div class="data-container">
+			    	<div class="data-title">SetStory Score</div>
+			    	<div class="raw-score-container flex-column">
+			    		<div class="buffer"></div>
+			    		<div class="raw-score" >{{detail.calculateEventScore()}}</div>
+			    		<div class="buffer"></div>
+			    		<div class="data-title lineup-total">{{detail.lineup.length}} Artists</div>
+			    	</div>
+			    </div>
+			    <div class="data-container">		
+					<div class="data-title">Social Media Reach</div>			
+					<div class="data-title">
+						<div class="number">{{detail.twitterReach()}} </div> 
+						<div class="description"> Twitter</div>
+					</div>
+					<div class="data-title">{{detail.facebookReach()}} Facebook</div>
+					<div class="data-title">{{detail.youtubeReach()}} Youtube</div>
+					<div class="data-title"></div>
+			    </div>
+
+
+		</div>
+		<div class="buffer-big"></div> 
+	<div class="search-container artists">
+		<h1 class="wow fadeIn" style="margin-left:1vw">Which artists you want in your festival?</h1>	
+		<br>
+		<autocomplete class="search-bar" 
+			ng-model="choice"
+			attr-placeholder="search artists..." 
+			click-activation="true" 
+			data="artists" 
+			on-type="updateArtists" 
+			on-select="addArtists"></autocomplete>
+		
+	</div>
+	 <div class="buffer-big"></div>	
+		
+
+		<div class="lineup-container">
+			<div class="lineup-title wow rubberBand animated centered"></div>
+			<div class="artist-row repeat-item" ng-repeat="artist in detail.lineup">
+				<div class="repeat-item artist-lineup-container wow rollIn animated">
+					<div ng-click="removeArtitst($index,artist)" class="hand artist-lineup">
+						<img src="" ng-src="{{artist.imageURL}}"/>
+
+					</div>
+					<div class="centered">
+						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+					</div>
+				</div>
+				<div class="buffer"></div>
+			</div>
+				
+			
+
+			
+
+
+		</div>
+
+	</div>
+
+

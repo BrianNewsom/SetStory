@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['autocomplete', 'infinite-scroll','angularMoment','ngRoute']).
+var myApp = angular.module('myApp', ['autocomplete', 'ngAnimate', 'infinite-scroll','angularMoment','ngRoute']).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', 
     {
@@ -17,6 +17,11 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/events.html', 
       controller: 'EventsController'
     });
+   $routeProvider.when('/lineup/builder', 
+    {
+      templateUrl: '/scripts/ng/partials/lineup-builder.html', 
+      controller: 'LineupBuilderController'
+    });
 }]);
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
@@ -29,9 +34,10 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
         // gives another movie array on changez
         $scope.updateArtists = function(typed){
             // MovieRetriever could be some service returning a promise
-            var url = '/api/search/' + typed;
+            var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
+            	console.log(data);
 		    	$scope.artists = data;
 		    });
             
@@ -42,7 +48,7 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 
         $scope.updateEvents = function(typed){
             // MovieRetriever could be some service returning a promise
-            var url = '/api/search/' + typed;
+            var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
 		    	$scope.events = data;
@@ -194,3 +200,94 @@ myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$r
 
 
 });
+myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+	
+
+	$scope.detail = {
+		lineup:[]
+	};
+
+	$scope.gotoArtist = function(artist){
+		var encoded = encodeURIComponent(artist.artist);
+		$scope.gotoArtist = function(c){	
+        	$location.path("/artists/" + encoded);
+        };
+	}
+
+		$rootScope.main = true;
+    	$rootScope.detail = false;
+        $scope.artists = [];
+        $scope.events = [];
+
+        // gives another movie array on changez
+        $scope.updateArtists = function(typed){
+            // MovieRetriever could be some service returning a promise
+            var url = '/api/autocomplete/' + typed;
+            
+            $http.get(url).success(function(data) {
+		    	$scope.artists = data;
+		    });
+            
+        };
+        $scope.addArtists = function(c){	
+        	var url = "api/search/" + c;
+
+	        $http.get(url).success(function(data) {
+	            var artist = data[0];
+	            processArtistImage(data[0]);
+	            $scope.detail.lineup.push(data[0]);
+	            var socialMediaURL = "api/artist/social_media/" + c;
+	            (function(smURL,item){
+	            	$http.get(smURL).success(function(data) {
+	            		item.socialMedia = data;
+	            	});
+	            })(socialMediaURL,artist);
+	            
+	            
+	        });
+	        $scope.choice = '';
+	        $scope.artists= [];
+
+		};
+		$scope.detail.calculateEventScore = function() {
+			return $scope.detail.lineup.length * 1300;
+		};
+		$scope.detail.twitterReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.twitter_followers ? a.socialMedia.twitter_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
+		$scope.detail.facebookReach = function(){
+			if ($scope.detail.lineup.length === 0) return 0;
+			var sum = 0;
+			for (var i = 0; i < $scope.detail.lineup.length; i++) {
+				var a = $scope.detail.lineup[i];
+				sum += a.socialMedia.facebook_followers ? a.socialMedia.facebook_followers: 0;
+			}
+			return Math.round(sum / $scope.detail.lineup.length) ;
+		}
+		$scope.detail.youtubeReach = function(){
+			return $scope.detail.lineup.length * 10;
+		}
+
+		$scope.removeArtitst = function(i,a){
+			 $scope.detail.lineup.splice(i, 1);
+		};
+
+});
+
+
+function processArtistImage(artist){
+	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
+	{
+		 artist.imageURL ='';
+	}
+	else {
+		artist.imageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  artist.imageURL;	
+	}
+
+}

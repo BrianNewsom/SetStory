@@ -21,7 +21,7 @@ setmine.init = function(callback) {
         if(callback) {
             callback()
         }
-    })
+    });
 
 }
 
