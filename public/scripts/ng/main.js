@@ -14,14 +14,10 @@ config(['$routeProvider', function($routeProvider) {
   
    $routeProvider.when('/events/:name', 
     {
-      templateUrl: '/scripts/ng/partials/events.html', 
+      templateUrl: '/scripts/ng/partials/concerts.html', 
       controller: 'EventsController'
     });
-   $routeProvider.when('/concerts', 
-    {
-      templateUrl: '/scripts/ng/partials/concerts.html', 
-      controller: 'ConcertsController'
-    });
+ 
    $routeProvider.when('/lineup/builder', 
     {
       templateUrl: '/scripts/ng/partials/lineup-builder.html', 

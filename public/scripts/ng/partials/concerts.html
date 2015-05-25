@@ -2,23 +2,36 @@
 	<div class="modules--wrapper header">
 		<div class="header--content">
 			<div class="header--top">
-				<h2>SetStory</h2>
+				<h2>{{detail.event}}</h2>
 			</div>
-			<a href="#/" class="button-white">Back to Search..</a>
+			<!-- <a href="#/" class="button-white">Back to Search..</a> -->
 		</div>
 		<div class="header--picture" style="background: url(../images/bg-landing.png) no-repeat center center;"></div>
 	</div>
 	<div class="modules--wrapper">
 		<div class="module score-page">
 			<ul>
-				<li>Pageviews<div class="score">2.104</div></li>
-				<li>Page / Visit<div class="score">3.30</div></li>
-				<li>Avg. Visit Duration<div class="score">0:30:23</div></li>
-				<li>Bonuce Rate<div class="score">40.91%</div></li>
+				<li>Score<div class="score">{{eventScore}}</div></li>
+				<li>Artists<div class="score">{{detail.lineup.length}}</div></li>
+				<li>Date<div class="score">July 25</div></li>
+				<li>Prices<div class="score">20 U$S</div></li>
 			</ul>
 		</div>
 		<div class="module outlook">
-			
+			<d3progress> </d3progress>
 		</div>
 	</div>
+	<div class="modules--wrapper lineup-container">
+			<div class="wow  animated centered">Lineup</div>
+			<div class="wow  animated cartist-row" ng-repeat="artist in detail.lineup">
+				<div class="artist-lineup-container wow rollIn animated">
+					<div ng-click="gotoArtist(artist)" class="hand artist-lineup"><img src="" ng-src="{{artist.artistimageURL}}"/>
+					</div>
+					<div class="centered">
+						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+					</div>
+				</div>
+				<div class="buffer"></div>
+			</div>
+		</div>
 </div>

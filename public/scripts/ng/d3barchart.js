@@ -35,31 +35,31 @@ angular.module('myApp')
       var drawChart = function(){
         if (ready){return;}
         ready = true;
-      x = d3.scale.linear()
-        .domain([0, d3.max(chartData, function(d) { return d.value; })])
-        .range([0, w]);
-      y = d3.scale.ordinal()
+      x = d3.scale.ordinal()
         .domain(d3.range(chartData.length))
         .rangeBands([0, h], 0.1);
+      y = d3.scale.linear()
+        .domain([0, d3.max(chartData, function(d) { return d.value; })])
+        .range([0, w]);
       color = d3.scale.ordinal()
-        .range(["red", "blue"]);
+        .range(["lightblue", "lightgreen"]);
         var bars = svg.selectAll(".bar")
         .data(chartData, function(d,i){ return i;})
         .enter().append("g")
           .attr("class", "bar")
           .attr("transform", function(d, i) 
-            { return "translate(" + 0 + "," + y(i+1) + ")"; });
+            { return "translate(" + x(i+1) + "," + 0 + ")"; });
         //bar rectangles
         bars.append("rect")
           .attr("fill", function(d, i) { return color(i%2); })
-          .attr("width", function(d) { return x(d.value); })
-          .attr("height", y.rangeBand());
+          .attr("width", x.rangeBand())
+          .attr("height", function(d) { return y(d.value); });
         //bar labels
         bars.append("text")
-          .attr("x", function(d) { return x(d.value); })
-          .attr("y", 0 + y.rangeBand() / 2)
-          .attr("dx", -6)
-          .attr("dy", ".35em")
+          .attr("x", 0 + x.rangeBand() / 2)
+          .attr("y", function(d) { return y(d.value); })
+          .attr("dy", -6)
+          .attr("dx", ".35em")
           .attr("text-anchor", "end")
           .text(function(d) { return d.value; });
 
@@ -78,10 +78,10 @@ angular.module('myApp')
           var delay = function(d, i) { return i * 50; };
           rect.transition().duration(750)
             .delay(delay)
-            .attr("width", function(d) { return x(d.value); });
+            .attr("height", function(d) { return y(d.value); });
           text.transition().duration(750)
             .delay(delay)
-            .attr("x", function(d) { return x(d.value); })
+            .attr("y", function(d) { return y(d.value); })
             .text(function(d) { return d.value; });
           
       });
