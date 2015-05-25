@@ -2467,7 +2467,7 @@ h3 {
 
 .landing {
   height: 100%;
-  background: url(../images/bg-landing.png) no-repeat center top;
+  background: url(../images/bg-landing.jpg) no-repeat center top;
   -moz-background-size: cover;
   -o-background-size: cover;
   -webkit-background-size: cover;
@@ -2577,4 +2577,57 @@ h3 {
 }
 .concerts .outlook {
   width: 60%;
+}
+
+.artist-general-info {
+  text-align: right;
+  margin-right: 1vw;
+}
+
+.artist-image-row {
+  width: 25%;
+  padding: 0vh 3vw;
+}
+
+.artist-lineup-container .artist-lineup {
+  border-radius: 10000px;
+  background-color: #2ecc74;
+  max-width: 175px;
+  min-height: 175px;
+  min-width: 175px;
+  overflow: hidden;
+  max-height: 175px;
+  position: relative;
+}
+
+.artist-lineup img {
+  width: 100%;
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.artist-row {
+  display: inline-block;
+}
+
+.artist-lineup-text {
+  font-size: 2em;
+}
+
+.artist-text-row {
+  text-align: center;
+  color: black;
+  padding: 0vh 3vw;
+}
+
+.artist-title {
+  background-color: #2ecc74;
+  text-align: left;
+  font-size: 3em;
+  padding: 1vh 1vw;
+  font-weight: 900;
 }

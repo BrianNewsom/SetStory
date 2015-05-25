@@ -6,7 +6,7 @@ angular.module('myApp')
   return {
     restrict: 'E',
     replace: true,
-    template: '<div><button id="transition">transition!</button><div class="wow fadeIn bar-chart" id="test-chart"></div></div>',
+    template: '<div><div class="wow fadeIn bar-chart" id="test-chart"></div></div>',
     scope: {
       // creates a scope variable in your directive
       // called `dataset` bound to whatever was passed

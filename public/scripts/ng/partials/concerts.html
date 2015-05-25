@@ -6,7 +6,7 @@
 			</div>
 			<!-- <a href="#/" class="button-white">Back to Search..</a> -->
 		</div>
-		<div class="header--picture" style="background: url(../images/bg-landing.png) no-repeat center center;"></div>
+		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
 	</div>
 	<div class="modules--wrapper">
 		<div class="module score-page">
@@ -20,6 +20,21 @@
 		<div class="module outlook">
 			<d3progress> </d3progress>
 		</div>
+		<div class="module score-page">
+			<d3percentage dataset="0"> </d3percentage>
+		</div>
+		<div class="module outlook">
+			<div class="summary-data-body">
+				<div class="data-container">
+					<div class="data-row">
+						<div class="data-title"></div>
+						<d3barchart dataset="dataset"> </d3barchart>
+						<div class="data-title"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<div class="modules--wrapper lineup-container">
 			<div class="wow  animated centered">Lineup</div>

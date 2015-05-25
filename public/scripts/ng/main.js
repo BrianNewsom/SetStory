@@ -205,8 +205,22 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 	$scope.choice = decodeURIComponent($scope.choice);
 
 });
-myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
+	  $scope.dataset =
+        [{"number":1, "value":8},
+        {"number":2, "value":16},
+        {"number":3, "value":32},
+        {"number":4, "value":64}];
+
+  $interval(function(){
+ 		  var data = [];
+          for(var i = 0; i < 4; i++) {
+            data.push({"number":i, "value": Math.floor(Math.random()*64)});
+          }
+          $scope.dataset = data;
+
+  }, 3000);
 	var loadData = function(url){
 		$http.get(url).success(function(data) {
 			
