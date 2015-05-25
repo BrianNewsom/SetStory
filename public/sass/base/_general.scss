@@ -30,6 +30,8 @@ h3 {
 
 .ng-scope {
 	height: 100%;
+	@include clearfix;
+	background: $bg-grey-dark;
 }
 
 .button-white{

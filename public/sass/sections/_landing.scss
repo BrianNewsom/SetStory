@@ -2,7 +2,7 @@
 	height: 100%;
 	background: url(../images/bg-landing.jpg) no-repeat center top;
 	@include background-size (cover);  
-	@include bg-color($bg-grey-dark);
+	@include bg-color($green);
 	
 	.landing--search--container {
 		@include vertical-align;
@@ -35,7 +35,7 @@
 
 				&:hover {
 					cursor: pointer;
-					background-color: rgba($orange, .9);
+					background-color: rgba($blue, .9);
 					color: white;
 				}
 			}
@@ -51,7 +51,7 @@
 			border-radius: 5px;
 			border: none;
 			max-width: 400px;
-			background-color: rgba($orange, .9);
+			background-color: rgba($blue, .9);
 			color: white;
 			@include placeholder-color(rgba(255,255,255,.5));
 		}
