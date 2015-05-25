@@ -23,51 +23,9 @@ config(['$routeProvider', function($routeProvider) {
       templateUrl: '/scripts/ng/partials/lineup-builder.html', 
       controller: 'LineupBuilderController'
     });
-   $routeProvider.when('/new/landingpage', 
-    {
-      templateUrl: '/scripts/ng/partials/new-landing-page.html', 
-      controller: 'newLandingPage'
-    });
-   $routeProvider.when('/new/viztest', 
-    {
-      templateUrl: '/scripts/ng/partials/new-datviz.html', 
-      controller: 'vizTestController'
-    });
 }]);
 
-myApp.controller('vizTestController', function($scope,$rootScope,$location,$interval, $http){
 
-    $rootScope.main = true;
-    $rootScope.detail = false;
-        $scope.artists = [];
-        $scope.events = [];
-
-        $scope.dataset =
-        [{"number":1, "value":8},
-        {"number":2, "value":16},
-        {"number":3, "value":32},
-        {"number":4, "value":64}];
-
-  $interval(function(){
- 		  var data = [];
-          for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*64)});
-          }
-          $scope.dataset = data;
-
-  }, 3000);
-
-      
-      
-});
-myApp.controller('newLandingPage', function($scope,$rootScope,$location, $http){
-
-    $rootScope.main = true;
-    $rootScope.detail = false;
-        $scope.artists = [];
-        $scope.events = [];
-      
-});
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
 
@@ -304,6 +262,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 	            (function(smURL,item){
 	            	$http.get(smURL).success(function(data) {
 	            		item.socialMedia = data;
+	            		calculateSocialAverage();
 	            	});
 	            })(socialMediaURL,artist);
 	            
@@ -316,48 +275,44 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 		$scope.detail.calculateEventScore = function() {
 			return $scope.detail.lineup.length * 1300;
 		};
-		$scope.detail.twitterReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.twitter_followers ? a.socialMedia.twitter_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.facebookReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.facebook_followers ? a.socialMedia.facebook_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.instagramReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.instagram_followers ? a.socialMedia.instagram_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.soundcloudReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.soundcloud_followers ? a.socialMedia.soundcloud_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.youtubeReach = function(){
-			return $scope.detail.lineup.length * 10;
-		}
+		  $scope.dataset =
+        [{"number":1, "value":2},
+        {"number":2, "value":2},
+        {"number":3, "value":2},
+        {"number":4, "value":2}];
+
+        var dimensions = ["twitter_followers", "facebook_followers", "instagram_followers", "soundcloud_followers"];
+
+        var calculateSocialAverage = function(){
+        	var data =[];
+        	for (var i = 0; i < dimensions.length; i++) {
+	        	var key = dimensions[i];
+	        	var result = 0;
+	        	if ($scope.detail.lineup.length > 0) {
+					var sum = 0;
+					for (var j = 0; j < $scope.detail.lineup.length; j++) {
+						var a = $scope.detail.lineup[j];
+						if (a.socialMedia){
+							sum += a.socialMedia[key] ? a.socialMedia[key] : 0;
+						}
+					}
+					result = Math.round(sum / $scope.detail.lineup.length) ;
+				}
+				data.push({"number":i+1, "value":sum});
+        	};
+        	
+    		
+    		$scope.dataset= data;	
+        	
+        	
+        };
+        
+			
+
 
 		$scope.removeArtitst = function(i,a){
 			 $scope.detail.lineup.splice(i, 1);
+			 calculateSocialAverage();
 		};
 
 });
