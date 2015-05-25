@@ -166,15 +166,15 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
 	  $scope.dataset =
-        [{"number":1, "value":8},
-        {"number":2, "value":16},
-        {"number":3, "value":32},
-        {"number":4, "value":64}];
+        [{"number":1, "value":900000},
+        {"number":2, "value":900000},
+        {"number":3, "value":900000},
+        {"number":4, "value":900000}];
 
   $interval(function(){
  		  var data = [];
           for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*64)});
+            data.push({"number":i, "value": Math.floor(Math.random()*900000)});
           }
           $scope.dataset = data;
 
@@ -275,11 +275,16 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 		$scope.detail.calculateEventScore = function() {
 			return $scope.detail.lineup.length * 1300;
 		};
-		  $scope.dataset =
-        [{"number":1, "value":2},
-        {"number":2, "value":2},
-        {"number":3, "value":2},
-        {"number":4, "value":2}];
+		  // $scope.dataset =
+    //     [{"number":1, "value":2000},
+    //     {"number":2, "value":2000},
+    //     {"number":3, "value":2000},
+    //     {"number":4, "value":2000}];
+          $scope.dataset =
+        [{"number":1, "value":0},
+        {"number":2, "value":0},
+        {"number":3, "value":0},
+        {"number":4, "value":0}];
 
         var dimensions = ["twitter_followers", "facebook_followers", "instagram_followers", "soundcloud_followers"];
 
@@ -296,7 +301,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 							sum += a.socialMedia[key] ? a.socialMedia[key] : 0;
 						}
 					}
-					result = Math.round(sum / $scope.detail.lineup.length) ;
+					result = Math.round(sum /1000) ;
 				}
 				data.push({"number":i+1, "value":sum});
         	};

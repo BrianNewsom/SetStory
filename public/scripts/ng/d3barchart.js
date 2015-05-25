@@ -35,12 +35,7 @@ angular.module('myApp')
       var drawChart = function(){
         if (ready){return;}
         ready = true;
-      x = d3.scale.ordinal()
-        .domain(d3.range(chartData.length))
-        .rangeBands([0, h], 0.1);
-      y = d3.scale.linear()
-        .domain([0, d3.max(chartData, function(d) { return d.value; })])
-        .range([0, w]);
+      
       color = d3.scale.ordinal()
         .range(["lightblue", "lightgreen"]);
         var bars = svg.selectAll(".bar")
@@ -72,6 +67,15 @@ angular.module('myApp')
           console.log(dataset);
 
           chartData = dataset;
+          
+          //SetDimensions
+          x = d3.scale.ordinal()
+            .domain(d3.range(chartData.length))
+            .rangeBands([0, h], 0.1);
+          y = d3.scale.linear()
+            .domain([0, d3.max(chartData, function(d) { return d.value; })])
+            .range([0, w]);
+
           drawChart();
            var rect = svg.selectAll(".bar rect").data(dataset);
           var text = svg.selectAll(".bar text").data(dataset);
