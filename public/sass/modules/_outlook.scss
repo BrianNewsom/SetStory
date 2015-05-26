@@ -7,5 +7,9 @@
 	background: -ms-linear-gradient(top,  $red 0%,$orange 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  $red 0%,$orange 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$red', endColorstr='$orange',GradientType=0 ); /* IE6-9 */
+	overflow: hidden;
 
+	.progress-graph path{
+		stroke: #873d34;
+	}
 }

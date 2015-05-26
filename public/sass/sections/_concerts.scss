@@ -17,6 +17,7 @@
 	}
 }
 
+
 .progress-graph path { 
     stroke: steelblue;
     stroke-width: 2;
@@ -56,7 +57,8 @@ path.color1 {
 }
 
 .progress-graph {
-  border: 1px solid #1072b8;
+  border: none;
+  text-align: center;
 }
 .circle-text {
   width: 50%;
@@ -69,7 +71,7 @@ path.color1 {
     width: 100%;
     height:0;
     padding-bottom: 100%;
-    background: #4679BD; 
+    background: #4679BD;
     -moz-border-radius: 50%; 
     -webkit-border-radius: 50%; 
     border-radius: 50%;
@@ -84,57 +86,3 @@ path.color1 {
   color: white;
 
 }
-
-.artist-general-info {
-  text-align:right; 
-  margin-right:1vw; 
-}
-
-.artist-image-row {
-  width: 25%;
-  padding: 0vh 3vw; 
-}
-
-.artist-lineup-container {
-   .artist-lineup {
-    border-radius: 10000px; 
-    background-color: rgba(46,204,116,1);
-    max-width: 175px;
-    min-height: 175px;
-    min-width: 175px;
-    overflow: hidden;
-    max-height: 175px;
-    position:relative;
-  }
-}
-.artist-lineup img{
-  width: 100%;
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-}
-.artist-row{
-  display: inline-block;
-}
-.artist-lineup-text {
-  font-size:2em; 
-}
-
-.artist-text-row {
-  text-align:center; 
-  color:black;
-  padding: 0vh 3vw; 
-}
-
-
-.artist-title {
-  background-color: #2ecc74;
-  text-align: left;
-  font-size: 3em;
-  padding: 1vh 1vw;
-  font-weight: 900;
-}
-

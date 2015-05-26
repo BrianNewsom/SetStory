@@ -2451,6 +2451,21 @@ h3 {
   float: right;
   color: #f57a58;
 }
+.score-page svg {
+  margin: 25px;
+}
+.score-page svg text {
+  fill: #f57a58;
+  font-family: "Nunito", sans-serif;
+  font-weight: 300;
+  font-size: 35px;
+}
+.score-page path.color0 {
+  fill: #f57a58;
+}
+.score-page path.color1 {
+  fill: white;
+}
 
 .outlook {
   background: #f65e59;
@@ -2469,6 +2484,116 @@ h3 {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$red', endColorstr='$orange',GradientType=0 );
   /* IE6-9 */
+  overflow: hidden;
+}
+.outlook .progress-graph path {
+  stroke: #873d34;
+}
+
+.outlook-social {
+  width: 60%;
+  background: #56626e;
+}
+.outlook-social .summary-data-body {
+  max-width: 100%;
+  max-height: 100%;
+}
+.outlook-social .bar rect {
+  fill: #35c9a9;
+}
+
+.lineup-container {
+  font-family: "Nunito", sans-serif;
+  font-weight: 300;
+  width: 100%;
+  background-color: #333333;
+}
+.lineup-container:before, .lineup-container:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+.lineup-container h2 {
+  padding: 30px;
+}
+.lineup-container .ng-scope {
+  background-color: transparent;
+}
+
+.artist-row {
+  float: left;
+  width: 20vw;
+  height: 20vw;
+}
+.artist-row .artist-lineup-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.artist-row .artist-lineup-container .artist-lineup {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  overflow: hidden;
+  position: relative;
+  opacity: .4;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  border: none;
+}
+.artist-row .artist-lineup-container .artist-lineup:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.artist-row .artist-lineup-container .artist-lineup img {
+  min-width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #2b2b2b;
+}
+
+.artist-general-info {
+  text-align: right;
+  margin-right: 1vw;
+}
+
+.artist-title {
+  text-align: left;
+  font-size: 3em;
+  padding: 1vh 1vw;
+  font-weight: 900;
+}
+
+.artist-image-row {
+  width: 25%;
+  padding: 0vh 3vw;
+}
+
+.artist-text-row {
+  text-align: center;
+  color: black;
+}
+
+.artist-lineup-text {
+  width: 100%;
+  padding: 0 15px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: center;
+  position: absolute;
+}
+.artist-lineup-text a {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
 .landing {
@@ -2548,18 +2673,18 @@ h3 {
   color: white;
 }
 .landing .autocomplete input::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.3);
 }
 .landing .autocomplete input:-moz-placeholder {
   /* Firefox 18- */
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.3);
 }
 .landing .autocomplete input::-moz-placeholder {
   /* Firefox 19+ */
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.3);
 }
 .landing .autocomplete input:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.3);
 }
 .landing .landing--search--text {
   color: white;
@@ -2620,7 +2745,8 @@ path.color1 {
 }
 
 .progress-graph {
-  border: 1px solid #1072b8;
+  border: none;
+  text-align: center;
 }
 
 .circle-text {
@@ -2649,57 +2775,4 @@ path.color1 {
   margin-top: -1.3em;
   text-align: center;
   color: white;
-}
-
-.artist-general-info {
-  text-align: right;
-  margin-right: 1vw;
-}
-
-.artist-image-row {
-  width: 25%;
-  padding: 0vh 3vw;
-}
-
-.artist-lineup-container .artist-lineup {
-  border-radius: 10000px;
-  background-color: #2ecc74;
-  max-width: 175px;
-  min-height: 175px;
-  min-width: 175px;
-  overflow: hidden;
-  max-height: 175px;
-  position: relative;
-}
-
-.artist-lineup img {
-  width: 100%;
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-.artist-row {
-  display: inline-block;
-}
-
-.artist-lineup-text {
-  font-size: 2em;
-}
-
-.artist-text-row {
-  text-align: center;
-  color: black;
-  padding: 0vh 3vw;
-}
-
-.artist-title {
-  background-color: #2ecc74;
-  text-align: left;
-  font-size: 3em;
-  padding: 1vh 1vw;
-  font-weight: 900;
 }

@@ -53,7 +53,7 @@
 			max-width: 400px;
 			background-color: rgba($blue, .9);
 			color: white;
-			@include placeholder-color(rgba(255,255,255,.5));
+			@include placeholder-color(rgba(0,0,0,.3));
 		}
 	}
 

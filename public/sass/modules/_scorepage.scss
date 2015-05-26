@@ -18,4 +18,23 @@
 		float: right;
 		color: $orange;
 	}
+
+	svg {
+		margin: 25px;
+
+		text {
+			fill: $orange;
+			font-family: $font;
+			font-weight: $light;
+			font-size: 35px;
+		}
+	}
+
+	path.color0 {
+		fill: $orange;
+	}
+
+	path.color1 {
+		fill: white;
+	}
 }
