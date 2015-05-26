@@ -3,6 +3,7 @@ var cheerio = require('cheerio');
 var request = require( 'request' );
 var async = require( 'async' );
 var soundcloud = require('../apiHandlers/soundcloud')
+var youtube = require('../apiHandlers/youtube')
 
 
 var settings = require('../config/settings');
@@ -103,7 +104,7 @@ socialmedia.soundcloud = function(data, supercallback) {
     async.whilst(
         function() { return count < data.length },
         function(callback) {
-            soundcloud.getUserFromName(data[count].username, function(user){
+            soundcloud.getUserFromPermalink(data[count].soundcloud_link, function(user){
                 console.log(user)
                 soundcloud.getTotalPlays(user.id, function(plays){
                    data[count]['soundcloud_followers'] = user.followers_count
@@ -127,17 +128,11 @@ socialmedia.soundcloud = function(data, supercallback) {
             }
             console.log(followerSQL)
 
-            var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays) VALUES (" + data[0].artist_id + "," + data[0].soundcloud_plays + ")"
+            var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays, tracks) VALUES (" + data[0].artist_id + "," + data[0].soundcloud_plays + "," + data[0].soundcloud_track_count + ")"
             for(var i = 1; i < data.length; i++) {
-                playsSQL += ",(" + data[i].artist_id + "," + data[i].soundcloud_plays + ")"
+                playsSQL += ",(" + data[i].artist_id + "," + data[i].soundcloud_plays + "," + data[0].soundcloud_track_count + ")"
             }
             console.log(playsSQL)
-
-            var trackSQL = "INSERT INTO soundcloud_track_counts(artist_id, count) VALUES (" + data[0].artist_id + "," + data[0].soundcloud_track_count + ")"
-            for(var i = 1; i < data.length; i++) {
-                trackSQL += ",(" + data[i].artist_id + "," + data[i].soundcloud_track_count + ")"
-            }
-            console.log(trackSQL)
 
             async.parallel([
                 function(callback) {
@@ -155,17 +150,6 @@ socialmedia.soundcloud = function(data, supercallback) {
                         else {
                             console.log(response)
                             callback(null, response)
-
-                            
-                        }
-                    })
-                },
-                function(callback) {
-                    connection.query(trackSQL, function(err, response) {
-                        if(err) console.log(err)
-                        else {
-                            console.log(response)
-                            callback(null, response)
                         }
                     })
                 }
@@ -178,6 +162,64 @@ socialmedia.soundcloud = function(data, supercallback) {
     )
 }
 
+socialmedia.youtube = function(data, supercallback) {
+    if(data.length > 100) {
+        console.log("Rate limited at 100 objects with youtube links.")
+        supercallback(data)
+        return
+    }
+    console.log(data)
+    var count = 0
+    async.whilst(
+        function() { return count < data.length },
+        function(callback) {
+            youtube.getStatsForChannelById(data[count].youtube_id, function(stats) {
+                console.log(stats)
+                data[count]['youtube_followers'] = stats.subscriberCount
+                data[count]['youtube_plays'] = stats.viewCount
+                data[count]['youtube_videos'] = stats.videoCount
+                count++
+                callback()
+            });
+        },
+        function(err) {
+            
+            var followerSQL = "INSERT INTO youtube_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].youtube_followers + ")"
+            for(var i = 1; i < data.length; i++) {
+                followerSQL += ",(" + data[i].artist_id + "," + data[i].youtube_followers + ")"
+            }
+            console.log(followerSQL)
 
+            var playsSQL = "INSERT INTO youtube_media_plays(artist_id, plays, videos) VALUES (" + data[0].artist_id + "," + data[0].youtube_plays + "," + data[0].youtube_videos + ")"
+            for(var i = 1; i < data.length; i++) {
+                playsSQL += ",(" + data[i].artist_id + "," + data[i].youtube_plays + "," + data[i].youtube_videos + ")"
+            }
+            console.log(playsSQL)
+
+            async.parallel([
+                function(callback) {
+                    connection.query(followerSQL, function(err, response) {
+                        if(err) console.log(err)
+                        else {
+                            console.log(response)
+                            callback(null, response)
+                        }
+                    })
+                },
+                function(callback) {
+                    connection.query(playsSQL, function(err, response) {
+                        if(err) console.log(err)
+                        else {
+                            console.log(response)
+                            callback(null, response)
+                        }
+                    })
+                }
+            ], function(err, results) {
+                supercallback(data)
+            })
+        }
+    )
+}
 
 module.exports = socialmedia;

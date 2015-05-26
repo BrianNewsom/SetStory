@@ -73,7 +73,7 @@ artist_social_media.getArtist = function(id, id_type, cb) {
 
 artist_social_media.updateSetrecordsArtists = function(supercallback) {
   connection = mysql.createPool(settings.db.main);
-  connection.query("SELECT * FROM setrecords_users", function(err, data) {
+  connection.query("SELECT su.*, a.artist, a.twitter_link, a.facebook_link, a.instagram_link, a.soundcloud_link, a.youtube_link FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, data) {
     async.parallel({
       twitter: function(callback) {
         setmine.socialmedia.twitter(data, function(data) {
@@ -94,19 +94,15 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
         setmine.socialmedia.soundcloud(data, function(data) {
           callback(null, data)
         })
+      },
+      youtube: function(callback) {
+        setmine.socialmedia.youtube(data, function(data) {
+            callback(null, data)
+        })
       }
-      // youtube: function(callback) {
-      //   setmine.socialmedia.youtube(data, function(data) {
-      //       res.json({"response": data});
-      //   })
-      // }
     }, function(err, results) {
       supercallback(results)
     })
-    
-    
-    
-    
     
   })
   
