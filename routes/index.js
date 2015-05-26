@@ -7,6 +7,7 @@ var setlistFM = require('../apiHandlers/setlistfm');
 var unified = require('../apiHandlers/unified');
 var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
+var soundcloud = require('../apiHandlers/soundcloud')
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
@@ -184,10 +185,11 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
     })
 })
 
-router.get('/api/temp/twitter', function(req,res,next){
-    setmine.socialmedia("https://twitter.com/SetMineApp", function(response) {
-        
-        res.json(response);
+// Fetch metrics for all setrecords artists
+
+router.get('/api/socialmedia/setrecords', function(req,res,next){
+    artist_social_media.updateSetrecordsArtists(function(data) {
+        res.json({"response": data});
     })
 })
 

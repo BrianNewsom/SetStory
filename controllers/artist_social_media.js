@@ -1,13 +1,18 @@
 // Handles relations w/ mysql table artist_social_media in schema setstory
 var settings = require('../config/settings');
+var async = require( 'async' );
+
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.setstory);
 
 var artist_social_media = {};
 var artists = require('../controllers/artists');
 var openaura = require('../apiHandlers/openaura');
+var setmine = require('../apiHandlers/setmine')
 
 artist_social_media.updateArtistById = function(musicbrainz_id, cb) {
+  connection = mysql.createPool(settings.db.setstory);
+
   console.log("updating artist by id");
   openaura.getFollowers(musicbrainz_id, function(data){
     console.log(data);
@@ -38,6 +43,7 @@ artist_social_media.updateArtistByName = function(artistName, cb){
 
 
 artist_social_media.getArtist = function(id, id_type, cb) {
+  connection = mysql.createPool(settings.db.setstory);
 
   var query = "SELECT * FROM artist_social_media WHERE ";
   // Default to setstory id
@@ -62,7 +68,48 @@ artist_social_media.getArtist = function(id, id_type, cb) {
           })
         }
       }
-  } );
+  });
+}
+
+artist_social_media.updateSetrecordsArtists = function(supercallback) {
+  connection = mysql.createPool(settings.db.main);
+  connection.query("SELECT * FROM setrecords_users", function(err, data) {
+    async.parallel({
+      twitter: function(callback) {
+        setmine.socialmedia.twitter(data, function(data) {
+          callback(null, data)
+        })
+      },
+      // facebook: function(callback) {
+      //   setmine.socialmedia.facebook(data, function(data) {
+      //       res.json({"response": data});
+      //   })
+      // },
+      // instagram: function(callback) {
+      //   setmine.socialmedia.instagram(data, function(data) {
+      //       res.json({"response": data});
+      //   })
+      // },
+      soundcloud: function(callback) {
+        setmine.socialmedia.soundcloud(data, function(data) {
+          callback(null, data)
+        })
+      }
+      // youtube: function(callback) {
+      //   setmine.socialmedia.youtube(data, function(data) {
+      //       res.json({"response": data});
+      //   })
+      // }
+    }, function(err, results) {
+      supercallback(results)
+    })
+    
+    
+    
+    
+    
+  })
+  
 }
 
 module.exports = artist_social_media;
