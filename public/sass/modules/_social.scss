@@ -55,6 +55,23 @@
 					background: white;
 					opacity: 0;
 					@include transition(opacity $animation-time ease-in-out);
+					position: relative;
+
+					i {
+						left: 25px;
+						top: 15px;
+						color: $grey-blue;
+					}
+
+					p {
+						position: absolute;
+						left:50%;
+						top: 45px;
+						font-weight: $light;
+						@include transform(translate(-50%,0));
+						color: $grey-blue;
+						font-size: 18px;
+					}
 
 					&:hover {
 						opacity: 1;
