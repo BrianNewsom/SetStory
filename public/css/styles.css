@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(http://fonts.googleapis.com/css?family=Nunito:400,300,700);
 /*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
@@ -2395,8 +2396,19 @@ h3 {
   float: left;
   position: relative;
 }
-.module h2 {
-  padding: 30px;
+
+.ball:before {
+  content: " ";
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background: white;
+  display: inline-block;
+}
+.ball.blue:before {
+  background: #19B5FE;
 }
 
 .header {
@@ -2442,8 +2454,15 @@ h3 {
   width: 100%;
 }
 
-.score-page {
-  width: 40%;
+@media (min-width: 320px) {
+  .score-page {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .score-page {
+    width: 40%;
+  }
 }
 .score-page ul li {
   text-transform: uppercase;
@@ -2460,12 +2479,49 @@ h3 {
 }
 
 .visits {
-  width: 40%;
+  padding: 30px;
+  font-weight: 300;
+}
+@media (min-width: 320px) {
+  .visits {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .visits {
+    width: 40%;
+  }
+}
+.visits .module--visit--score {
+  margin: 4em auto;
+  width: 315px;
+}
+.visits .module--visit--score li {
+  font-size: 40px;
+}
+.visits .module--visit--score li.new {
+  color: #19B5FE;
+}
+.visits .visit--score--dates {
+  text-align: center;
+}
+.visits .visit--score--dates li {
+  display: inline-block;
+  margin-right: 20px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.visits .visit--score--dates li .ball:before {
+  margin: 0 4px;
 }
 .visits svg {
-  margin: 30px;
+  margin: 30px 0 0 50px;
   position: absolute;
-  right: 0;
+  left: 50%;
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   top: 0;
 }
 .visits svg text {
@@ -2483,7 +2539,7 @@ h3 {
 }
 
 .outlook {
-  width: 60%;
+  padding: 30px;
   background: #19B5FE;
   /* Old browsers */
   background: -moz-linear-gradient(top, #19B5FE 0%, #35c9a9 100%);
@@ -2502,6 +2558,24 @@ h3 {
   /* IE6-9 */
   overflow: hidden;
 }
+@media (min-width: 320px) {
+  .outlook {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .outlook {
+    width: 60%;
+  }
+}
+.outlook .point .point--dates  {
+  display: inline-block;
+}
+.outlook .point .point--dates :before, .outlook .point .point--dates :after {
+  content: " ";
+  display: table;
+  clear: both;
+}
 .outlook svg {
   opacity: .4;
   top: 50%;
@@ -2517,8 +2591,65 @@ h3 {
 }
 
 .social {
-  width: 60%;
   background: #56626e;
+}
+@media (min-width: 320px) {
+  .social {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .social {
+    width: 60%;
+  }
+}
+.social h2 {
+  padding: 30px;
+  border-bottom: 2px solid #4d545c;
+}
+.social .bars {
+  height: 226px;
+}
+.social .bars li {
+  float: left;
+  height: 100%;
+  width: 14.28571%;
+  position: relative;
+  border-right: 1px solid #4d545c;
+}
+.social .bars li .bars--item {
+  background: #35c9a9;
+  height: 5%;
+  width: 100%;
+  position: absolute;
+  overflow: visible;
+  bottom: 0;
+  -moz-transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  -webkit-transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.social .bars li .bars--item .bars--item--dates {
+  height: 80px;
+  margin-top: -80px;
+  width: 100%;
+  background: white;
+  opacity: 0;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+}
+.social .bars li .bars--item .bars--item--dates:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.social .bars li .bars--item:hover {
+  cursor: pointer;
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+.social .bars li .bars--item:hover .bars--item--dates {
+  opacity: 1;
 }
 .social .summary-data-body {
   max-width: 100%;
@@ -2548,8 +2679,24 @@ h3 {
 
 .artist-row {
   float: left;
-  width: 20%;
-  height: 20vw;
+}
+@media (min-width: 320px) {
+  .artist-row {
+    width: 33.33333%;
+    height: 33.33333vw;
+  }
+}
+@media (min-width: 768px) {
+  .artist-row {
+    width: 20%;
+    height: 20vw;
+  }
+}
+@media (min-width: 1280px) {
+  .artist-row {
+    width: 16.66667%;
+    height: 16.66667vw;
+  }
 }
 .artist-row .artist-lineup-container {
   position: relative;

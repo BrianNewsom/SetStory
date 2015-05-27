@@ -1,5 +1,12 @@
 .score-page {
-	width: 40%;
+	
+	@include breakpoint(small) {
+		width: 100%;
+	}
+
+	@include breakpoint(medium) {
+		width: 40%;
+	}
 
 	ul {
 

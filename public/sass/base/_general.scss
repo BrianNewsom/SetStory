@@ -61,8 +61,23 @@ h3 {
 	height: 304px;
 	float:left;
 	position: relative;
+}
 
-	h2 {
-		padding: 30px;
+.ball {
+
+	&:before {
+		content: " ";
+		@include border-radius(50%);
+		width: 10px;
+		height: 10px;
+		background: white;
+		display: inline-block;
+	}
+
+	&.blue {
+
+		&:before {
+			background: $blue;
+		}
 	}
 }

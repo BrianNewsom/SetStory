@@ -1,6 +1,64 @@
 .social {
-	width: 60%;
 	background: $grey-blue;
+
+	@include breakpoint(small) {
+		width: 100%;
+	}
+
+	@include breakpoint(medium) {
+		width: 60%;
+	}
+
+	h2 {
+		padding: 30px;
+		border-bottom: 2px solid $grey-blue-dark;
+	}
+
+	.bars {
+		height: 226px;
+
+		li {
+			$redes: 7;
+			float: left;
+			height: 100%;
+			width: (100%)/$redes;
+			position: relative;
+			border-right: 1px solid $grey-blue-dark;
+
+			.bars--item {
+				background: $green;
+				height: 5%;
+				width: 100%;
+				position: absolute;
+				overflow: visible;
+				bottom: 0;
+				@include transition(height $animation-time ease-in-out, box-shadow $animation-time ease-in-out);
+
+				.bars--item--dates {
+					height: 80px;
+					margin-top: -80px;
+					width: 100%;
+					background: white;
+					opacity: 0;
+					@include transition(opacity $animation-time ease-in-out);
+
+					&:hover {
+						opacity: 1;
+						cursor: pointer;
+					}
+				}
+
+				&:hover {
+					cursor: pointer;
+					@include box-shadow(0 0 20px rgba(#000,.3));
+
+					.bars--item--dates {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
 
 	.summary-data-body {
 		max-width: 100%;
@@ -9,7 +67,6 @@
 	}
 
 	.bar {
-
 		rect {
 			fill: $green;
 		}
