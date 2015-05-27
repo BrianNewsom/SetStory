@@ -70,7 +70,14 @@
 						font-weight: $light;
 						@include transform(translate(-50%,0));
 						color: $grey-blue;
-						font-size: 18px;
+
+						@include breakpoint(small) {
+							font-size: 12px;
+						}
+
+						@include breakpoint(medium) {
+							font-size: 18px;
+						}
 					}
 
 					&:hover {
