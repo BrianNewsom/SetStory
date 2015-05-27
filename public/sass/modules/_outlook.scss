@@ -18,13 +18,42 @@
 		width: 60%;
 	}
 	
-	.point {
+	.points {
+		margin-top: 30px;
 
-		.point--dates {
+		.point {
+			position: relative;
 			display: inline-block;
-			@include clearfix;
+
+			.point--info {
+				display: inline-block;
+				background: #04618d;
+				padding: 8px 12px;
+				font-weight: $light;
+				position: relative;
+				@include clearfix;
+			}
+
+			.ball {
+				display: block;
+				margin: 7px 0 0 7px;
+			}
+
+			.dialog {
+				&:before {
+					content: " ";
+					width: 0;
+					height: 0;
+					border-style: solid;
+					border-width: 6px 4px 0 4px;
+					border-color: #04618d transparent transparent transparent;
+					position: absolute;
+					bottom: -6px;
+					left: 8px;
+				}
+			}
 		}
-	}
+	}		
 
 	svg {
 		opacity: .4;
