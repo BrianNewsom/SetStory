@@ -17,6 +17,13 @@
 	.bars {
 		height: 226px;
 
+		i {
+			position: absolute;
+			font-size:20px;
+			color: $grey-blue-dark;
+			z-index: 0;
+		}
+
 		li {
 			$redes: 7;
 			float: left;
@@ -25,6 +32,12 @@
 			position: relative;
 			border-right: 1px solid $grey-blue-dark;
 
+			i {
+				left:50%;
+				top: 30px;
+				@include transform(translate(-50%,0));
+			}
+
 			.bars--item {
 				background: $green;
 				height: 5%;
@@ -32,6 +45,7 @@
 				position: absolute;
 				overflow: visible;
 				bottom: 0;
+				z-index: 1;
 				@include transition(height $animation-time ease-in-out, box-shadow $animation-time ease-in-out);
 
 				.bars--item--dates {
