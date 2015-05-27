@@ -2799,10 +2799,19 @@ h3 {
   transform: translateY(-50%);
   margin: 0 25px;
 }
-.landing .autocomplete {
-  width: 48%;
-  display: inline-block;
-  text-align: right;
+@media (min-width: 320px) {
+  .landing .autocomplete {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .landing .autocomplete {
+    width: 48%;
+    display: inline-block;
+    text-align: right;
+  }
 }
 .landing .autocomplete ul {
   border: none;
@@ -2812,8 +2821,6 @@ h3 {
   background-color: rgba(255, 255, 255, 0.8);
   color: #5a5a5a;
   padding: 5px 10px;
-  max-width: 400px;
-  float: right;
 }
 .landing .autocomplete ul li:first-child {
   -moz-border-radius: 5px 5px 0 0;
@@ -2830,6 +2837,20 @@ h3 {
   background-color: rgba(25, 181, 254, 0.9);
   color: white;
 }
+@media (min-width: 320px) {
+  .landing .autocomplete ul li {
+    max-width: 100%;
+    float: initial;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .landing .autocomplete ul li {
+    max-width: 400px;
+    float: right;
+    text-align: left;
+  }
+}
 .landing .autocomplete input {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -2841,7 +2862,6 @@ h3 {
   vertical-align: middle;
   border-radius: 5px;
   border: none;
-  max-width: 400px;
   background-color: rgba(25, 181, 254, 0.9);
   color: white;
 }
@@ -2859,13 +2879,42 @@ h3 {
 .landing .autocomplete input:-ms-input-placeholder {
   color: rgba(0, 0, 0, 0.3);
 }
+@media (min-width: 320px) {
+  .landing .autocomplete input {
+    max-width: 100%;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .landing .autocomplete input {
+    max-width: 400px;
+    text-align: left;
+  }
+}
 .landing .landing--search--text {
   color: white;
-  display: inline-block;
-  width: 48%;
-  padding-left: 2%;
   font-size: 42px;
   vertical-align: middle;
+}
+@media (min-width: 320px) {
+  .landing .landing--search--text {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    padding-left: 0;
+    display: block;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .landing .landing--search--text {
+    width: 48%;
+    text-align: left;
+    margin-top: 0;
+    padding-left: 2%;
+    display: inline-block;
+    text-align: left;
+  }
 }
 
 .concerts .header .button-white {
