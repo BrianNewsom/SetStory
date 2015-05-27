@@ -1,15 +1,23 @@
 .outlook {
-	background: $red; /* Old browsers */
-	background: -moz-linear-gradient(top,  $red 0%, $orange 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$red), color-stop(100%,$orange)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  $red 0%,$orange 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  $red 0%,$orange 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  $red 0%,$orange 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  $red 0%,$orange 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$red', endColorstr='$orange',GradientType=0 ); /* IE6-9 */
+	width: 60%;
+	background: $blue; /* Old browsers */
+	background: -moz-linear-gradient(top,  $blue 0%, $green 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$blue), color-stop(100%,$green)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, $blue 0%, $green 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $blue 0%, $green 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $blue 0%, $green 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $blue 0%, $green 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$blue', endColorstr='$green',GradientType=0 ); /* IE6-9 */
 	overflow: hidden;
 
+	svg {
+		opacity: .4;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%,-50%));
+		position: absolute;
+	}
 	.progress-graph path{
-		stroke: #873d34;
+		stroke: #000;
 	}
 }

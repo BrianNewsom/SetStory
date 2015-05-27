@@ -1,0 +1,26 @@
+.visits {
+	width: 40%;
+
+	svg {
+		margin: 30px;
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		text {
+			fill: $blue;
+			font-family: $font;
+			font-weight: $light;
+			font-size: 35px;
+			display: none;
+		}
+	}
+
+	path.color0 {
+		fill: $blue;
+	}
+
+	path.color1 {
+		fill: white;
+	}
+}

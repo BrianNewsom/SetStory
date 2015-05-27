@@ -20,8 +20,8 @@ scope.$watch('dataset', function(dataset) {
   drawDonutChart(
     '.percentage-'+dataset,
     dataset,
-    250,
-    250,
+    200,
+    200,
     ".30em"
   );
 });
@@ -88,22 +88,8 @@ function drawDonutChart(element, percent, width, height, text_y) {
 function calcPercent(percent) {
   return [percent, 100-percent];
 };
-
-
-
-
-
-            }
-
-          
-
-
-
-
 }
-  
-
-
+}
 });
 
 
