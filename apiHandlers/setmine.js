@@ -1,5 +1,6 @@
 var rest = require('restler');
 var setmine = {};
+<<<<<<< HEAD
 var api_version = "7"
 var _ = require('underscore')
 var socialmedia = require('../models/socialmedia')
@@ -7,6 +8,11 @@ var socialmedia = require('../models/socialmedia')
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
+=======
+var api_key = 'sxsw2015';
+var jf = require('jsonfile')
+var echonest = require('./echonest.js')
+>>>>>>> bug fixes
 
 var artists = []
 
@@ -86,15 +92,49 @@ setmine.getEventLineupByName = function(eventName, callback) {
     
 }
 
+setmine.popularity = function(artist, callback) {
+    console.log(artist)
+    rest.get("http://setmine.com/api/v/7/artist", {
+        query: {
+            search: artist
+        }}).on('complete', function(response) {
+            callback(response)
+    })
+}
+
 setmine.getAVAScore = function(artistName, callback) {
     console.log("getavascore function")
     console.log(artistName)
-    var score = 0;
-    var data = {
-      artist: artistName,
-      ava_score: score
-    }
-    callback(data)
+    var setmine_play_counts;
+    var echnonest_artist_popularity;
+
+    echonest.getArtistPopularity(artistName, function(data) {
+        console.log(data);
+        var artistData = data;
+        echonest_artist_popularity = data.popularity
+
+
+        setmine.popularity(artistName, function(setmineResponse){
+            console.log(setmineResponse);
+
+            setmine_play_counts = setmineResponse.payload.artist.popularity || 100;
+
+
+            var score = setmine_play_counts + echonest_artist_popularity;
+            var data = {
+             artist: artistName,
+             ava_score: score
+            }
+            callback(data)
+
+
+        })
+
+   
+        
+    })
+
+   
 }
 
 setmine.socialmedia = socialmedia; // >> /models/socialmedia.js
