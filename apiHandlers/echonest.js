@@ -42,6 +42,7 @@ echonest.getArtistPopularity = function(artist, cb){
                     cb(0);
                     return 1;
                 }
+                console.log(artist_data)
                 var popularity = artist_data.response.artist.hotttnesss;
                 cb({
                     "artist_name":artist,
