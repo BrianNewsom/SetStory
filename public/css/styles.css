@@ -627,6 +627,67 @@ p {
   border-right: 2px solid #2b2b2b;
 }
 
+.timeline {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.timeline h2 {
+  padding: 30px;
+  background: #333333;
+}
+.timeline .line {
+  position: absolute;
+  background: #19B5FE;
+  z-index: 2;
+  width: 3px;
+  left: 30px;
+  top: 100px;
+  height: 100%;
+}
+.timeline .bull--time {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 3;
+  background: #19B5FE;
+  top: 20px;
+  left: 24px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.timeline .bull--time span {
+  display: block;
+  width: 7px;
+  height: 7px;
+  z-index: 3;
+  background: #2b2b2b;
+  top: 20px;
+  left: 24px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  position: relative;
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.timeline .timeline--concerts li {
+  min-height: 100px;
+  width: 100%;
+  position: relative;
+}
+.timeline .timeline--concerts li:nth-child(2n) {
+  background: #333333;
+}
+.timeline .timeline--concerts li:first-child .bull--time span {
+  background: #19B5FE;
+}
+
 .landing {
   height: 100%;
   background: url(../images/bg-landing.jpg) no-repeat center top;
