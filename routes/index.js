@@ -8,6 +8,8 @@ var unified = require('../apiHandlers/unified');
 var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var soundcloud = require('../apiHandlers/soundcloud')
+var instagram = require('../apiHandlers/instagram')
+
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
@@ -192,5 +194,6 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
         res.json({"response": data});
     })
 })
+
 
 module.exports = router;
