@@ -1,14 +1,6 @@
 .social {
 	background: $grey-blue;
 
-	@include breakpoint(small) {
-		width: 100%;
-	}
-
-	@include breakpoint(medium) {
-		width: 60%;
-	}
-
 	h2 {
 		padding: 30px;
 		border-bottom: 2px solid $grey-blue-dark;

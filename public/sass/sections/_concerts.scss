@@ -8,6 +8,16 @@
 			right: 25px;
 		}
 	}
+
+  .social {
+      @include breakpoint(small) {
+        width: 100%;
+      }
+
+      @include breakpoint(medium) {
+        width: 60%;
+      }
+  }
 }
 
 
