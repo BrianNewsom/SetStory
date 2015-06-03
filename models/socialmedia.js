@@ -401,17 +401,3 @@ socialmedia.youtube = function(data, supercallback) {
 }
 
 module.exports = socialmedia;
-
-var count = 0
-async.whilst(
-    function() { return count < venuesWithIcon83.length },
-    function(callback) {
-        connection.query()
-    },
-    function(err) {
-        console.log("Soundcloud data received. Caching...")
-        
-
-        
-    }
-)
