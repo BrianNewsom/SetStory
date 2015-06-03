@@ -906,6 +906,7 @@ path.color1 {
   text-transform: uppercase;
   float: left;
   width: 33.33333%;
+  min-height: 72px;
   padding: 20px 30px;
   background: #2b2b2b;
   border-right: 2px solid #56626e;
