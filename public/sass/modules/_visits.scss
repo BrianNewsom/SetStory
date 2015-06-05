@@ -11,8 +11,10 @@
 	}
 
 	.module--visit--score {
-		margin: 4em auto;
-		width: 315px;
+		margin: 13em auto;
+	  	width: 315px;
+	 	margin-left: 55%;
+		
 
 		li {
 			font-size: 40px;
@@ -25,7 +27,7 @@
 
 	.visit--score--dates {
 		text-align: center;
-
+ 		margin: 5em auto;
 		li {
 			display: inline-block;
 			margin-right: 20px;
@@ -42,7 +44,7 @@
 	}
 
 	svg {
-		margin: 30px 0 0 50px;
+		margin: 30px 0 0 -16px;
 		position: absolute;
 		left: 50%;
 		@include transform(translate(-50%, 0));
@@ -53,7 +55,7 @@
 			font-family: $font;
 			font-weight: $light;
 			font-size: 35px;
-			display: none;
+			
 		}
 	}
 

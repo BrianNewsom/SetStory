@@ -1,12 +1,12 @@
-var duration   = 1000,
-    transition = 300;
+var duration   = 6000,
+    transition = 400;
 
 angular.module('myApp')
   .directive('d3percentage', function() {
   return {
     restrict: 'E',
     replace: true,
-    template: '<div class="wow fadeIn precentage-graph"></div>',
+    template: '<div class="precentage-graph"></div>',
     scope: {
       // creates a scope variable in your directive
       // called `dataset` bound to whatever was passed

@@ -234,8 +234,9 @@ p {
   }
 }
 .visits .module--visit--score {
-  margin: 4em auto;
+  margin: 13em auto;
   width: 315px;
+  margin-left: 55%;
 }
 .visits .module--visit--score li {
   font-size: 40px;
@@ -245,6 +246,7 @@ p {
 }
 .visits .visit--score--dates {
   text-align: center;
+  margin: 5em auto;
 }
 .visits .visit--score--dates li {
   display: inline-block;
@@ -256,7 +258,7 @@ p {
   margin: 0 4px;
 }
 .visits svg {
-  margin: 30px 0 0 50px;
+  margin: 30px 0 0 -16px;
   position: absolute;
   left: 50%;
   -moz-transform: translate(-50%, 0);
@@ -270,7 +272,6 @@ p {
   font-family: "Nunito", sans-serif;
   font-weight: 300;
   font-size: 35px;
-  display: none;
 }
 .visits path.color0 {
   fill: #19B5FE;
@@ -312,7 +313,7 @@ p {
 .outlook svg {
   opacity: .4;
   top: 50%;
-  left: 50%;
+  left: 38%;
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
