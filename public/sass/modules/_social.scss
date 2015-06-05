@@ -1,0 +1,104 @@
+.social {
+	background: $grey-blue;
+
+	h2 {
+		padding: 30px;
+		border-bottom: 2px solid $grey-blue-dark;
+	}
+
+	.bars {
+		height: 226px;
+
+		i {
+			position: absolute;
+			font-size:20px;
+			color: $grey-blue-dark;
+			z-index: 0;
+		}
+
+		li {
+			$redes: 7;
+			float: left;
+			height: 100%;
+			width: (100%)/$redes;
+			position: relative;
+			border-right: 1px solid $grey-blue-dark;
+
+			i {
+				left:50%;
+				top: 30px;
+				@include transform(translate(-50%,0));
+			}
+
+			.bars--item {
+				background: $green;
+				height: 5%;
+				width: 100%;
+				position: absolute;
+				overflow: visible;
+				bottom: 0;
+				z-index: 1;
+				@include transition(height $animation-time ease-in-out, box-shadow $animation-time ease-in-out);
+
+				.bars--item--dates {
+					height: 80px;
+					margin-top: -80px;
+					width: 100%;
+					background: white;
+					opacity: 0;
+					@include transition(opacity $animation-time ease-in-out);
+					position: relative;
+
+					i {
+						left: 25px;
+						top: 15px;
+						color: $grey-blue;
+					}
+
+					p {
+						position: absolute;
+						left:50%;
+						top: 45px;
+						font-weight: $light;
+						@include transform(translate(-50%,0));
+						color: $grey-blue;
+
+						@include breakpoint(small) {
+							font-size: 12px;
+						}
+
+						@include breakpoint(medium) {
+							font-size: 18px;
+						}
+					}
+
+					&:hover {
+						opacity: 1;
+						cursor: pointer;
+					}
+				}
+
+				&:hover {
+					cursor: pointer;
+					@include box-shadow(0 0 20px rgba(#000,.3));
+
+					.bars--item--dates {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+
+	.summary-data-body {
+		max-width: 100%;
+		max-height: 100%;
+
+	}
+
+	.bar {
+		rect {
+			fill: $green;
+		}
+	}
+}

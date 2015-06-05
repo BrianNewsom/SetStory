@@ -1,0 +1,70 @@
+.timeline {
+	position: relative;
+	overflow:hidden;
+	width: 100%;
+
+	h2 {
+		padding: 30px;
+		background: $bg-grey-light;
+	}
+
+	.line {
+		position: absolute;
+		background: $blue;
+		z-index: 2;
+		width: 3px;
+		left: 30px;
+		top:100px;
+		height: 100%;
+	}
+
+	.bull--time {
+		position:absolute;
+		width: 14px;
+		height: 14px;
+		z-index: 3;
+		background: $blue;
+		top: 20px;
+		left: 24px;
+		@include border-radius(50%);
+
+		span {
+			display: block;
+			width: 7px;
+			height: 7px;
+			z-index: 3;
+			background: $bg-grey-dark;
+			top: 20px;
+			left: 24px;
+			@include border-radius(50%);
+			top: 50%;
+			left: 50%;
+			position: relative;
+			@include transform(translate(-50%, -50%));
+		}
+	}
+
+	.timeline--concerts {
+
+		li {
+			min-height: 100px;
+			width: 100%;
+			position: relative;
+
+			&:nth-child(2n) {
+				background: $bg-grey-light;
+			}
+
+			&:first-child {
+
+				.bull--time {
+
+					span {
+						background: $blue;
+					}
+				}
+			}
+		}
+	}
+
+}
