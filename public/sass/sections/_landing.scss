@@ -18,7 +18,7 @@
 		}
 
 		@include breakpoint(medium) {
-			width:48%;
+			width:40%;
 			display: inline-block;
 			text-align: right;
 		}
@@ -83,8 +83,26 @@
 				text-align: left;
 			}
 		}
-	}
+		
 
+	}
+	.venue{
+			@include breakpoint(small) {
+				width: 100%;
+				max-width:100%;
+				text-align: center;
+			}
+
+			@include breakpoint(medium) {
+				width: 40%;
+				text-align: left;
+			}
+			
+			input {
+			  max-width: none;
+  			  width: 100%;
+			}
+	}	
 	.landing--search--text {
 		color: white;
 		font-size: 42px;
@@ -100,7 +118,7 @@
 		}
 
 		@include breakpoint(medium) {
-			width:48%;
+			width:55%;
 			text-align: left;
 			margin-top: 0;
 			padding-left: 2%;

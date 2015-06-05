@@ -739,7 +739,7 @@ p {
 }
 @media (min-width: 768px) {
   .landing .autocomplete {
-    width: 48%;
+    width: 40%;
     display: inline-block;
     text-align: right;
   }
@@ -822,6 +822,23 @@ p {
     text-align: left;
   }
 }
+@media (min-width: 320px) {
+  .landing .venue {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .landing .venue {
+    width: 40%;
+    text-align: left;
+  }
+}
+.landing .venue input {
+  max-width: none;
+  width: 100%;
+}
 .landing .landing--search--text {
   color: white;
   font-size: 42px;
@@ -839,7 +856,7 @@ p {
 }
 @media (min-width: 768px) {
   .landing .landing--search--text {
-    width: 48%;
+    width: 55%;
     text-align: left;
     margin-top: 0;
     padding-left: 2%;

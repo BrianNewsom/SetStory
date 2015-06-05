@@ -165,7 +165,7 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 });
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
-	  $scope.dataset =
+	  $scope.socialset =
         [{"number":1, "value":900000},
         {"number":2, "value":900000},
         {"number":3, "value":900000},
@@ -176,7 +176,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
           for(var i = 0; i < 4; i++) {
             data.push({"number":i, "value": Math.floor(Math.random()*900000)});
           }
-          $scope.dataset = data;
+          $scope.socialset = data;
 
   }, 3000);
 	var loadData = function(url){
