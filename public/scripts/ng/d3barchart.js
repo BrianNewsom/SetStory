@@ -15,15 +15,17 @@ angular.module('myApp')
     },
     link: function(scope, element, attrs) {
       var chartData = [];
-      var w = $('.outlook-social').innerWidth();
-      var h = $('.outlook-social').innerHeight();
+      var w = 515;
+      var h = 660;
       
+
+    
 
       //initial svg creation
       var svg = d3.select("#test-chart")
         .append("svg")
-          .attr("width", w )
-          .attr("height", h )
+          .attr("width", 815 + 40)
+          .attr("height", h + 20)
         .append("g")
           .attr("transform", "translate(20,0)");
 
@@ -55,7 +57,12 @@ angular.module('myApp')
           .attr("dx", ".35em")
           .attr("text-anchor", "end")
           .text(function(d) { return d.value; });
+
+        
       }
+
+
+
         scope.$watch('dataset', function(dataset) {
           console.log(dataset);
 
@@ -80,9 +87,17 @@ angular.module('myApp')
             .delay(delay)
             .attr("y", function(d) { return y(d.value); })
             .text(function(d) { return d.value; });
-      });  
+          
+      });
+
+     
+        
     }
   }
+
+    
+
+
 });
 
 
