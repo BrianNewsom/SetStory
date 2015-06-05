@@ -47,11 +47,11 @@ angular.module('myApp')
 
               // Get the data
               d3.csv("tickets-year-cochela.csv", function(error, data) {
-              data.forEach(function(d) {
-                  
-                  d.year = parseInt(d.years);
-                  d.tickets = parseInt(d.tickets);
-              });
+                data.forEach(function(d) {
+                    
+                    d.year = parseInt(d.years);
+                    d.tickets = parseInt(d.tickets);
+                });
 
               // Scale the range of the data
               x.domain(d3.extent(data, function(d) { return d.year; }));
@@ -68,12 +68,32 @@ angular.module('myApp')
                   .attr("transform", "translate(0," + height + ")")
                   .call(xAxis);
 
-              // Add the Y Axis
-              svg.append("g")
-                  .attr("class", "y axis")
-                  .call(yAxis);
+
+                    //Mouseover tip
+             var tip = d3.tip()
+                .attr('class', 'd3-tip points')
+                .html(function(d) { 
+
+                return '<li class="point"><div class="point--info"><p>' + d.tickets + 
+                '</p><span class="dialog"></span></div><span class="ball"></span></li>'; 
+              });
+
+              svg.call(tip);
+              svg.selectAll(".dot")
+                  .data(data)
+                  .enter().append("circle")
+                  .attr('class', 'datapoint')
+                  .attr('cx', function(d) { return x(d.year); })
+                  .attr('cy', function(d) { return y(d.tickets); })
+                  .attr('r', 6)
+                  .attr('fill', 'white')
+                  .attr('stroke', 'steelblue')
+                  .attr('stroke-width', '3')
+                  .on('mouseover', tip.show)
+                  .on('mouseout', tip.hide);
 
               });
+            
 
             }
 
