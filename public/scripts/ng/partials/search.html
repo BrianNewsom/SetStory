@@ -1,7 +1,9 @@
 <div class="landing" id="new-landing-page">
-	<div class="landing--search--container">
-		<autocomplete class="search-bar" ng-model="search" attr-placeholder="Festival name" click-activation="true" data="events" on-type="updateEvents" on-select="gotoEvent"></autocomplete>
-		<div class="landing--search--text wow fadeIn">will take place at venue</div>	
+	<div class="landing--search--container fadeIn">
+		<autocomplete class="search-bar fadeIn" ng-model="search" attr-placeholder="Festival name" click-activation="true" data="events" on-type="updateEvents" on-select="gotoEvent"></autocomplete>
+
+		<div class="landing--search--text wow fadeIn">will take place at</div>	
+		<div class="autocomplete fadeIn"> <input type="text"placeholder="venue"class="autocomplete search-bar"></input></div>
 	</div>
 </div>
 

@@ -1,5 +1,5 @@
 <div class="concerts" id="lineup-page">
-	<div class="modules--wrapper header">
+	<div class="modules--wrapper header wow fadeIn">
 		<div class="header--content">
 			<div class="header--top">
 				<h2>{{detail.event}}</h2>
@@ -8,8 +8,8 @@
 		</div>
 		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
 	</div>
-	<div class="modules--wrapper">
-		<div class="module score-page">
+	<div class="modules--wrapper wow fadeIn">
+		<div class="module score-page wow fadeIn">
 			<ul>
 				<li>Score<div class="score">{{eventScore}}</div></li>
 				<li>Artists<div class="score">{{detail.lineup.length}}</div></li>
@@ -18,14 +18,14 @@
 			</ul>
 		</div>
 
-		<div class="module outlook">
+		<div class="module outlook wow fadeIn">
 			<h2>Sells progression</h2>
 			
 			
 			<d3progress> </d3progress>
 		</div>
 
-		<div class="module visits">
+		<div class="module visits wow fadeIn">
 			<h2>Visits</h2>
 			<ul class="module--visit--score">
 
@@ -40,80 +40,10 @@
 		</div>
 
 		<div class="module social">
-			<!--<div class="summary-data-body">
-				<div class="data-container">
-					<div class="data-row">
-						<div class="data-title"></div>
-						<d3barchart dataset="dataset"> </d3barchart>
-					</div>
-				</div>
-			</div>-->
 			<h2>Social</h2>
-			<ul class="bars">
-				<li>
-					<i class="fa fa-google-plus"></i> 
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-google-plus"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-stumbleupon"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-stumbleupon"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-dribbble"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-dribbble"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-facebook"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-facebook"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-twitter"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-twitter"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-vimeo-square"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-vimeo-square"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-yahoo"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-yahoo"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-			</ul>
+			
+						<d3barchart dataset="dataset"> </d3barchart>
+		
 		</div>
 	</div>
 
