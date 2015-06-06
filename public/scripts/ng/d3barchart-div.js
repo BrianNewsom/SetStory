@@ -77,9 +77,6 @@ angular.module('myApp')
           x = d3.scale.ordinal()
             .domain(d3.range(chartData.length))
             .rangeBands([0, h], 0.1);
-          y = d3.scale.linear()
-            .domain([0, d3.max(chartData, function(d) { return d.value; })])
-            .range([0, w]);
 
           drawChart();
            var rect = svg.selectAll(".bar div").data(dataset);
@@ -88,8 +85,14 @@ angular.module('myApp')
         
           var delay = function(d, i) { return i * 50; };
           rect.transition().duration(750)
-            .delay(delay)
-            .style("height", function(d) { return y(d.value) + 'px'; });
+            .style("height", function(d) { 
+            
+            var scaleY = d3.scale.linear()
+              .domain([0, d.max])
+              .range([0, 160]);
+
+              return scaleY(d.value) + 'px'; 
+            });
 
           icons.transition().duration(750)
             .delay(delay)

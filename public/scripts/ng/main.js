@@ -174,17 +174,30 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
   $scope.socialset =
-    [{"number":1, "value":20},
-    {"number":2, "value":20},
-    {"number":3, "value":20},
-    {"number":4, "value":20},
-    {"number":4, "value":20}];
+    [{"number":1, "value":20, "max":20},
+    {"number":2, "value":20, "max":20},
+    {"number":3, "value":20, "max":20},
+    {"number":4, "value":20, "max":20},
+    {"number":5, "value":20, "max":20}];
 
-    var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
+    var sources = [];
+	    sources.push({name: "google-plus", max: 10000000  * 1.2});
+	    sources.push({name: "vimeo", max: 90000 * 1.2});
+	    sources.push({name: "facebook", max: 100000000 * 1.2});
+	    sources.push({name: "twitter", max: 70697964 * 1.2});
+	    sources.push({name: "youtube", max: 30000000000});
+	    sources.push({name: "soudcloud", max: 1000000});
+
+
 	$interval(function(){
 		  var data = [];
-      for(var i = 0; i < names.length; i++) {
-        data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
+      for(var i = 0; i < sources.length; i++) {
+      	var s = sources[i]
+        data.push({
+        	"name": s.name, 
+        	"number":i, 
+        	"max": s.max,
+        	"value": Math.floor(Math.random()*s.max)});
       }
 
     	$scope.socialset = data;  
