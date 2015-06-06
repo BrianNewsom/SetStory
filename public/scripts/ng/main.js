@@ -69,109 +69,8 @@ myApp.controller('ArtistsController', function($scope,$interval, $filter, $sce,$
 	
 
 	var plays = []
-	var months =[];
 
-
-
-	maxYoutube = 10000;
-	maxSoundCloud = 10000;
-	maxSetMine  = 10000;
-
-	
-	$scope.scaleHeight = function(item, play){
-		var scaleY = d3.scale.linear()
-              .domain([0, item.max])
-              .range([0, 160]);
-        var styles = {height: scaleY(play) + "px"};
-        console.log(styles);      
-		return styles;
-
-	};
-
-	var format = d3.format('.1s');
-
-	$scope.formatOutput = function(play){
-		return format(play);
-	};
-	months.push({name:"JAN", plays: Math.round(Math.random()*maxYoutube)});
-	months.push({name:"FEB", plays: Math.round(Math.random()*maxYoutube)});
-	months.push({name:"APR", plays: Math.round(Math.random()*maxYoutube)});
-	months.push({name:"MAY", plays: Math.round(Math.random()*maxYoutube)});
-
-
-	plays.push({name:'setmine', max:maxSetMine ,months:months});
-	plays.push({name:'youtube', max: maxYoutube,months:months});
-	plays.push({name:'soundcloud',max:maxSoundCloud, months:months});
-	
-	$scope.plays = plays;
-
-
-	$scope.socialset =
-	    [{"number":1, "value":20, "max":20},
-	    {"number":2, "value":20, "max":20},
-	    {"number":3, "value":20, "max":20},
-	    {"number":4, "value":20, "max":20},
-	    {"number":5, "value":20, "max":20},
-	    {"number":6, "value":20, "max":20},
-	    {"number":7, "value":20, "max":20}];
-
-    var sources = [];
-	    sources.push({name: "google-plus", max: 10000000  * 1.2});
-	    sources.push({name: "vimeo-square", max: 90000 * 1.2});
-	    sources.push({name: "facebook", max: 100000000 * 1.2});
-	    sources.push({name: "twitter", max: 70697964 * 1.2});
-	    sources.push({name: "youtube", max: 30000000000});
-	    sources.push({name: "soundcloud", max: 1000000});
-	    sources.push({name: "setmine", max: 1000000});
-
-
-	$interval(function(){
-		  var data = [];
-      for(var i = 0; i < sources.length; i++) {
-      	var s = sources[i]
-        data.push({
-        	"name": s.name, 
-        	"number":i, 
-        	"max": s.max,
-        	"value": Math.floor(Math.random()*s.max)});
-      }
-
-    	$scope.socialset = data;  
-  	},3000);
-	$scope.choice = $routeParams.name;
-
-	$scope.getArtistID = function() {
-		var url = "api/getArtistID/" + $scope.choice; 
-		
-		$http.get(url).success(function(data) {
-			$scope.artistsPhoto = data;
-		});
-	}
-	
-	$scope.getArtistPhoto = function(){
-		
-		var url = "api/getArtistPic/" + $scope.choice; 
-		
-		$http.get(url).success(function(data) {
-			$scope.artistsPhoto = data;
-		});
-		
-	}
-	$scope.getArtistPhoto();
-
-    $scope.getArtistData = function(){
-        var url = "api/artist/" + $scope.choice;
-
-        $http.get(url).success(function(data) {
-            $scope.artistData = data;
-        })
-
-    }
-
-    $scope.getArtistData();
-
-
-    $scope.getArtistScore = function() {
+	$scope.getArtistScore = function() {
 
     	// var url = '/api/artist/avascore/' + $scope.choice;
 
@@ -217,11 +116,6 @@ myApp.controller('ArtistsController', function($scope,$interval, $filter, $sce,$
     	// 	console.log(metadata);
     	// 	$scope.artistScore = metadata.ava_score || 12345;
     	// });
-		$scope.totalPlays = {
-			setmine: 1000,
-			soundcloud: 2000,
-			youtube: 3000,
-		}
 
 		$scope.playsOverTime = {
 			setmine: [
@@ -230,23 +124,131 @@ myApp.controller('ArtistsController', function($scope,$interval, $filter, $sce,$
 				4000,
 				5000
 			],
-			soundcloud: 
-				2000,
-				3000,
-				4000,
-				5000
+			soundcloud: [
+				2500,
+				3500,
+				4500,
+				5500
 			],
-			youtube: 
-				2000,
-				3000,
-				4000,
-				5000
+			youtube: [
+				2800,
+				3800,
+				4800,
+				5800
 			],
 		}
 
     }
 
     $scope.getArtistMediaData();
+
+	maxYoutube = 10000;
+	maxSoundCloud = 10000;
+	maxSetMine  = 10000;
+
+	
+	$scope.scaleHeight = function(item, play){
+		var scaleY = d3.scale.linear()
+              .domain([0, item.max])
+              .range([0, 160]);
+        var styles = {height: scaleY(play) + "px"};
+        console.log(styles);      
+		return styles;
+
+	};
+
+	var format = d3.format('.1s');
+
+	$scope.formatOutput = function(play) {
+		return format(play);
+	};
+
+	var setmineOverTime =[];
+	var youtubeOverTime =[];
+	var soundcloudOverTime =[];
+
+
+	setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
+	setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
+	setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
+	setmineOverTime.push({name:"MAY", plays: $scope.playsOverTime.setmine[3]});
+
+	youtubeOverTime.push({name:"FEB", plays: $scope.playsOverTime.youtube[0]});
+	youtubeOverTime.push({name:"MAR", plays: $scope.playsOverTime.youtube[1]});
+	youtubeOverTime.push({name:"APR", plays: $scope.playsOverTime.youtube[2]});
+	youtubeOverTime.push({name:"MAY", plays: $scope.playsOverTime.youtube[3]});
+
+	soundcloudOverTime.push({name:"FEB", plays: $scope.playsOverTime.soundcloud[0]});
+	soundcloudOverTime.push({name:"MAR", plays: $scope.playsOverTime.soundcloud[1]});
+	soundcloudOverTime.push({name:"APR", plays: $scope.playsOverTime.soundcloud[2]});
+	soundcloudOverTime.push({name:"MAY", plays: $scope.playsOverTime.soundcloud[3]});
+
+	plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
+	plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
+	plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
+	
+	$scope.plays = plays;
+
+	$scope.socialset =
+	    [{"number":1, "value":20, "max":20},
+	    {"number":2, "value":20, "max":20},
+	    {"number":3, "value":20, "max":20},
+	    {"number":4, "value":20, "max":20},
+	    {"number":5, "value":20, "max":20}]
+
+    var sources = [];
+	    sources.push({name: "facebook", max: 100000000 * 1.2});
+	    sources.push({name: "twitter", max: 70697964 * 1.2});
+	    sources.push({name: "youtube", max: 30000000000});
+	    sources.push({name: "soundcloud", max: 1000000});
+	    sources.push({name: "setmine", max: 1000000});
+
+
+	$interval(function(){
+		  var data = [];
+      for(var i = 0; i < sources.length; i++) {
+      	var s = sources[i]
+        data.push({
+        	"name": s.name, 
+        	"number":i, 
+        	"max": s.max,
+        	"value": Math.floor(Math.random()*s.max)});
+    	}
+
+    	$scope.socialset = data;  
+  	},3000);
+
+	$scope.choice = $routeParams.name;
+
+	$scope.getArtistID = function() {
+		var url = "api/getArtistID/" + $scope.choice; 
+		
+		$http.get(url).success(function(data) {
+			$scope.artistsPhoto = data;
+		});
+	}
+	
+	$scope.getArtistPhoto = function(){
+		
+		var url = "api/getArtistPic/" + $scope.choice; 
+		
+		$http.get(url).success(function(data) {
+			$scope.artistsPhoto = data;
+		});
+		
+	}
+	$scope.getArtistPhoto();
+
+    $scope.getArtistData = function(){
+        var url = "api/artist/" + $scope.choice;
+
+        $http.get(url).success(function(data) {
+            $scope.artistData = data;
+        })
+
+    }
+
+    $scope.getArtistData();
 
 	$scope.back = function(){
 		$location.path("/");
