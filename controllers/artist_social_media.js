@@ -107,6 +107,42 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
   })
 }
 
+artist_social_media.updateDemoLineupArtists = function(supercallback) {
+  connection = mysql.createPool(settings.db.main);
+  connection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, data) {
+    async.parallel({
+      twitter: function(callback) {
+        setmine.socialmedia.twitter(data, function(data) {
+          callback(null, data)
+        })
+      },
+      facebook: function(callback) {
+        setmine.socialmedia.facebook(data, function(data) {
+            callback(null, data);
+        })
+      },
+      instagram: function(callback) {
+        setmine.socialmedia.instagram(data, function(data) {
+            callback(null, data);
+        })
+      },
+      soundcloud: function(callback) {
+        setmine.socialmedia.soundcloud(data, function(data) {
+          callback(null, data)
+        })
+      },
+      youtube: function(callback) {
+        setmine.socialmedia.youtube(data, function(data) {
+            callback(null, data)
+        })
+      }
+    }, function(err, results) {
+      supercallback(results)
+    })
+    
+  })
+}
+
 module.exports = artist_social_media;
 
 

@@ -92,16 +92,14 @@ router.get('/api/autocomplete/:name', function(req, res, next) {
     var result = [];
 
     if(req.params.name.length > 2) {
-        var artists = setmine.artists
-        for (var i = 0; i < artists.length; i++) {
-            if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
-                result.push(artists[i].artist)
+        var events = setmine.events
+        for (var i = 0; i < events.length; i++) {
+            if(events[i].event.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+                result.push(events[i].event)
             }
         };
     }
     res.json(result)
-
-
 });
 
 router.get('/api/artist/:artistName/:page/:count', function(req, res, next){
@@ -195,5 +193,14 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
     })
 })
 
+router.get('/api/lineup/event/:eventName', function(req,res,next){
+    setmine.getEventLineupByName(req.params.eventName, function(data) {
+        res.json({"response": data});
+    })
+})
+
+// 1 route that gets EDC Las Vegas artists and gets and stores all social media metrics for all of them
+
+// 1 route for gets EDC Las Vegas artists and gets and stores twitter images
 
 module.exports = router;
