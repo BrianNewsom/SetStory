@@ -17,7 +17,8 @@ angular.module('myApp')
       var chartData = [];
       var w = 515;
       var h = 660;
-      
+      //Display everything on 10M 10k and over
+      var formatValue = d3.format(".1s"); 
 
     
 
@@ -41,13 +42,6 @@ angular.module('myApp')
 
 
         var bars = 
-
-// <li>
-//           <i class="fa fa-stumbleupon"></i>
-//           <div class="bars--item">
-//             <div class="bars--item--dates"></div>
-//           </div>
-//         </li>
         svg.selectAll(".bar")
         .data(chartData, function(d,i){ return i;})
         .enter().append("li")
@@ -94,7 +88,8 @@ angular.module('myApp')
             var scaleY = d3.scale.linear()
               .domain([0, d.max])
               .range([0, 160]);
-              var height = scaleY(d.value);
+            
+            var height = scaleY(d.value);
               if (height < 40){
                 height = 40;
               }
@@ -102,7 +97,8 @@ angular.module('myApp')
             });
 
           values.transition().duration(750).text(function(d){
-            return d.value;
+            
+            return formatValue(d.value).toUpperCase();
           });
 
           icons.transition().duration(750)

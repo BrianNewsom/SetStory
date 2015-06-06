@@ -16,88 +16,21 @@
 		<div class="header--picture wow fadeIn" style="background: url({{artistsPhoto}}) no-repeat center center;"></div>
 		<div class="buffer"></div>
 	</div>
-	<div class="modules--wrapper content">
+	<div class="wow fadeIn modules--wrapper content">
 		<div class="module social">
 			<h2>Social</h2>
 			<d3barchart dataset="socialset"> </d3barchart>
 		</div>
-
-		<div class="module totalplays setmine-module">
-			<h2>Total Plays </h2>
+		<div ng-repeat="play in plays" class="module totalplays {{play.name}}-module">
+			<h2>Total Plays <i class="fa fa-{{play.name}}"></i></h2>
 			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
+				<li ng-repeat="m in play.months">
+					<p class="totalplays--month">{{m.name}} </p>
+					<p class="totalplays--score">{{m.plays}}</p>
+					<div class="bars--item" ng-style="scaleHeight(play,m.plays)"></div>
 				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
 		</div>
-		<div class="module totalplays soundcloud-module">
-			<h2>Total Plays <i class="fa fa-soundcloud"></i></h2>
-			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
-		</div>
-		<div class="module totalplays youtube-module">
-			<h2>Total Plays <i class="fa fa-youtube"></i></h2>
-			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
-		</div>
-
+		
 
 
 
@@ -174,10 +107,6 @@
 		    			    	</div>
 		    			  	</div>
 	    			  	</div>
-						<div class="d3circles-container wow fadeIn">
-							<h3 ng-show="concert.meta.genres.length > 0" class="genrelabel"> Genres</h3>
-							<d3circles dataset="concert.meta.genres"></d3circles>
-						</div>
 	    			</div>
 
 	    		</div>

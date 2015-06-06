@@ -65,18 +65,55 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 });
 
 
-myApp.controller('ArtistsController', function($scope,$interval, $sce,$filter, $rootScope,$routeParams,$location, $http) {
+myApp.controller('ArtistsController', function($scope,$interval, $filter, $sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
 
+	var plays = []
+	var months =[];
 
 
-	 $scope.socialset =
-    [{"number":1, "value":20, "max":20},
-    {"number":2, "value":20, "max":20},
-    {"number":3, "value":20, "max":20},
-    {"number":4, "value":20, "max":20},
-    {"number":5, "value":20, "max":20},
-    {"number":6, "value":20, "max":20}];
+
+	maxYoutube = 10000;
+	maxSoundCloud = 10000;
+	maxSetMine  = 10000;
+
+	
+	$scope.scaleHeight = function(item, play){
+		var scaleY = d3.scale.linear()
+              .domain([0, item.max])
+              .range([0, 160]);
+        var styles = {height: scaleY(play) + "px"};
+        console.log(styles);      
+		return styles;
+
+	};
+
+	var format = d3.format('.1s');
+
+	$scope.formatOutput = function(play){
+		return format(play);
+	};
+	months.push({name:"JAN", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"FEB", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"APR", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"MAY", plays: Math.round(Math.random()*maxYoutube)});
+
+
+	plays.push({name:'setmine', max:maxSetMine ,months:months});
+	plays.push({name:'youtube', max: maxYoutube,months:months});
+	plays.push({name:'soundcloud',max:maxSoundCloud, months:months});
+	
+	$scope.plays = plays;
+
+
+	$scope.socialset =
+	    [{"number":1, "value":20, "max":20},
+	    {"number":2, "value":20, "max":20},
+	    {"number":3, "value":20, "max":20},
+	    {"number":4, "value":20, "max":20},
+	    {"number":5, "value":20, "max":20},
+	    {"number":6, "value":20, "max":20},
+	    {"number":7, "value":20, "max":20}];
 
     var sources = [];
 	    sources.push({name: "google-plus", max: 10000000  * 1.2});
@@ -85,6 +122,7 @@ myApp.controller('ArtistsController', function($scope,$interval, $sce,$filter, $
 	    sources.push({name: "twitter", max: 70697964 * 1.2});
 	    sources.push({name: "youtube", max: 30000000000});
 	    sources.push({name: "soundcloud", max: 1000000});
+	    sources.push({name: "setmine", max: 1000000});
 
 
 	$interval(function(){
@@ -207,13 +245,14 @@ myApp.controller('ArtistsController', function($scope,$interval, $sce,$filter, $
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 
 	
-  $scope.socialset =
-    [{"number":1, "value":20, "max":20},
-    {"number":2, "value":20, "max":20},
-    {"number":3, "value":20, "max":20},
-    {"number":4, "value":20, "max":20},
-    {"number":5, "value":20, "max":20},
-    {"number":6, "value":20, "max":20}];
+	$scope.socialset =
+	    [{"number":1, "value":20, "max":20},
+	    {"number":2, "value":20, "max":20},
+	    {"number":3, "value":20, "max":20},
+	    {"number":4, "value":20, "max":20},
+	    {"number":5, "value":20, "max":20},
+	    {"number":6, "value":20, "max":20},
+	    {"number":7, "value":20, "max":20}];
 
     var sources = [];
 	    sources.push({name: "google-plus", max: 10000000  * 1.2});
@@ -222,6 +261,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	    sources.push({name: "twitter", max: 70697964 * 1.2});
 	    sources.push({name: "youtube", max: 30000000000});
 	    sources.push({name: "soundcloud", max: 1000000});
+	    sources.push({name: "setmine", max: 1000000});
 
 
 	$interval(function(){
