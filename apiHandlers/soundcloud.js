@@ -16,9 +16,10 @@ soundcloud.getUserTracks = function(user_id, cb){
 soundcloud.getTotalPlays = function(user_id, cb){
     // Sum all plays across tracks for a given user id
     soundcloud.getUserTracks(user_id, function(data){
+
         var total = 0;
         _.forEach(data, function(track){
-            total += Number(track.playback_count);
+            total += (track.playback_count)? Number(track.playback_count) : 0
         });
         cb(total);
     })
@@ -33,7 +34,6 @@ soundcloud.getUserFromPermalink = function(url, cb){
 
 soundcloud.getUserFromName = function(name, cb){
     // Search users for 'name' and return first result
-    console.log(name);
 
     rest.get('http://api.soundcloud.com/users.json?q=' + name + '&client_id=' + soundcloud.client_id).on('complete', function(user){
         cb(user[0]);

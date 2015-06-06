@@ -68,6 +68,14 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
 	$scope.choice = $routeParams.name;
+
+	$scope.getArtistID = function() {
+		var url = "api/getArtistID/" + $scope.choice; 
+		
+		$http.get(url).success(function(data) {
+			$scope.artistsPhoto = data;
+		});
+	}
 	
 	$scope.getArtistPhoto = function(){
 		
@@ -165,6 +173,7 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 });
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
+<<<<<<< HEAD
 	  $scope.socialset =
         [{"number":1, "value":20},
         {"number":2, "value":20},
@@ -179,35 +188,72 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
             data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
           }
           $scope.socialset = data;
+=======
+	$scope.eventName = $routeParams.name;
 
-  }, 3000);
+	
+	
+
+	// Mock Animation START
+
+	// $interval(function(){
+	// 	var data = [];
+	// 	for(var i = 0; i < 4; i++) {
+	// 		data.push({"number":i, "value": Math.floor(Math.random()*900000)});
+	// 	}
+	// 	$scope.socialset = data;
+ //  	}, 3000);
+
+	// Mock Animation END
+
+>>>>>>> 1afd82688e2c1487b1e13762f84921a664cf85e4
+
 	var loadData = function(url){
+		console.log(url)
 		$http.get(url).success(function(data) {
+			$scope.event = data.response;
+
+			$scope.calculateEventScore();
 			
-			for (var i = 0; i < data.lineup.length; i++) {
-				if ( data.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
+			for (var i = 0; i < $scope.event.lineup.length; i++) {
+				if ( $scope.event.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
 				{
-					 data.lineup[i].artistimageURL ='';
+					 $scope.event.lineup[i].artistimageURL = '';
 				}
 				else {
-					 data.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  data.lineup[i].artistimageURL;	
+					 $scope.event.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  $scope.event.lineup[i].artistimageURL;	
 				}
 
 						
 			};
-			$scope.detail = data;
-			$scope.calculateEventScore();
-			console.log(data);
 		});
 	}
-	if($routeParams.name.toLowerCase().indexOf('coachella') > -1) {
-		loadData('coachella2015.json');
-	} else {
-		loadData('umf2015.json');
+
+	var getSocialScore= function(lineup) {
+
+		// TODO: Get social route from Setmine and Openaura
+		 
+		// $http.get(url).success(function(data) {
+			
+		// 	$scope.socialset = [{"number":1, "value":900000},
+		// 		{"number":2, "value":900000},
+		// 		{"number":3, "value":900000},
+		// 		{"number":4, "value":900000}];
+			
+		// });
+
+		$scope.socialset = [{"number":1, "value":900000},
+			{"number":2, "value":900000},
+			{"number":3, "value":900000},
+			{"number":4, "value":900000}];
 	}
 
+	loadData("/api/lineup/event/" + $scope.eventName)
+	getSocialScore($scope.event.lineup)
+
+
 	$scope.calculateEventScore = function() {
-		$scope.eventScore = $scope.detail.lineup.length * 1300
+		$scope.eventScore = $scope.event.lineup.length * 13000
 	}
 
 	$scope.gotoArtist = function(artist){
