@@ -826,6 +826,7 @@ p {
   .landing .venue {
     width: 100%;
     max-width: 100%;
+    margin-top: 20px;
     text-align: center;
   }
 }

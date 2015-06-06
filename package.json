@@ -23,6 +23,7 @@
     "node-gracenote": "git://github.com/ddanninger/node-gracenote",
     "restler": "*",
     "request": "*",
+    "underscore": "*",
     "serve-favicon": "~2.2.0"
   }
 }

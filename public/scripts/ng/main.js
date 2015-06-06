@@ -172,25 +172,10 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 
 });
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
-	
+    
 	$scope.eventName = $routeParams.name;
 
 	
-	
-
-	// Mock Animation START
-
-	// $interval(function(){
-	// 	var data = [];
-	// 	for(var i = 0; i < 4; i++) {
-	// 		data.push({"number":i, "value": Math.floor(Math.random()*900000)});
-	// 	}
-	// 	$scope.socialset = data;
- //  	}, 3000);
-
-	// Mock Animation END
-
-
 	var loadData = function(url){
 		console.log(url)
 		$http.get(url).success(function(data) {
@@ -214,16 +199,16 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	var getSocialScore= function() {
 
-		// TODO: Get social route from Setmine and Openaura
+	// 	// TODO: Get social route from Setmine and Openaura
 		 
-		// $http.get(url).success(function(data) {
+	// 	// $http.get(url).success(function(data) {
 			
-		// 	$scope.socialset = [{"number":1, "value":900000},
-		// 		{"number":2, "value":900000},
-		// 		{"number":3, "value":900000},
-		// 		{"number":4, "value":900000}];
+	// 	// 	$scope.socialset = [{"number":1, "value":900000},
+	// 	// 		{"number":2, "value":900000},
+	// 	// 		{"number":3, "value":900000},
+	// 	// 		{"number":4, "value":900000}];
 			
-		// });
+	// 	// });
 
 		$scope.socialset = [{"number":1, "value":900000},
 			{"number":2, "value":900000},
@@ -233,6 +218,16 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	loadData("/api/lineup/event/" + $scope.eventName)
 	getSocialScore()
+
+    var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
+	$interval(function(){
+		  var data = [];
+      for(var i = 0; i < names.length; i++) {
+        data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
+      }
+
+    	$scope.socialset = data;  
+  	},3000);
 
 
 	$scope.calculateEventScore = function() {
@@ -306,42 +301,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $int
 		$scope.detail.calculateEventScore = function() {
 			return $scope.detail.lineup.length * 1300;
 		};
-		  // $scope.dataset =
-    //     [{"number":1, "value":2000},
-    //     {"number":2, "value":2000},
-    //     {"number":3, "value":2000},
-    //     {"number":4, "value":2000}];
-          $scope.dataset =
-        [{"number":1, "value":0},
-        {"number":2, "value":0},
-        {"number":3, "value":0},
-        {"number":4, "value":0}];
 
-    //     var dimensions = ["twitter_followers", "facebook_followers", "instagram_followers", "soundcloud_followers"];
-
-    //     var calculateSocialAverage = function(){
-    //     	var data =[];
-    //     	for (var i = 0; i < dimensions.length; i++) {
-	   //      	var key = dimensions[i];
-	   //      	var result = 0;
-	   //      	if ($scope.detail.lineup.length > 0) {
-				// 	var sum = 0;
-				// 	for (var j = 0; j < $scope.detail.lineup.length; j++) {
-				// 		var a = $scope.detail.lineup[j];
-				// 		if (a.socialMedia){
-				// 			sum += a.socialMedia[key] ? a.socialMedia[key] : 0;
-				// 		}
-				// 	}
-				// 	result = Math.round(sum /1000) ;
-				// }
-				// data.push({"number":i+1, "value":sum});
-    //     	};
-        	
-    		
-    // 		$scope.dataset= data;	
-        	
-        	
-    //     };
       $scope.socialset =
         [{"number":1, "value":900000},
         {"number":2, "value":900000},
