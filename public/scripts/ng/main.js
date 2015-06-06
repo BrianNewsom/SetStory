@@ -206,7 +206,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
   	},3000);
     
 
-    
 	$scope.eventName = $routeParams.name;
 
 	
@@ -231,37 +230,9 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 		});
 	}
 
-	var getSocialScore= function() {
 
-	// 	// TODO: Get social route from Setmine and Openaura
-		 
-	// 	// $http.get(url).success(function(data) {
-			
-	// 	// 	$scope.socialset = [{"number":1, "value":900000},
-	// 	// 		{"number":2, "value":900000},
-	// 	// 		{"number":3, "value":900000},
-	// 	// 		{"number":4, "value":900000}];
-			
-	// 	// });
-
-		$scope.socialset = [{"number":1, "value":900000},
-			{"number":2, "value":900000},
-			{"number":3, "value":900000},
-			{"number":4, "value":900000}];
-	}
 
 	loadData("/api/lineup/event/" + $scope.eventName)
-	getSocialScore()
-
-    var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
-	$interval(function(){
-		  var data = [];
-      for(var i = 0; i < names.length; i++) {
-        data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
-      }
-
-    	$scope.socialset = data;  
-  	},3000);
 
 
 	$scope.calculateEventScore = function() {
@@ -336,21 +307,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $int
 			return $scope.detail.lineup.length * 1300;
 		};
 
-      $scope.socialset =
-        [{"number":1, "value":900000},
-        {"number":2, "value":900000},
-        {"number":3, "value":900000},
-        {"number":4, "value":900000}];
 
-  $interval(function(){
- 		  var data = [];
-          for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*900000)});
-          }
-          $scope.socialset = data;
-
-  }, 3000);
-        
 			
 
 
