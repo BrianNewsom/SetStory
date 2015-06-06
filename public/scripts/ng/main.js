@@ -101,20 +101,81 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 
 
     $scope.getArtistScore = function() {
-    	var url = '/coachellaPopularity.json';
 
-    	$http.get(url).success(function(metadata) {
-    		$scope.artistScore = " - ";
-    		for(var i in metadata) {
-    			if(metadata[i].artist_name == $scope.choice) {
-    				var score = Math.floor(metadata[i].popularity*10000);
-    				$scope.artistScore = score;
-    			}
-    		}
-    	});
+    	// var url = '/api/artist/avascore/' + $scope.choice;
+
+    	// console.log(url);
+
+    	// $http.get(url).success(function(metadata) {
+    	// 	console.log(metadata);
+    	// 	$scope.artistScore = metadata.ava_score || 12345;
+    	// });
+		$scope.artistScore = 1234567
+
     }
 
     $scope.getArtistScore();
+
+    $scope.getArtistSocialData = function() {
+    	// var url = '/api/artist/avascore/' + $scope.choice;
+
+    	// console.log(url);
+
+    	// $http.get(url).success(function(metadata) {
+    	// 	console.log(metadata);
+    	// 	$scope.artistScore = metadata.ava_score || 12345;
+    	// });
+		$scope.socialData = {
+			facebook_followers: 100,
+			twitter_followers: 200,
+			instagram_followers: 300,
+			soundcloud_followers: 400,
+			youtube_followers: 500,
+		}
+
+    }
+
+    $scope.getArtistSocialData();
+
+    $scope.getArtistMediaData = function() {
+    	// var url = '/api/artist/avascore/' + $scope.choice;
+
+    	// console.log(url);
+
+    	// $http.get(url).success(function(metadata) {
+    	// 	console.log(metadata);
+    	// 	$scope.artistScore = metadata.ava_score || 12345;
+    	// });
+		$scope.totalPlays = {
+			setmine: 1000,
+			soundcloud: 2000,
+			youtube: 3000,
+		}
+
+		$scope.playsOverTime = {
+			setmine: [
+				2000,
+				3000,
+				4000,
+				5000
+			],
+			soundcloud: 
+				2000,
+				3000,
+				4000,
+				5000
+			],
+			youtube: 
+				2000,
+				3000,
+				4000,
+				5000
+			],
+		}
+
+    }
+
+    $scope.getArtistMediaData();
 
 	$scope.back = function(){
 		$location.path("/");
@@ -210,10 +271,10 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 			
 	// 	// });
 
-		$scope.socialset = [{"number":1, "value":900000},
-			{"number":2, "value":900000},
-			{"number":3, "value":900000},
-			{"number":4, "value":900000}];
+		$scope.socialset = [{"number":1, "value":400000},
+			{"number":2, "value":400000},
+			{"number":3, "value":400000},
+			{"number":4, "value":400000}];
 	}
 
 	loadData("/api/lineup/event/" + $scope.eventName)
