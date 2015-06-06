@@ -14,15 +14,18 @@ config(['$routeProvider', function($routeProvider) {
   
    $routeProvider.when('/events/:name', 
     {
-      templateUrl: '/scripts/ng/partials/events.html', 
+      templateUrl: '/scripts/ng/partials/concerts.html', 
       controller: 'EventsController'
     });
+ 
    $routeProvider.when('/lineup/builder', 
     {
       templateUrl: '/scripts/ng/partials/lineup-builder.html', 
       controller: 'LineupBuilderController'
     });
 }]);
+
+
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
 
@@ -160,8 +163,24 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 	$scope.choice = decodeURIComponent($scope.choice);
 
 });
-myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
+	  $scope.socialset =
+        [{"number":1, "value":20},
+        {"number":2, "value":20},
+        {"number":3, "value":20},
+        {"number":4, "value":20},
+        {"number":4, "value":20}];
+
+        var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
+  $interval(function(){
+ 		  var data = [];
+          for(var i = 0; i < names.length; i++) {
+            data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
+          }
+          $scope.socialset = data;
+
+  }, 3000);
 	var loadData = function(url){
 		$http.get(url).success(function(data) {
 			
@@ -200,7 +219,7 @@ myApp.controller('EventsController', function($scope,$sce,$filter, $rootScope,$r
 
 
 });
-myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $interval, $rootScope,$routeParams,$location, $http) {
 	
 
 	$scope.detail = {
@@ -225,11 +244,16 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
             var url = '/api/autocomplete/' + typed;
             
             $http.get(url).success(function(data) {
-		    	$scope.artists = data;
+            	if (data){
+			    	$scope.artists = data;
+		    	}
 		    });
             
         };
         $scope.addArtists = function(c){	
+
+
+        	
         	var url = "api/search/" + c;
 
 	        $http.get(url).success(function(data) {
@@ -240,6 +264,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 	            (function(smURL,item){
 	            	$http.get(smURL).success(function(data) {
 	            		item.socialMedia = data;
+	            		calculateSocialAverage();
 	            	});
 	            })(socialMediaURL,artist);
 	            
@@ -252,34 +277,70 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter, $rootS
 		$scope.detail.calculateEventScore = function() {
 			return $scope.detail.lineup.length * 1300;
 		};
-		$scope.detail.twitterReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.twitter_followers ? a.socialMedia.twitter_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.facebookReach = function(){
-			if ($scope.detail.lineup.length === 0) return 0;
-			var sum = 0;
-			for (var i = 0; i < $scope.detail.lineup.length; i++) {
-				var a = $scope.detail.lineup[i];
-				sum += a.socialMedia.facebook_followers ? a.socialMedia.facebook_followers: 0;
-			}
-			return Math.round(sum / $scope.detail.lineup.length) ;
-		}
-		$scope.detail.youtubeReach = function(){
-			return $scope.detail.lineup.length * 10;
-		}
+		  // $scope.dataset =
+    //     [{"number":1, "value":2000},
+    //     {"number":2, "value":2000},
+    //     {"number":3, "value":2000},
+    //     {"number":4, "value":2000}];
+          $scope.dataset =
+        [{"number":1, "value":0},
+        {"number":2, "value":0},
+        {"number":3, "value":0},
+        {"number":4, "value":0}];
+
+    //     var dimensions = ["twitter_followers", "facebook_followers", "instagram_followers", "soundcloud_followers"];
+
+    //     var calculateSocialAverage = function(){
+    //     	var data =[];
+    //     	for (var i = 0; i < dimensions.length; i++) {
+	   //      	var key = dimensions[i];
+	   //      	var result = 0;
+	   //      	if ($scope.detail.lineup.length > 0) {
+				// 	var sum = 0;
+				// 	for (var j = 0; j < $scope.detail.lineup.length; j++) {
+				// 		var a = $scope.detail.lineup[j];
+				// 		if (a.socialMedia){
+				// 			sum += a.socialMedia[key] ? a.socialMedia[key] : 0;
+				// 		}
+				// 	}
+				// 	result = Math.round(sum /1000) ;
+				// }
+				// data.push({"number":i+1, "value":sum});
+    //     	};
+        	
+    		
+    // 		$scope.dataset= data;	
+        	
+        	
+    //     };
+      $scope.socialset =
+        [{"number":1, "value":900000},
+        {"number":2, "value":900000},
+        {"number":3, "value":900000},
+        {"number":4, "value":900000}];
+
+  $interval(function(){
+ 		  var data = [];
+          for(var i = 0; i < 4; i++) {
+            data.push({"number":i, "value": Math.floor(Math.random()*900000)});
+          }
+          $scope.socialset = data;
+
+  }, 3000);
+        
+			
+
 
 		$scope.removeArtitst = function(i,a){
 			 $scope.detail.lineup.splice(i, 1);
+			 calculateSocialAverage();
 		};
 
 });
 
+myApp.controller('ConcertsController', function($scope){
+
+});
 
 function processArtistImage(artist){
 	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')

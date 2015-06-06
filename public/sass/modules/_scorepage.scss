@@ -1,0 +1,29 @@
+.score-page {
+	
+	@include breakpoint(small) {
+		width: 100%;
+	}
+
+	@include breakpoint(medium) {
+		width: 40%;
+	}
+
+	ul {
+
+		li {
+			text-transform: uppercase;
+			font-size: 16px;
+			font-weight: $light;
+			padding: 30px;
+
+			&:nth-child(2n) {
+				background: $bg-grey-light;
+			}
+		}
+	}
+	
+	.score {
+		float: right;
+		color: $blue;
+	}
+}

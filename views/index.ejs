@@ -1,11 +1,21 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SetStory</title>
+
+	<link rel="stylesheet" type="text/css" href="/bower_components/allmighty-autocomplete/style/autocomplete.css"/>
+  	<link rel="stylesheet" type="text/css" href="/bower_components/wow/css/libs/animate.css"/>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body ng-app="myApp">
+	<div ng-view></div>
 
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/bower_components/d3/d3.min.js"></script>
     <script src="/bower_components/wow/dist/wow.min.js"></script>
-
-
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 	<script type='text/javascript' src='/bower_components/angularjs/angular.min.js'></script>
 	<script type='text/javascript' src='/bower_components/angular-animate/angular-animate.min.js'></script>
 	<script type='text/javascript' src='/bower_components/angular-route/angular-route.min.js'></script>
@@ -14,22 +24,12 @@
 	<script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
 	<script type="text/javascript" src="/bower_components/angular-moment/angular-moment.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/bower_components/allmighty-autocomplete/style/autocomplete.css"/>
-
-  <link rel="stylesheet" type="text/css" href="/bower_components/wow/css/libs/animate.css"/>
-	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-	<link href='http://fonts.googleapis.com/css?family=Nunito:400,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
-</head>
-<body ng-app="myApp">
-	<div ng-view></div>
     <script src="/scripts/services.js"></script>
     <script src="/scripts/app.js"></script>
 
-
     <script src="/scripts/ng/main.js"></script>
     <script src="/scripts/ng/dat-viz.js"></script>
+    <script src="/scripts/ng/d3barchart-div.js"></script>
     <script src="/scripts/ng/d3progress.js"></script>
     <script src="/scripts/ng/d3percentage.js"></script>
 </body>

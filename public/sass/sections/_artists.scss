@@ -1,0 +1,95 @@
+.artist {
+	
+	.header {
+
+		h2 {
+			margin-top: 10px;
+		}
+
+		.header--content {
+			height: 100%;
+			@include bg-color($blue);
+		}
+
+		.header--artist--title {
+			@include vertical-align;
+			@include transform(translateY(-90%));
+			text-align: center;
+			z-index: 1;
+		}
+
+		.header--artist--info {
+			position: absolute;
+			z-index: 1;
+			bottom: 0;
+			width: 100%;
+
+			li {
+				font-size: 12px;
+				font-weight: $light;
+				text-transform: uppercase;
+				float: left;
+				width: (100%)/3;
+				min-height: 72px;
+				padding: 20px 30px;
+				background: $bg-grey-dark;
+				border-right: 2px solid $grey-blue;
+
+				p {
+					font-size: 14px;
+					color: $blue;
+					clear: both;
+					margin-top: 5px;
+				}
+			}
+		}
+	}
+
+	.social {
+		width: 100%;
+	}
+
+	.totalplays {
+		width: (100%)/3;
+
+		&.setmine-module {
+
+			.totalplays--score {
+				color: #8560a8;
+			}
+
+			.bars--item {
+				background: #8560a8;
+			}	
+		}
+
+		&.soundcloud-module {
+
+			.totalplays--score {
+				color: #f68e56;
+			}
+
+			.bars--item {
+				background: #f68e56;
+			}
+		}
+
+		&.youtube-module {
+
+			.totalplays--score {
+				color: #ff4e4e;
+			}
+
+			.bars--item {
+				background: #ff4e4e;
+			}
+		}
+	}
+	
+	.button-white {
+		top: 30px;
+		left: 30px;
+		position: absolute;
+		z-index: 1;
+	}
+}

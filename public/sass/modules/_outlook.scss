@@ -1,0 +1,41 @@
+.outlook {
+	padding: 30px;
+	background: $blue; /* Old browsers */
+	background: -moz-linear-gradient(top,  $blue 0%, $green 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$blue), color-stop(100%,$green)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, $blue 0%, $green 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $blue 0%, $green 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $blue 0%, $green 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $blue 0%, $green 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$blue', endColorstr='$green',GradientType=0 ); /* IE6-9 */
+	overflow: hidden;
+
+	@include breakpoint(small) {
+		width: 100%;
+	}
+
+	@include breakpoint(medium) {
+		width: 60%;
+	}
+	
+		
+
+	svg {
+		opacity: .4;
+		top: 50%;
+		left: 38%;
+		@include transform(translate(-50%,-50%));
+		position: absolute;
+	}
+	.d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+      }
+	.progress-graph path{
+		stroke: #000;
+	}
+}

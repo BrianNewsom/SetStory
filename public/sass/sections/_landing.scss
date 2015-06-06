@@ -1,0 +1,130 @@
+.landing {
+	height: 100%;
+	background: url(../images/bg-landing.jpg) no-repeat center top;
+	@include background-size (cover);  
+	@include bg-color($green);
+	
+	.landing--search--container {
+		@include vertical-align;
+		margin: 0 25px;
+	}
+
+	.autocomplete {
+
+		@include breakpoint(small) {
+			width:100%;
+			display: block;
+			text-align: center;
+		}
+
+		@include breakpoint(medium) {
+			width:40%;
+			display: inline-block;
+			text-align: right;
+		}
+
+		ul {
+			border: none;
+			margin-top: 4px;
+
+			li {
+				background-color: rgba(white, .8);
+				color: $grey-dark;
+				padding: 5px 10px;
+				
+				&:first-child {
+					@include border-radius(5px 5px 0 0);
+				}
+
+				&:last-child {
+					@include border-radius(0 0 5px 5px);
+				}
+
+				&:hover {
+					cursor: pointer;
+					background-color: rgba($blue, .9);
+					color: white;
+				}
+
+				@include breakpoint(small) {
+				  	max-width: 100%;
+				 	float: initial;
+				  	text-align: center;
+				}
+				
+				@include breakpoint(medium) {
+					max-width: 400px;
+					float: right;
+					text-align: left;
+				}
+			}
+		}
+
+		input {
+			@include box-sizing(border-box);
+			font-family: $font;
+			font-size: 30px;
+			font-weight: $light;
+			padding: 0.4em;
+			vertical-align: middle;
+			border-radius: 5px;
+			border: none;
+			background-color: rgba($blue, .9);
+			color: white;
+			@include placeholder-color(rgba(0,0,0,.3));
+
+			@include breakpoint(small) {
+				max-width:100%;
+				text-align: center;
+			}
+
+			@include breakpoint(medium) {
+				max-width:400px;
+				text-align: left;
+			}
+		}
+		
+
+	}
+	.venue{
+			@include breakpoint(small) {
+				width: 100%;
+				max-width:100%;
+				margin-top: 20px;
+				text-align: center;
+			}
+
+			@include breakpoint(medium) {
+				width: 40%;
+				text-align: left;
+			}
+			
+			input {
+			  max-width: none;
+  			  width: 100%;
+			}
+	}	
+	.landing--search--text {
+		color: white;
+		font-size: 42px;
+		vertical-align: middle;
+
+		@include breakpoint(small) {
+			width:100%;
+			text-align: center;
+			margin-top: 20px;
+			padding-left: 0;
+			display: block;
+			text-align: center;
+		}
+
+		@include breakpoint(medium) {
+			width:55%;
+			text-align: left;
+			margin-top: 0;
+			padding-left: 2%;
+			display: inline-block;
+			text-align: left;
+		}
+	}
+}

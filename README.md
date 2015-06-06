@@ -14,8 +14,18 @@ tracking and analyzing each artists past performances.
 
 SetStory was developed for the 2015 South By Southwest Music Hackathon Championship.
 
+## Setup the Application
+```
+$ cd public
+$ npm install
+$ grunt 
+$ cd ..
+$ npm install
+```
+
 ## Running the Application
 ```
-$ npm install
-$ node bin/www
+
+$ npm start
+localhost:3000
 ```

@@ -1,0 +1,64 @@
+<div class="concerts" id="lineup-page">
+	<div class="modules--wrapper header wow fadeIn">
+		<div class="header--content">
+			<div class="header--top">
+				<h2>{{detail.event}}</h2>
+			</div>
+			<!-- <a href="#/" class="button-white">Back to Search..</a> -->
+		</div>
+		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
+	</div>
+	<div class="modules--wrapper wow fadeIn">
+		<div class="module score-page wow fadeIn">
+			<ul>
+				<li>Score<div class="score">{{eventScore}}</div></li>
+				<li>Artists<div class="score">{{detail.lineup.length}}</div></li>
+				<li>Date<div class="score">July 25</div></li>
+				<li>Prices<div class="score">20 U$S</div></li>
+			</ul>
+		</div>
+
+		<div class="module outlook wow fadeIn">
+			<h2>Sells progression</h2>
+			
+			
+			<d3progress> </d3progress>
+		</div>
+
+		<div class="module visits wow fadeIn">
+			<h2>Visits</h2>
+			<ul class="module--visit--score">
+
+			</ul>
+
+			<ul class="visit--score--dates">
+				<li><span class="ball"></span> New visitors</li>
+				<li><span class="ball blue"></span> Returning visitor</li>
+			</ul>
+
+			<d3percentage dataset="60"></d3percentage>
+		</div>
+
+		<div class="module social">
+			<h2>Social</h2>
+			<d3barchart dataset="socialset"> </d3barchart>
+			
+			
+		</div>
+	</div>
+
+	<!-- <div class="modules--wrapper lineup-container">
+		<h2 class="wow  animated">Lineup</h2>
+		<div class="wow  animated artist-row" ng-repeat="artist in detail.lineup">
+			<div class="artist-lineup-container wow slideInLeft animated">
+				<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
+					<img ng-src="{{artist.artistimageURL}}"/>
+				</div>
+				<div class="artist-lineup-text">
+					<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+				</div>
+			</div>
+			<div class="buffer"></div>
+		</div>
+	</div> -->
+</div>

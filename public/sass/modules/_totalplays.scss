@@ -1,0 +1,64 @@
+.totalplays {
+	background: $bg-grey-dark;
+
+
+	.totalplays--month {
+		font-size: 12px;
+		color: $grey-blue;
+		text-align: center;
+		margin-top: 15px;
+	}
+
+	.totalplays--score {
+		font-size: 16px;
+		text-align: center;
+		margin-top: 5px;
+	}
+
+	h2 {
+		padding: 30px;
+		background: $bg-grey-light;
+		border-right: 2px solid $bg-grey-dark;
+
+		i {
+			position: absolute;
+			font-size:20px;
+			color: white;
+			z-index: 0;
+			right: 30px;
+		}
+	}
+
+	.bars {
+		height: 226px;
+
+		li {
+			$months: 4;
+			float: left;
+			height: 100%;
+			width: (100%)/$months;
+			position: relative;
+			border-right: 1px solid $bg-grey-light;
+
+			i {
+				left:50%;
+				top: 30px;
+				@include transform(translate(-50%,0));
+			}
+
+			.bars--item {
+				height: 5%;
+				width: 100%;
+				position: absolute;
+				overflow: visible;
+				bottom: 0;
+				z-index: 1;
+				@include transition(height $animation-time ease-in-out, box-shadow $animation-time ease-in-out);
+			}
+
+			&:last-child {
+				border-right: 2px solid $bg-grey-dark;
+			}
+		}
+	}
+}
