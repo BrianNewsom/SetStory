@@ -628,13 +628,59 @@ p {
   top: 100px;
   height: 100%;
 }
+.timeline .inner--header {
+  padding-left: 3em;
+}
+.timeline .inner--header h1 {
+  font-size: 2em;
+  margin: 0;
+}
+.timeline .inner--header h3 {
+  font-size: 0.8em;
+  color: #19B5FE;
+}
+.timeline .inner {
+  width: 100%;
+}
+@media (min-width: 320px) {
+  .timeline .inner {
+    padding-left: 3em;
+    display: inherit;
+  }
+}
+@media (min-width: 768px) {
+  .timeline .inner {
+    padding-left: 5em;
+    display: inline-flex;
+  }
+}
+@media (min-width: 1280px) {
+  .timeline .inner {
+    padding-left: 7em;
+    display: inline-flex;
+  }
+}
+@media (min-width: 320px) {
+  .timeline .inner .inner--module {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .timeline .inner .inner--module {
+    width: 33.33333%;
+  }
+}
+@media (min-width: 1280px) {
+  .timeline .inner .inner--module {
+    width: 33.33333%;
+  }
+}
 .timeline .bull--time {
   position: absolute;
   width: 14px;
   height: 14px;
   z-index: 3;
   background: #19B5FE;
-  top: 20px;
   left: 24px;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -660,9 +706,11 @@ p {
   transform: translate(-50%, -50%);
 }
 .timeline .timeline--concerts li {
+  top: 20px;
   min-height: 100px;
   width: 100%;
   position: relative;
+  padding-bottom: 20px;
 }
 .timeline .timeline--concerts li:nth-child(2n) {
   background: #333333;

@@ -42,15 +42,17 @@
 				<li ng-repeat='concert in sets'>
 					<div class="bull--time"><span></span>
 					</div>
-						
-						<span>{{concert.eventDate | amDateFormat:'ddd'}}</span>
-	    				<span>{{concert.eventDate | amDateFormat:'MMM DD'}}</span>
-	    				<span>{{concert.eventDate | amDateFormat:'YYYY'}}</span>
+					<div class="inner--header">
+						<h3>
+							<span>{{concert.eventDate | amDateFormat:'ddd'}}</span>
+	    					<span>{{concert.eventDate | amDateFormat:'MMM DD'}}</span>
+	    					<span>{{concert.eventDate | amDateFormat:'YYYY'}}</span>
+	    				</h3>
 	    				
-	    				
-		    			<h1 style="font-size:2em;padding-left:9vw;margin:0">{{concert.location.city}}, {{concert.location.country}} </h1>
-
-		    			<div class="insights">
+		    			<h1>{{concert.location.city}}, {{concert.location.country}} </h1>
+	    			</div>
+		    		<div class="inner">
+		    			<div class="inner--module">
 			    			<div class="insight-box" style="padding-left:0">
 			    				<h2>{{concert.meta.duration|| "-"}} </h2>
 			    				<h3> minutes </h3>
@@ -67,10 +69,18 @@
 			    				<h2>{{concert.media.length || "-"}} </h2>
 			    				<h3> media </h3>
 			    			</div>
-			    			
 		    			</div>
-		    			
-	    			</div>
+		    			<div class="inner--module setlist-container wow fadeIn">
+	    			  		<h3 ng-show="concert.tracks.length > 0"> SetList</h3>
+		    				<div class="tracklist-container">
+		    					<div ng-repeat='track in concert.tracks' class="row-track wow fadeIn">
+				    				<h2 class="track-name" style="margin:0">{{track.name}} 
+			    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
+				    				</h2>
+		    			    	</div>
+		    			  	</div>
+		    			</div>
+	    			
 	    			
 
 	    			<div class="genres-viz wow fadeIn flex-row">
@@ -90,16 +100,9 @@
 				    			</div>
 		    			  	</div>
 	    				</div>
-	    			  	<div class="setlist-container flex-column wow fadeIn">
-	    			  		<h3 ng-show="concert.tracks.length > 0"> SetList</h3>
-		    				<div class="tracklist-container">
-		    					<div ng-repeat='track in concert.tracks' class="row-track wow fadeIn">
-				    				<h2 class="track-name" style="margin:0">{{track.name}} 
-			    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
-				    				</h2>
-		    			    	</div>
-		    			  	</div>
-	    			  	</div>
+	    			</div>
+	    		</div>
+	    			  	
 				</li>
 			</ul>
 			

@@ -17,14 +17,55 @@
 		top:100px;
 		height: 100%;
 	}
+	.inner--header{
+			padding-left: 3em;
+			h1 {
+				font-size:2em;
+				margin:0;
+			}
+			h3{
+				font-size:0.8em;
+				color: $blue;
+			}
+		}
+	.inner{
+	  	width: 100%;
+  		
+  		
+  		@include breakpoint(small) {
+			padding-left: 3em;
+			display: inherit;
+		}
+		@include breakpoint(medium) {
+			padding-left: 5em;
+			display: inline-flex;
+		}
+		@include breakpoint(large) {
+			padding-left: 7em;
+			display: inline-flex;
 
+		}
+		
+
+  		.inner--module{
+			@include breakpoint(small) {
+				width: 100%;
+			}
+			@include breakpoint(medium) {
+				width: (100%)/3;
+			}
+			@include breakpoint(large) {
+				width: (100%)/3;
+			}
+		}
+	}
+	
 	.bull--time {
 		position:absolute;
 		width: 14px;
 		height: 14px;
 		z-index: 3;
 		background: $blue;
-		top: 20px;
 		left: 24px;
 		@include border-radius(50%);
 
@@ -47,9 +88,11 @@
 	.timeline--concerts {
 
 		li {
+			top: 20px;
 			min-height: 100px;
 			width: 100%;
 			position: relative;
+			padding-bottom: 20px;
 
 			&:nth-child(2n) {
 				background: $bg-grey-light;
