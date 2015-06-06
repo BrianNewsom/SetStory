@@ -1018,8 +1018,15 @@ path.color1 {
 .artist .social {
   width: 100%;
 }
-.artist .totalplays {
-  width: 33.33333%;
+@media (min-width: 320px) {
+  .artist .totalplays {
+    width: 100%;
+  }
+}
+@media (min-width: 1280px) {
+  .artist .totalplays {
+    width: 33.33333%;
+  }
 }
 .artist .totalplays.setmine-module .totalplays--score {
   color: #8560a8;

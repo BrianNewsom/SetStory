@@ -50,8 +50,15 @@
 	}
 
 	.totalplays {
-		width: (100%)/3;
+		
+		@include breakpoint(small) {
+				width: 100%;
+		}
+		@include breakpoint(large) {
+			width: (100%)/3;
+		}
 
+		
 		&.setmine-module {
 
 			.totalplays--score {
