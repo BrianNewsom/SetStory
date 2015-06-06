@@ -9,6 +9,8 @@ var musicgraph = require('../apiHandlers/musicgraph');
 var setmine = require('../apiHandlers/setmine')
 var soundcloud = require('../apiHandlers/soundcloud')
 var instagram = require('../apiHandlers/instagram')
+var stubhub = require('../apiHandlers/stubhub')
+
 
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
@@ -198,6 +200,14 @@ router.get('/api/lineup/event/:eventName', function(req,res,next){
         res.json({"response": data});
     })
 })
+
+// Ticket Prices Route (incomplete)
+
+// router.get('/api/ticket/event/:eventName', function(req,res,next){
+//     stubhub.getTicketInfoByName(req.params.eventName, function(data) {
+//         res.json({"response": data});
+//     })
+// })
 
 // 1 route that gets EDC Las Vegas artists and gets and stores all social media metrics for all of them
 

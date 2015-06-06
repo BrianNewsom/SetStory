@@ -1,12 +1,7 @@
 var rest = require('restler');
 var setmine = {};
-var api_key = 'sxsw2015';
-var jf = require('jsonfile')
-var cheerio = require('cheerio');
-var request = require( 'request' );
-var async = require( 'async' );
-var _ = require('lodash')
-var us = require('underscore')
+var api_version = "7"
+var _ = require('underscore')
 var socialmedia = require('../models/socialmedia')
 
 var settings = require('../config/settings');
@@ -76,7 +71,7 @@ setmine.getEventLineupByID = function(eventID, callback) {
 
 setmine.getEventLineupByName = function(eventName, callback) {
 
-    var matchedEvent = us.findWhere(setmine.events, {event:eventName})
+    var matchedEvent = _.findWhere(setmine.events, {event:eventName})
 
     if(matchedEvent) {
         setmine.getEventLineupByID(matchedEvent.id, function(lineup) {
