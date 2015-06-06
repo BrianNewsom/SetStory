@@ -65,8 +65,79 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 });
 
 
-myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+myApp.controller('ArtistsController', function($scope,$interval, $filter, $sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
+
+	var plays = []
+	var months =[];
+
+
+
+	maxYoutube = 10000;
+	maxSoundCloud = 10000;
+	maxSetMine  = 10000;
+
+	
+	$scope.scaleHeight = function(item, play){
+		var scaleY = d3.scale.linear()
+              .domain([0, item.max])
+              .range([0, 160]);
+        var styles = {height: scaleY(play) + "px"};
+        console.log(styles);      
+		return styles;
+
+	};
+
+	var format = d3.format('.1s');
+
+	$scope.formatOutput = function(play){
+		return format(play);
+	};
+	months.push({name:"JAN", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"FEB", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"APR", plays: Math.round(Math.random()*maxYoutube)});
+	months.push({name:"MAY", plays: Math.round(Math.random()*maxYoutube)});
+
+
+	plays.push({name:'setmine', max:maxSetMine ,months:months});
+	plays.push({name:'youtube', max: maxYoutube,months:months});
+	plays.push({name:'soundcloud',max:maxSoundCloud, months:months});
+	
+	$scope.plays = plays;
+
+
+	$scope.socialset =
+	    [{"number":1, "value":20, "max":20},
+	    {"number":2, "value":20, "max":20},
+	    {"number":3, "value":20, "max":20},
+	    {"number":4, "value":20, "max":20},
+	    {"number":5, "value":20, "max":20},
+	    {"number":6, "value":20, "max":20},
+	    {"number":7, "value":20, "max":20}];
+
+    var sources = [];
+	    sources.push({name: "google-plus", max: 10000000  * 1.2});
+	    sources.push({name: "vimeo-square", max: 90000 * 1.2});
+	    sources.push({name: "facebook", max: 100000000 * 1.2});
+	    sources.push({name: "twitter", max: 70697964 * 1.2});
+	    sources.push({name: "youtube", max: 30000000000});
+	    sources.push({name: "soundcloud", max: 1000000});
+	    sources.push({name: "setmine", max: 1000000});
+
+
+	$interval(function(){
+		  var data = [];
+      for(var i = 0; i < sources.length; i++) {
+      	var s = sources[i]
+        data.push({
+        	"name": s.name, 
+        	"number":i, 
+        	"max": s.max,
+        	"value": Math.floor(Math.random()*s.max)});
+      }
+
+    	$scope.socialset = data;  
+  	},3000);
 	$scope.choice = $routeParams.name;
 
 	$scope.getArtistID = function() {
@@ -233,7 +304,42 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 
 });
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
+
+	
+	$scope.socialset =
+	    [{"number":1, "value":20, "max":20},
+	    {"number":2, "value":20, "max":20},
+	    {"number":3, "value":20, "max":20},
+	    {"number":4, "value":20, "max":20},
+	    {"number":5, "value":20, "max":20},
+	    {"number":6, "value":20, "max":20},
+	    {"number":7, "value":20, "max":20}];
+
+    var sources = [];
+	    sources.push({name: "google-plus", max: 10000000  * 1.2});
+	    sources.push({name: "vimeo-square", max: 90000 * 1.2});
+	    sources.push({name: "facebook", max: 100000000 * 1.2});
+	    sources.push({name: "twitter", max: 70697964 * 1.2});
+	    sources.push({name: "youtube", max: 30000000000});
+	    sources.push({name: "soundcloud", max: 1000000});
+	    sources.push({name: "setmine", max: 1000000});
+
+
+	$interval(function(){
+		  var data = [];
+      for(var i = 0; i < sources.length; i++) {
+      	var s = sources[i]
+        data.push({
+        	"name": s.name, 
+        	"number":i, 
+        	"max": s.max,
+        	"value": Math.floor(Math.random()*s.max)});
+      }
+
+    	$scope.socialset = data;  
+  	},3000);
     
+
 	$scope.eventName = $routeParams.name;
 
 	
@@ -258,37 +364,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 		});
 	}
 
-	var getSocialScore= function() {
-
-	// 	// TODO: Get social route from Setmine and Openaura
-		 
-	// 	// $http.get(url).success(function(data) {
-			
-	// 	// 	$scope.socialset = [{"number":1, "value":900000},
-	// 	// 		{"number":2, "value":900000},
-	// 	// 		{"number":3, "value":900000},
-	// 	// 		{"number":4, "value":900000}];
-			
-	// 	// });
-
-		$scope.socialset = [{"number":1, "value":400000},
-			{"number":2, "value":400000},
-			{"number":3, "value":400000},
-			{"number":4, "value":400000}];
-	}
-
 	loadData("/api/lineup/event/" + $scope.eventName)
-	getSocialScore()
-
-    var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
-	$interval(function(){
-		  var data = [];
-      for(var i = 0; i < names.length; i++) {
-        data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
-      }
-
-    	$scope.socialset = data;  
-  	},3000);
 
 
 	$scope.calculateEventScore = function() {
@@ -363,21 +439,7 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $int
 			return $scope.detail.lineup.length * 1300;
 		};
 
-      $scope.socialset =
-        [{"number":1, "value":900000},
-        {"number":2, "value":900000},
-        {"number":3, "value":900000},
-        {"number":4, "value":900000}];
 
-  $interval(function(){
- 		  var data = [];
-          for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*900000)});
-          }
-          $scope.socialset = data;
-
-  }, 3000);
-        
 			
 
 

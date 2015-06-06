@@ -17,7 +17,8 @@ angular.module('myApp')
       var chartData = [];
       var w = 515;
       var h = 660;
-      
+      //Display everything on 10M 10k and over
+      var formatValue = d3.format(".1s"); 
 
     
 
@@ -41,13 +42,6 @@ angular.module('myApp')
 
 
         var bars = 
-
-// <li>
-//           <i class="fa fa-stumbleupon"></i>
-//           <div class="bars--item">
-//             <div class="bars--item--dates"></div>
-//           </div>
-//         </li>
         svg.selectAll(".bar")
         .data(chartData, function(d,i){ return i;})
         .enter().append("li")
@@ -60,7 +54,8 @@ angular.module('myApp')
           .attr('class', 'bars--item')
           .style('height',function(d,i){
             return d.value + 'px';
-          })
+          }).append('p')
+            .attr('class','value');
           
         
         
@@ -77,19 +72,34 @@ angular.module('myApp')
           x = d3.scale.ordinal()
             .domain(d3.range(chartData.length))
             .rangeBands([0, h], 0.1);
-          y = d3.scale.linear()
-            .domain([0, d3.max(chartData, function(d) { return d.value; })])
-            .range([0, w]);
 
           drawChart();
            var rect = svg.selectAll(".bar div").data(dataset);
+           var values = svg.selectAll(".bar div p.value").data(dataset);
            var icons = svg.selectAll(".bar i").data(dataset);
 
-        
+          
+
           var delay = function(d, i) { return i * 50; };
+
           rect.transition().duration(750)
-            .delay(delay)
-            .style("height", function(d) { return y(d.value) + 'px'; });
+            .style("height", function(d) { 
+            
+            var scaleY = d3.scale.linear()
+              .domain([0, d.max])
+              .range([0, 160]);
+            
+            var height = scaleY(d.value);
+              if (height < 40){
+                height = 40;
+              }
+              return height + 'px'; 
+            });
+
+          values.transition().duration(750).text(function(d){
+            
+            return formatValue(d.value).toUpperCase();
+          });
 
           icons.transition().duration(750)
             .delay(delay)

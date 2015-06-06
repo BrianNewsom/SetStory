@@ -37,8 +37,23 @@ p {
 
 .ng-scope {
 	height: 100%;
-	@include clearfix;
 	background: $bg-grey-dark;
+}
+
+::-webkit-scrollbar
+{
+  width: 5px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: $grey-dark;
+}
+
+::-webkit-scrollbar-thumb
+{
+  background:$green;
 }
 
 .button-white {

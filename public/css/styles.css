@@ -98,10 +98,20 @@ p {
   height: 100%;
   background: #2b2b2b;
 }
-.ng-scope:before, .ng-scope:after {
-  content: " ";
-  display: table;
-  clear: both;
+
+::-webkit-scrollbar {
+  width: 5px;
+  /* for vertical scrollbars */
+  height: 12px;
+  /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: #5a5a5a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #35c9a9;
 }
 
 .button-white {
@@ -375,6 +385,13 @@ p {
   -webkit-transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+.social .bars li .bars--item p.value {
+  font-size: 0.75em;
+  text-align: center;
+  bottom: 0;
+  z-index: 20;
+  padding-top: 8px;
+}
 .social .bars li .bars--item .bars--item--dates {
   height: 80px;
   margin-top: -80px;
@@ -606,6 +623,7 @@ p {
   position: relative;
   overflow: hidden;
   width: 100%;
+  height: auto;
 }
 .timeline h2 {
   padding: 30px;
@@ -620,13 +638,86 @@ p {
   top: 100px;
   height: 100%;
 }
+.timeline .inner--header {
+  padding-left: 3em;
+  padding-bottom: 20px;
+}
+.timeline .inner--header h1 {
+  font-size: 2em;
+  margin: 0;
+}
+.timeline .inner--header h3 {
+  font-size: 0.8em;
+  color: #19B5FE;
+}
+.timeline .inner {
+  width: 100%;
+}
+@media (min-width: 320px) {
+  .timeline .inner {
+    padding-left: 2em;
+    display: inherit;
+  }
+}
+@media (min-width: 768px) {
+  .timeline .inner {
+    padding-left: 2em;
+    display: inline-flex;
+  }
+}
+@media (min-width: 1280px) {
+  .timeline .inner {
+    padding-left: 7em;
+    display: inline-flex;
+  }
+}
+@media (min-width: 320px) {
+  .timeline .inner .inner--module {
+    padding: 0px 1em 0px 1em;
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .timeline .inner .inner--module {
+    width: 33.33333%;
+    padding: 0px 1em 0px 1em;
+  }
+}
+.timeline .inner .inner--module .insight-box h2 {
+  color: #19B5FE;
+}
+.timeline .inner .inner--module .insight-box h2 span {
+  color: white;
+}
+.timeline .inner .inner--module ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+.timeline .inner .inner--module ol li.row-track {
+  height: 43px;
+  min-height: 10px;
+  padding: 0;
+  padding-bottom: 0px;
+  color: #19B5FE;
+}
+.timeline .inner .inner--module ol li.row-track p.track-name {
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  font-weight: 100;
+}
+.timeline .inner .inner--module.setlist-container {
+  max-height: 320px;
+  height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
 .timeline .bull--time {
   position: absolute;
   width: 14px;
   height: 14px;
   z-index: 3;
   background: #19B5FE;
-  top: 20px;
   left: 24px;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -652,9 +743,12 @@ p {
   transform: translate(-50%, -50%);
 }
 .timeline .timeline--concerts li {
+  top: 20px;
   min-height: 100px;
   width: 100%;
   position: relative;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 .timeline .timeline--concerts li:nth-child(2n) {
   background: #333333;
@@ -1011,8 +1105,20 @@ path.color1 {
 .artist .social {
   width: 100%;
 }
-.artist .totalplays {
-  width: 33.33333%;
+@media (min-width: 320px) {
+  .artist .totalplays {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .artist .totalplays {
+    width: 33.33333%;
+  }
+}
+@media (min-width: 1280px) {
+  .artist .totalplays {
+    width: 33.33333%;
+  }
 }
 .artist .totalplays.setmine-module .totalplays--score {
   color: #8560a8;

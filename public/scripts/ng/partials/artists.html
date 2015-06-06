@@ -16,152 +16,21 @@
 		<div class="header--picture wow fadeIn" style="background: url({{artistsPhoto}}) no-repeat center center;"></div>
 		<div class="buffer"></div>
 	</div>
-	<div class="modules--wrapper content">
+	<div class="wow fadeIn modules--wrapper content">
 		<div class="module social">
 			<h2>Social</h2>
-			<ul class="bars">
-				<li>
-					<i class="fa fa-google-plus"></i> 
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-google-plus"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-stumbleupon"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-stumbleupon"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-dribbble"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-dribbble"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-facebook"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-facebook"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-twitter"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-twitter"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-vimeo-square"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-vimeo-square"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<i class="fa fa-yahoo"></i>
-					<div class="bars--item">
-						<div class="bars--item--dates">
-							<i class="fa fa-yahoo"></i>
-							<p>23023</p>
-						</div>
-					</div>
-				</li>
-			</ul>
+			<d3barchart dataset="socialset"> </d3barchart>
 		</div>
-
-		<div class="module totalplays setmine-module">
-			<h2>Total Plays </h2>
+		<div ng-repeat="play in plays" class="module totalplays {{play.name}}-module">
+			<h2>Total Plays <i class="fa fa-{{play.name}}"></i></h2>
 			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
+				<li ng-repeat="m in play.months">
+					<p class="totalplays--month">{{m.name}} </p>
+					<p class="totalplays--score">{{m.plays}}</p>
+					<div class="bars--item" ng-style="scaleHeight(play,m.plays)"></div>
 				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
 		</div>
-		<div class="module totalplays soundcloud-module">
-			<h2>Total Plays <i class="fa fa-soundcloud"></i></h2>
-			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
-		</div>
-		<div class="module totalplays youtube-module">
-			<h2>Total Plays <i class="fa fa-youtube"></i></h2>
-			<ul class="bars">
-				<li>
-					<p class="totalplays--month">FEB</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">APR</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-				<li>
-					<p class="totalplays--month">MAY</p>
-					<p class="totalplays--score">3400</p>
-					<div class="bars--item"></div>
-				</li>
-			</ul>
-		</div>
-
+		
 
 
 
@@ -169,84 +38,71 @@
 		<div class="module timeline">
 			<h2>timeline</h2>
 			<div class="line"></div>
-			<ul class="timeline--concerts">
-				<li>
-					<div class="bull--time"><span></span></div>
-				</li>
-				<li>
-					<div class="bull--time"><span></span></div>
-				</li>
-			</ul>
-			
-	    	<div>
-	    		<section id="cd-timeline">
-	    		<div ng-repeat='concert in sets' class="concert-row"> 
-	    			<div class="wow fadeIn">
-	    				<div class="circle-text"><div>
-	    				<p>{{concert.eventDate | amDateFormat:'ddd'}}</p>
-	    				<p>{{concert.eventDate | amDateFormat:'MMM DD'}}</p>
-	    				<p>{{concert.eventDate | amDateFormat:'YYYY'}}</p>
-	    				</div></div>
-		    			<h1 style="font-size:2em;padding-left:9vw;margin:0">{{concert.location.city}}, {{concert.location.country}} </h1>
-		    			<div class="insights">
-			    			<div class="insight-box" style="padding-left:0">
-			    				<h2>{{concert.meta.duration|| "-"}} </h2>
-			    				<h3> minutes </h3>
-			    			</div>
-			    			<div class="insight-box">
-			    				<h2>{{concert.meta.bpm_average || "-"}} </h2>
-			    				<h3> bpm </h3>
-			    			</div>
-			    			<div class="insight-box">
-			    				<h2>{{concert.tracks.length || "-"}} </h2>
-			    				<h3> tracks </h3>
-			    			</div>
-			    			<div class="insight-box">
-			    				<h2>{{concert.media.length || "-"}} </h2>
-			    				<h3> media </h3>
-			    			</div>
-			    			
-		    			</div>
-		    			
+			<ul class="wow fadeIn timeline--concerts" >
+				<li ng-repeat='concert in sets'>
+					<div class="bull--time"><span></span>
+					</div>
+					<div class="inner--header">
+						<h3>
+							<span>{{concert.eventDate | amDateFormat:'ddd'}}</span>
+	    					<span>{{concert.eventDate | amDateFormat:'MMM DD'}}</span>
+	    					<span>{{concert.eventDate | amDateFormat:'YYYY'}}</span>
+	    				</h3>
+	    				
+		    			<h1>{{concert.location.city}}, {{concert.location.country}} </h1>
 	    			</div>
+		    		<div class="inner">
+		    			<div class="inner--module">
+		    				<h3 > Info</h3>
+			    			<div class="insight-box" style="padding-left:0">
+			    				<h2>{{concert.meta.duration|| "-"}} <span>minutes </span></h2>
+			    			</div>
+			    			<div class="insight-box">
+			    				<h2>{{concert.meta.bpm_average || "-"}} <span>bpm</span></h2>
+
+			    			</div>
+			    			<div class="insight-box">
+			    				<h2>{{concert.tracks.length || "-"}} <span>tracks </span></h2>
+
+			    				
+			    			</div>
+			    			<div class="insight-box">
+			    				<h2>{{concert.media.length || "-"}} <span> media</span> </h2>
+			    			</div>
+		    			</div>
+		    			<div class="inner--module setlist-container wow fadeIn">
+	    			  		<h3 ng-show="concert.tracks.length > 0"> Set</h3>
+		    				<div class="tracklist-container">
+		    					<ol class="track-list">
+				    				<li  class="row-track wow fadeIn" ng-repeat='track in concert.tracks' >
+					    				<p class="track-name" style="margin:0">{{track.name}} 
+				    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
+					    				</p>
+				    				</li>
+		    			    	</ol>
+		    			  	</div>
+		    			</div>
+	    			
 	    			
 
-	    			<div class="genres-viz wow fadeIn flex-row">
+	    			<div class="inner--module genres-viz wow fadeIn flex-row">
 	    				<div class="media-container flex-column">
-		    				<h3 ng-show="concert.media.length > 0"> Media</h3>
+		    				<h3 ng-show="concert.media.length > 0"> Social </h3>
 		    				<div ng-repeat='media in concert.media' class="wow fadeIn concert-image-container">
 			    				<div ng-show='media.type == image' ng-repeat='m in media' >
 			    					<div ng-show="showImage(m)" >
 				    					<img ng-src="{{m.url}}" style = "width:16vw;height:25vh">
 				    				</div>
-				    				<!-- <div ng-show="showVideo(m)">
-				    					<video controls ng-src="{{showVideoUrl(m.url)}}">
-				    				</div>
-				    				<div ng-show="showEmbed(m)">
-				    					<iframe ng-src="{{showVideoUrl(m.url)}}">
-				    				</div> -->
 				    			</div>
 		    			  	</div>
 	    				</div>
-	    			  	<div class="setlist-container flex-column wow fadeIn">
-	    			  		<h3 ng-show="concert.tracks.length > 0"> SetList</h3>
-		    				<div class="tracklist-container">
-		    					<div ng-repeat='track in concert.tracks' class="row-track wow fadeIn">
-				    				<h2 class="track-name" style="margin:0">{{track.name}} 
-			    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
-				    				</h2>
-		    			    	</div>
-		    			  	</div>
-	    			  	</div>
-						<div class="d3circles-container wow fadeIn">
-							<h3 ng-show="concert.meta.genres.length > 0" class="genrelabel"> Genres</h3>
-							<d3circles dataset="concert.meta.genres"></d3circles>
-						</div>
 	    			</div>
-
 	    		</div>
-	    	</section>
-	    	</div>
+	    			  	
+				</li>
+			</ul>
+			
+	    	
 		</div>
 	</div>
 </div>

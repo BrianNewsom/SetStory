@@ -2,7 +2,7 @@
 	position: relative;
 	overflow:hidden;
 	width: 100%;
-
+	height: auto;
 	h2 {
 		padding: 30px;
 		background: $bg-grey-light;
@@ -17,14 +17,92 @@
 		top:100px;
 		height: 100%;
 	}
+	.inner--header{
+			padding-left: 3em;
+			padding-bottom: 20px;
+			h1 {
+				font-size:2em;
+				margin:0;
+			}
+			h3{
+				font-size:0.8em;
+				color: $blue;
+			}
+		}
+	.inner{
+	  	width: 100%;
+  		
+  		
+  		@include breakpoint(small) {
+			padding-left: 2em;
+			display: inherit;
+		}
+		@include breakpoint(medium) {
+			padding-left: 2em;
+			display: inline-flex;
+		}
+		@include breakpoint(large) {
+			padding-left: 7em;
+			display: inline-flex;
 
+		}
+		
+
+  		.inner--module{
+
+  			
+			@include breakpoint(small) {
+				padding: 0px 1em 0px 1em;
+				width: 100%;
+			}
+			@include breakpoint(medium) {
+				width: (100%)/3;
+				padding: 0px 1em 0px 1em;
+			}
+
+			.insight-box{
+				h2 {
+					color: $blue;
+					span{
+						color:white;
+					}
+				}
+				
+			}
+
+			ol{
+			  list-style-type: decimal;
+			  list-style-position: inside;
+			  
+			  li.row-track{
+			    height: 43px;
+				min-height: 10px;
+				padding: 0;
+				padding-bottom: 0px;
+				color: $blue;
+				p.track-name {
+				  color: white;
+				  text-transform: uppercase;
+				  font-size: 0.8em;
+				  font-weight: 100;
+				}
+			  }
+			}
+		}
+		.inner--module.setlist-container{
+				max-height: 320px;
+				height: 500px;
+				overflow: hidden;
+				overflow-y: scroll;
+			}
+	}
+	
 	.bull--time {
 		position:absolute;
 		width: 14px;
 		height: 14px;
 		z-index: 3;
 		background: $blue;
-		top: 20px;
 		left: 24px;
 		@include border-radius(50%);
 
@@ -47,9 +125,12 @@
 	.timeline--concerts {
 
 		li {
+			top: 20px;
 			min-height: 100px;
 			width: 100%;
 			position: relative;
+			padding-bottom: 20px;
+			padding-top: 20px;
 
 			&:nth-child(2n) {
 				background: $bg-grey-light;
