@@ -172,7 +172,7 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 
 });
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
-<<<<<<< HEAD
+
 	
   $scope.socialset =
     [{"number":1, "value":20, "max":20},
@@ -206,8 +206,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
   	},3000);
     
 
-=======
->>>>>>> 1e48a3afc01de90a84096cfffce51f4f5ef503a2
     
 	$scope.eventName = $routeParams.name;
 
