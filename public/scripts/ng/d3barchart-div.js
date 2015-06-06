@@ -83,11 +83,19 @@ angular.module('myApp')
 
           drawChart();
            var rect = svg.selectAll(".bar div").data(dataset);
+           var icons = svg.selectAll(".bar i").data(dataset);
+
         
           var delay = function(d, i) { return i * 50; };
           rect.transition().duration(750)
             .delay(delay)
             .style("height", function(d) { return y(d.value) + 'px'; });
+
+          icons.transition().duration(750)
+            .delay(delay)
+            .attr('class', function(d,i){
+            return 'fa fa-' + d.name;
+          });
         
           
       });

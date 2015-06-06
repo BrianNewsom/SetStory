@@ -166,15 +166,17 @@ myApp.controller('ArtistsController', function($scope,$sce,$filter, $rootScope,$
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 	
 	  $scope.socialset =
-        [{"number":1, "value":900000},
-        {"number":2, "value":900000},
-        {"number":3, "value":900000},
-        {"number":4, "value":900000}];
+        [{"number":1, "value":20},
+        {"number":2, "value":20},
+        {"number":3, "value":20},
+        {"number":4, "value":20},
+        {"number":4, "value":20}];
 
+        var names = ["google-plus", "stumbleupon","dribbble", "facebook", "twitter", "youtube", "vimeo", "soudcloud"];
   $interval(function(){
  		  var data = [];
-          for(var i = 0; i < 4; i++) {
-            data.push({"number":i, "value": Math.floor(Math.random()*900000)});
+          for(var i = 0; i < names.length; i++) {
+            data.push({"name": names[i], "number":i, "value": Math.floor(Math.random()*900000)});
           }
           $scope.socialset = data;
 
