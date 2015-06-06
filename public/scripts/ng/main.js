@@ -178,15 +178,16 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
     {"number":2, "value":20, "max":20},
     {"number":3, "value":20, "max":20},
     {"number":4, "value":20, "max":20},
-    {"number":5, "value":20, "max":20}];
+    {"number":5, "value":20, "max":20},
+    {"number":6, "value":20, "max":20}];
 
     var sources = [];
 	    sources.push({name: "google-plus", max: 10000000  * 1.2});
-	    sources.push({name: "vimeo", max: 90000 * 1.2});
+	    sources.push({name: "vimeo-square", max: 90000 * 1.2});
 	    sources.push({name: "facebook", max: 100000000 * 1.2});
 	    sources.push({name: "twitter", max: 70697964 * 1.2});
 	    sources.push({name: "youtube", max: 30000000000});
-	    sources.push({name: "soudcloud", max: 1000000});
+	    sources.push({name: "soundcloud", max: 1000000});
 
 
 	$interval(function(){

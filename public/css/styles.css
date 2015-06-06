@@ -375,6 +375,13 @@ p {
   -webkit-transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   transition: height 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+.social .bars li .bars--item p.value {
+  font-size: 0.75em;
+  text-align: center;
+  bottom: 0;
+  z-index: 20;
+  padding-top: 8px;
+}
 .social .bars li .bars--item .bars--item--dates {
   height: 80px;
   margin-top: -80px;

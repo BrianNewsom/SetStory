@@ -60,7 +60,8 @@ angular.module('myApp')
           .attr('class', 'bars--item')
           .style('height',function(d,i){
             return d.value + 'px';
-          })
+          }).append('p')
+            .attr('class','value');
           
         
         
@@ -80,19 +81,29 @@ angular.module('myApp')
 
           drawChart();
            var rect = svg.selectAll(".bar div").data(dataset);
+           var values = svg.selectAll(".bar div p.value").data(dataset);
            var icons = svg.selectAll(".bar i").data(dataset);
 
-        
+          
+
           var delay = function(d, i) { return i * 50; };
+
           rect.transition().duration(750)
             .style("height", function(d) { 
             
             var scaleY = d3.scale.linear()
               .domain([0, d.max])
               .range([0, 160]);
-
-              return scaleY(d.value) + 'px'; 
+              var height = scaleY(d.value);
+              if (height < 40){
+                height = 40;
+              }
+              return height + 'px'; 
             });
+
+          values.transition().duration(750).text(function(d){
+            return d.value;
+          });
 
           icons.transition().duration(750)
             .delay(delay)
