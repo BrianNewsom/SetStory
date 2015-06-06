@@ -52,7 +52,10 @@
 	.totalplays {
 		
 		@include breakpoint(small) {
-				width: 100%;
+			width: 100%;
+		}
+		@include breakpoint(medium) {
+			width: (100%)/3;
 		}
 		@include breakpoint(large) {
 			width: (100%)/3;

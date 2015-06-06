@@ -38,25 +38,18 @@
 		<div class="module timeline">
 			<h2>timeline</h2>
 			<div class="line"></div>
-			<ul class="timeline--concerts">
-				<li>
-					<div class="bull--time"><span></span></div>
-				</li>
-				<li>
-					<div class="bull--time"><span></span></div>
-				</li>
-			</ul>
-			
-	    	<div>
-	    		<section id="cd-timeline">
-	    		<div ng-repeat='concert in sets' class="concert-row"> 
-	    			<div class="wow fadeIn">
-	    				<div class="circle-text"><div>
-	    				<p>{{concert.eventDate | amDateFormat:'ddd'}}</p>
-	    				<p>{{concert.eventDate | amDateFormat:'MMM DD'}}</p>
-	    				<p>{{concert.eventDate | amDateFormat:'YYYY'}}</p>
-	    				</div></div>
+			<ul class="wow fadeIn timeline--concerts" >
+				<li ng-repeat='concert in sets'>
+					<div class="bull--time"><span></span>
+					</div>
+						
+						<span>{{concert.eventDate | amDateFormat:'ddd'}}</span>
+	    				<span>{{concert.eventDate | amDateFormat:'MMM DD'}}</span>
+	    				<span>{{concert.eventDate | amDateFormat:'YYYY'}}</span>
+	    				
+	    				
 		    			<h1 style="font-size:2em;padding-left:9vw;margin:0">{{concert.location.city}}, {{concert.location.country}} </h1>
+
 		    			<div class="insights">
 			    			<div class="insight-box" style="padding-left:0">
 			    				<h2>{{concert.meta.duration|| "-"}} </h2>
@@ -107,11 +100,10 @@
 		    			    	</div>
 		    			  	</div>
 	    			  	</div>
-	    			</div>
-
-	    		</div>
-	    	</section>
-	    	</div>
+				</li>
+			</ul>
+			
+	    	
 		</div>
 	</div>
 </div>

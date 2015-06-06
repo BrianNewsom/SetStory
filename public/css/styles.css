@@ -613,6 +613,7 @@ p {
   position: relative;
   overflow: hidden;
   width: 100%;
+  height: auto;
 }
 .timeline h2 {
   padding: 30px;
@@ -1021,6 +1022,11 @@ path.color1 {
 @media (min-width: 320px) {
   .artist .totalplays {
     width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .artist .totalplays {
+    width: 33.33333%;
   }
 }
 @media (min-width: 1280px) {
