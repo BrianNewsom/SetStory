@@ -1,6 +1,5 @@
 var rest = require('restler');
 var setmine = {};
-<<<<<<< HEAD
 var api_version = "7"
 var _ = require('underscore')
 var socialmedia = require('../models/socialmedia')
@@ -8,11 +7,8 @@ var socialmedia = require('../models/socialmedia')
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
-=======
-var api_key = 'sxsw2015';
-var jf = require('jsonfile')
+
 var echonest = require('./echonest.js')
->>>>>>> bug fixes
 
 var artists = []
 
@@ -133,10 +129,11 @@ setmine.getAVAScore = function(artistName, callback) {
    
         
     })
-
    
 }
 
 setmine.socialmedia = socialmedia; // >> /models/socialmedia.js
+
+
 
 module.exports = setmine;
