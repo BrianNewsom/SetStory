@@ -98,10 +98,20 @@ p {
   height: 100%;
   background: #2b2b2b;
 }
-.ng-scope:before, .ng-scope:after {
-  content: " ";
-  display: table;
-  clear: both;
+
+::-webkit-scrollbar {
+  width: 5px;
+  /* for vertical scrollbars */
+  height: 12px;
+  /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: #5a5a5a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #35c9a9;
 }
 
 .button-white {
@@ -630,6 +640,7 @@ p {
 }
 .timeline .inner--header {
   padding-left: 3em;
+  padding-bottom: 20px;
 }
 .timeline .inner--header h1 {
   font-size: 2em;
@@ -644,13 +655,13 @@ p {
 }
 @media (min-width: 320px) {
   .timeline .inner {
-    padding-left: 3em;
+    padding-left: 2em;
     display: inherit;
   }
 }
 @media (min-width: 768px) {
   .timeline .inner {
-    padding-left: 5em;
+    padding-left: 2em;
     display: inline-flex;
   }
 }
@@ -662,18 +673,44 @@ p {
 }
 @media (min-width: 320px) {
   .timeline .inner .inner--module {
+    padding: 0px 1em 0px 1em;
     width: 100%;
   }
 }
 @media (min-width: 768px) {
   .timeline .inner .inner--module {
     width: 33.33333%;
+    padding: 0px 1em 0px 1em;
   }
 }
-@media (min-width: 1280px) {
-  .timeline .inner .inner--module {
-    width: 33.33333%;
-  }
+.timeline .inner .inner--module .insight-box h2 {
+  color: #19B5FE;
+}
+.timeline .inner .inner--module .insight-box h2 span {
+  color: white;
+}
+.timeline .inner .inner--module ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+.timeline .inner .inner--module ol li.row-track {
+  height: 43px;
+  min-height: 10px;
+  padding: 0;
+  padding-bottom: 0px;
+  color: #19B5FE;
+}
+.timeline .inner .inner--module ol li.row-track p.track-name {
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  font-weight: 100;
+}
+.timeline .inner .inner--module.setlist-container {
+  max-height: 320px;
+  height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .timeline .bull--time {
   position: absolute;
@@ -711,6 +748,7 @@ p {
   width: 100%;
   position: relative;
   padding-bottom: 20px;
+  padding-top: 20px;
 }
 .timeline .timeline--concerts li:nth-child(2n) {
   background: #333333;

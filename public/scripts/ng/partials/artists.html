@@ -53,50 +53,46 @@
 	    			</div>
 		    		<div class="inner">
 		    			<div class="inner--module">
+		    				<h3 > Info</h3>
 			    			<div class="insight-box" style="padding-left:0">
-			    				<h2>{{concert.meta.duration|| "-"}} </h2>
-			    				<h3> minutes </h3>
+			    				<h2>{{concert.meta.duration|| "-"}} <span>minutes </span></h2>
 			    			</div>
 			    			<div class="insight-box">
-			    				<h2>{{concert.meta.bpm_average || "-"}} </h2>
-			    				<h3> bpm </h3>
+			    				<h2>{{concert.meta.bpm_average || "-"}} <span>bpm</span></h2>
+
 			    			</div>
 			    			<div class="insight-box">
-			    				<h2>{{concert.tracks.length || "-"}} </h2>
-			    				<h3> tracks </h3>
+			    				<h2>{{concert.tracks.length || "-"}} <span>tracks </span></h2>
+
+			    				
 			    			</div>
 			    			<div class="insight-box">
-			    				<h2>{{concert.media.length || "-"}} </h2>
-			    				<h3> media </h3>
+			    				<h2>{{concert.media.length || "-"}} <span> media</span> </h2>
 			    			</div>
 		    			</div>
 		    			<div class="inner--module setlist-container wow fadeIn">
-	    			  		<h3 ng-show="concert.tracks.length > 0"> SetList</h3>
+	    			  		<h3 ng-show="concert.tracks.length > 0"> Set</h3>
 		    				<div class="tracklist-container">
-		    					<div ng-repeat='track in concert.tracks' class="row-track wow fadeIn">
-				    				<h2 class="track-name" style="margin:0">{{track.name}} 
-			    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
-				    				</h2>
-		    			    	</div>
+		    					<ol class="track-list">
+				    				<li  class="row-track wow fadeIn" ng-repeat='track in concert.tracks' >
+					    				<p class="track-name" style="margin:0">{{track.name}} 
+				    						<span ng-show="track.originalArtist">- <small>{{track.originalArtist}}</small></span>
+					    				</p>
+				    				</li>
+		    			    	</ol>
 		    			  	</div>
 		    			</div>
 	    			
 	    			
 
-	    			<div class="genres-viz wow fadeIn flex-row">
+	    			<div class="inner--module genres-viz wow fadeIn flex-row">
 	    				<div class="media-container flex-column">
-		    				<h3 ng-show="concert.media.length > 0"> Media</h3>
+		    				<h3 ng-show="concert.media.length > 0"> Social </h3>
 		    				<div ng-repeat='media in concert.media' class="wow fadeIn concert-image-container">
 			    				<div ng-show='media.type == image' ng-repeat='m in media' >
 			    					<div ng-show="showImage(m)" >
 				    					<img ng-src="{{m.url}}" style = "width:16vw;height:25vh">
 				    				</div>
-				    				<!-- <div ng-show="showVideo(m)">
-				    					<video controls ng-src="{{showVideoUrl(m.url)}}">
-				    				</div>
-				    				<div ng-show="showEmbed(m)">
-				    					<iframe ng-src="{{showVideoUrl(m.url)}}">
-				    				</div> -->
 				    			</div>
 		    			  	</div>
 	    				</div>

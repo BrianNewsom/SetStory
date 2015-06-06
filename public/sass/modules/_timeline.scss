@@ -19,6 +19,7 @@
 	}
 	.inner--header{
 			padding-left: 3em;
+			padding-bottom: 20px;
 			h1 {
 				font-size:2em;
 				margin:0;
@@ -33,11 +34,11 @@
   		
   		
   		@include breakpoint(small) {
-			padding-left: 3em;
+			padding-left: 2em;
 			display: inherit;
 		}
 		@include breakpoint(medium) {
-			padding-left: 5em;
+			padding-left: 2em;
 			display: inline-flex;
 		}
 		@include breakpoint(large) {
@@ -48,16 +49,52 @@
 		
 
   		.inner--module{
+
+  			
 			@include breakpoint(small) {
+				padding: 0px 1em 0px 1em;
 				width: 100%;
 			}
 			@include breakpoint(medium) {
 				width: (100%)/3;
+				padding: 0px 1em 0px 1em;
 			}
-			@include breakpoint(large) {
-				width: (100%)/3;
+
+			.insight-box{
+				h2 {
+					color: $blue;
+					span{
+						color:white;
+					}
+				}
+				
+			}
+
+			ol{
+			  list-style-type: decimal;
+			  list-style-position: inside;
+			  
+			  li.row-track{
+			    height: 43px;
+				min-height: 10px;
+				padding: 0;
+				padding-bottom: 0px;
+				color: $blue;
+				p.track-name {
+				  color: white;
+				  text-transform: uppercase;
+				  font-size: 0.8em;
+				  font-weight: 100;
+				}
+			  }
 			}
 		}
+		.inner--module.setlist-container{
+				max-height: 320px;
+				height: 500px;
+				overflow: hidden;
+				overflow-y: scroll;
+			}
 	}
 	
 	.bull--time {
@@ -93,6 +130,7 @@
 			width: 100%;
 			position: relative;
 			padding-bottom: 20px;
+			padding-top: 20px;
 
 			&:nth-child(2n) {
 				background: $bg-grey-light;
