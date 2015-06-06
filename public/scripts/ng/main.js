@@ -212,7 +212,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 		});
 	}
 
-	var getSocialScore= function(lineup) {
+	var getSocialScore= function() {
 
 		// TODO: Get social route from Setmine and Openaura
 		 
@@ -232,7 +232,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	}
 
 	loadData("/api/lineup/event/" + $scope.eventName)
-	getSocialScore($scope.event.lineup)
+	getSocialScore()
 
 
 	$scope.calculateEventScore = function() {

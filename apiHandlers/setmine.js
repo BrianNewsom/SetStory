@@ -64,6 +64,8 @@ setmine.getArtistPopularity = function(artist, callback) {
 setmine.getEventLineupByID = function(eventID, callback) {
     rest.get("http://setmine.com/api/v/7/lineup/" + eventID).on('complete', function(response) {
         if(response.status == "success") {
+            response.payload.lineup = _.extend(response.payload.lineup, {date: "June 19th-21st"})
+            console.log(response.payload.lineup)
             callback(response.payload.lineup)
         }
     })
