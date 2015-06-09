@@ -22,7 +22,15 @@ $ grunt
 $ cd ..
 $ npm install
 ```
+## Generating Styles
+```
 
+$ cd public
+$ grunt watch
+Running "watch" task
+Waiting...
+
+```
 ## Running the Application
 ```
 
