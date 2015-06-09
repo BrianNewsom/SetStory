@@ -2,6 +2,10 @@
 
 	.header {
 
+    @include breakpoint(small) {
+      height: 550px;
+    }
+    
 		.button-white {
 			position: absolute;
 			bottom: 25px;

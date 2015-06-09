@@ -17,15 +17,15 @@
 
 .artist-row {
   display: inline-table;
-  
+
   @include breakpoint(small) {
-      width: (100%)/3;
-      height: (100vw)/3;
+      width: 50%;
+      height: 50vw;
   }
 
   @include breakpoint(medium) {
-      width: (100%)/5;
-      height: (100vw)/5;
+      width: (100%)/4;
+      height: (100vw)/4;
   }
 
   @include breakpoint(large) {

@@ -4,7 +4,16 @@
 	width: 100%;
 	background: transparent;
 	
+
 	.indicator{
+		@include breakpoint(small) {
+			
+			top: 35px;
+			height: 80px;
+
+		}
+
+	  
 	  height: 200px;
 	  left: auto;
 	  position: relative;
@@ -50,8 +59,11 @@
 	}
 }
 .header--content.second {
-		  top: 76px;
-	    display: inline-flex;
+		top: 76px;
+		@include breakpoint(medium) {
+			display: inline-flex;
+		 }
+
 
 		  background: #56626e;
 		  width: 100%;
