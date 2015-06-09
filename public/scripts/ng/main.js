@@ -224,7 +224,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
     $scope.getArtistData();
 
 	$scope.back = function(){
-		$location.path("/");
+		window.history.back();
 	}
 	var media =[];
 	  $scope.sets = [];
@@ -343,7 +343,8 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 
 	$scope.calculateEventScore = function() {
-		$scope.eventScore = $scope.event.lineup.length * 13000
+		$scope.eventScore = $scope.event.lineup.length * 13000;
+
 	}
 
 	$scope.gotoArtist = function(artist){
@@ -402,6 +403,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
             var artist = data[0];
             processArtistImage(data[0]);
             $scope.event.lineup.unshift(data[0]);
+            $scope.calculateEventScore();
             var socialMediaURL = "api/artist/social_media/" + artistName;
             (function(smURL,item){
             	$http.get(smURL).success(function(data) {
@@ -416,9 +418,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         $scope.artists= [];
 
 	};
-	$scope.detail.calculateEventScore = function() {
-		$scope.eventScore = $scope.detail.lineup.length * 1300;
-	};
 
 	
 
@@ -432,17 +431,19 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 });
 
-myApp.controller('ConcertsController', function($scope){
 
-});
 
 function processArtistImage(artist){
+
+
 	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
 	{
 		 artist.imageURL ='';
+		 artist.artistimageURL =	artist.imageURL;
 	}
 	else {
 		artist.imageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  artist.imageURL;	
+		artist.artistimageURL =	artist.imageURL;
 	}
 
 }
