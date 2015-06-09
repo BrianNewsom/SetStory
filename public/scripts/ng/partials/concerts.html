@@ -31,53 +31,56 @@
 		</div>
 		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
 	</div>
-	<div class="module builder wow fadeIn search-container artists">
-		<h2>Which artists you want in your festival?</h2>
-		<br>
-		<autocomplete class="search-bar" 
-			ng-model="choice"
-			attr-placeholder="Add artists to your lineup.." 
-			click-activation="true" 
-			data="artists" 
-			on-type="updateArtists" 
-			on-select="addArtists"></autocomplete>
-	
-<div class="modules--wrapper lineup-container">
-		<h2 class="wow  animated">Lineup</h2>
-		<div class="horizontal-scroll">
-			<div class="wow  animated artist-row" ng-repeat="artist in event.lineup">
-				<div class="artist-lineup-container wow slideInLeft animated">
-					<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
-						<img ng-src="{{artist.artistimageURL}}"/>
-					</div>
-					<div class="artist-lineup-text">
-						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+	<div class="modules--wrapper wow fadeIn">
+		<div class="module builder wow fadeIn search-container artists">
+			<h2>Customize your lineup</h2>
+			<br>
+			<autocomplete class="search-bar" 
+				ng-model="choice"
+				attr-placeholder="Add artists to your lineup.." 
+				click-activation="true" 
+				data="artists" 
+				on-type="updateArtists" 
+				on-select="addArtists"></autocomplete>
+		
+			<div class="modules--wrapper lineup-container">
+				<h2 class="wow animated">Lineup</h2>
+				<div class="horizontal-scroll">
+					<span class="wow  animated artist-row" ng-repeat="artist in event.lineup">
+						<div class="artist-lineup-container wow slideInLeft animated">
+							<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
+								<img ng-src="{{artist.artistimageURL}}"/>
+							</div>
+							<div class="artist-lineup-text">
+								<div ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</div>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>		
+
+			<!-- <div class="lineup-container">
+				<div class="lineup-title wow rubberBand animated centered"></div>
+				<div class="artist-row repeat-item" ng-repeat="artist in detail.lineup">
+					<div class="repeat-item artist-lineup-container wow rollIn animated">
+						<div ng-click="removeArtitst($index,artist)" class="hand artist-lineup">
+							<img src="" ng-src="{{artist.imageURL}}"/>
+
+						</div>
+						<div class="centered">
+							<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
-	</div>		
-
-		<!-- <div class="lineup-container">
-			<div class="lineup-title wow rubberBand animated centered"></div>
-			<div class="artist-row repeat-item" ng-repeat="artist in detail.lineup">
-				<div class="repeat-item artist-lineup-container wow rollIn animated">
-					<div ng-click="removeArtitst($index,artist)" class="hand artist-lineup">
-						<img src="" ng-src="{{artist.imageURL}}"/>
-
-					</div>
-					<div class="centered">
-						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
-					</div>
-				</div>
-			</div>
-		</div> -->
 	</div>
+	
 
 	<div class="modules--wrapper wow fadeIn">
 		
 		<div class="module outlook wow fadeIn">
-			<h2>Sells progression</h2>
+			<h2>Sales Metrics</h2>
 			
 			
 			<d3progress> </d3progress>

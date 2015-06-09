@@ -70,38 +70,52 @@ router.get('/api/artist/getMBID', function(req, res, next){
     });
 })
 
+// Get any sourceAPI's Artist object by artist name
 
-router.get('/api/search/:name', function(req, res, next) {
-
-    var result = [];
-
-    if(req.params.name.length > 2) {
+router.get('/api/artist/:sourceAPI/:name', function(req, res, next) {
+    if(req.params.sourceAPI == "setmine") {
+        var result = [];
         var artists = setmine.artists
-        console.log(artists)
-
         for (var i = 0; i < artists.length; i++) {
             if (artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
                 result.push(artists[i])
             }
         };
+        res.json(result);
+    } else {
+        musicgraph.getArtistInfo(req.params.artistName, function(data){
+            res.json(data);
+        });
     }
-    res.json(result)
-
 
 });
-router.get('/api/autocomplete/:name', function(req, res, next) {
+
+// Get :models names of Artists or events by matching :name
+
+router.get('/api/autocomplete/:models/:name', function(req, res, next) {
 
     var result = [];
 
+    // Must differentiate between events and artists autocomplete
+
     if(req.params.name.length > 2) {
-        var events = setmine.events
-        for (var i = 0; i < events.length; i++) {
-            if(events[i].event.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
-                result.push(events[i].event)
+        if(req.params.models == "events") {
+            var events = setmine.events
+            for (var i = 0; i < events.length; i++) {
+                if(events[i].event.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+                    result.push(events[i].event)
+                }
             }
-        };
+        } else {
+            var artists = setmine.artists
+            for (var i = 0; i < artists.length; i++) {
+                if(artists[i].artist.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+                    result.push(artists[i].artist)
+                }
+            }
+        }
     }
-    res.json(result)
+    res.json(result) 
 });
 
 router.get('/api/artist/:artistName/:page/:count', function(req, res, next){
@@ -112,7 +126,6 @@ router.get('/api/artist/:artistName/:page/:count', function(req, res, next){
     else{
         res.json(skrillex);
     }
-
 });
 
 router.get('/api/artist/:artistName', function(req,res,next){

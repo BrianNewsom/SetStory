@@ -8,6 +8,9 @@
 			right: 25px;
 		}
 	}
+  autocomplete.search-bar {
+    color:$grey-dark;
+  }
 
   .social {
       @include breakpoint(small) {
