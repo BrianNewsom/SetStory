@@ -1,50 +1,45 @@
 var setlistfm = require('./setlistfm');
 var openaura = require('./openaura');
+var setmine = require('./setmine');
+
 var moment = require('moment');
+var async = require('async')
 
 var _ = require('lodash');
 
 var unified = {};
 
-unified.story = function(artist, cb){
-    setlistfm.getArtistGigs(artist, function(data){
-        openaura.getSocialFeed(artist,250,0,function(result){
-            try{
-                var media = result.particles;
-                for (var i = 0; i < data.length; i++) {
-                    var current = moment(data[i].eventDate);
+unified.story = function(artist, supercallback){
 
-
-                    for (var j = media.length - 1; j >= 0; j--) {
-
-
-                        var mediaDate = moment(media[j].date);
-                        var daysBetween = current.diff(mediaDate, 'days',true);
-
-                        if (daysBetween >=0 && daysBetween <= 3){
-                            var newOne = media[j].media;
-
-
-                            //Check if is smaller, not add it
-                            // if (newOne.width > 600){
-                                data[i].media = [];
-                                data[i].media.push(newOne);
-                            // }
-
-                        }
-                    };
-                };
-
-                cb(data);
-                return 0;
-            }catch (e){
-                console.log(e);
-                cb(null);
-                return 1;
-            }
-        })
-
+    async.parallel([
+        function(callback) {
+            setlistfmStory(artist, function(data) {
+                callback(null, data)
+            })
+        }
+    ], function(err, results) {
+        console.log(results)
+        supercallback(results[0])
     })
+
+    function setlistfmStory(artist, callback) {
+        setlistfm.getArtistGigs(artist, function(data){
+            callback(data);
+        })
+    }
+
+    function setmineStory(artist) {
+        
+    }
+
+    function socialmediaStory(artist) {
+        // setmine.socialmedia.
+    }
+
+    function openauraStory(artist) {
+        
+    }
+
 }
 
 module.exports = unified;

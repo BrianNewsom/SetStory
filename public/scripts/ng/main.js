@@ -107,7 +107,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 		    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
 		 $scope.socialset = data;
 
-
 		 $scope.playsOverTime = {
 			setmine: [
 				2000,
@@ -133,7 +132,9 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	var soundcloudOverTime =[];
 
 	maxYoutube = 10000000;
- 	maxSoundCloud = 10000000;
+	maxSoundCloud = 10000000;
+	maxSetMine  = 10000000;
+
 	//TODO : INTEGRATE SETMINE!
 	setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
 	setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
@@ -152,9 +153,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	soundcloudOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.soundcloud.overtime[3][1]});
 	soundcloudOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.soundcloud.overtime[4][1]});
 
-	console.log(soundcloudOverTime)
-	console.log(youtubeOverTime)
-
 
 	plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
 	plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
@@ -172,10 +170,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
     $scope.getArtistMediaData();
 
-	maxYoutube = 10000;
-	maxSoundCloud = 10000;
-	maxSetMine  = 10000;
-
+	
 	
 	$scope.scaleHeight = function(item, play){
 		var scaleY = d3.scale.linear()
@@ -213,8 +208,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	$scope.getArtistPhoto();
 
     $scope.getArtistData = function(){
-        var url = "api/artist/" + $scope.choice;
-
+        var url = "api/artist/info/musicgraph/" + $scope.choice;
         $http.get(url).success(function(data) {
             $scope.artistData = data;
         })
@@ -244,10 +238,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	$scope.showVideoUrl = function(url) {
 		return $sce.trustAsResourceUrl(url);
 	}
-	$scope.showImage = function(media){
-
-		console.log(media.type)
-		
+	$scope.showImage = function(media){		
 		if (media.type === 'image')
 		{
 			if (parseInt(media.width) >= 620 && parseInt(media.width) <= 800){
@@ -260,19 +251,9 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	};
 	var url = "/api/story/"+ $scope.choice; 
 	
-	
-
 	$http.get(url).success(function(data) {
-		$scope.sets= data;
-		var mockDatasetUrl = '/SkrillexSets.json';
-		$http.get(mockDatasetUrl).success(function(metadata) {
-
-
-			for (var i = 0; i < metadata.length; i++) {
-				metadata[i].genres = $filter('orderBy')(metadata[i].genres, '-count');
-				data[i].meta = metadata[i];
-			};
-		});
+		$scope.sets = data;
+		console.log(data)
 	});
 
 	$scope.choice = decodeURIComponent($scope.choice);
@@ -341,6 +322,10 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	loadData("/api/lineup/event/" + $scope.eventName)
 
+	var getSocialMediaData = function(lineup) {
+
+	}
+
 
 	$scope.calculateEventScore = function() {
 		$scope.eventScore = $scope.event.lineup.length * 13000;
@@ -374,21 +359,15 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         		var autocompleteArtistOptions = data
         		var lineup = $scope.event.lineup
 
-        		console.log(autocompleteArtistOptions.length)
 
         		// Splices allArtists and returns the artists not in lineup
 
         		for(var i in lineup) {
         			var index = autocompleteArtistOptions.indexOf(lineup[i].artist)
-        			console.log(lineup[i])
-        			console.log(index)
-
         			if(index > -1) {
         				autocompleteArtistOptions.splice(index, 1)
         			}
         		}
-        		console.log(autocompleteArtistOptions.length)
-
 
 		    	$scope.artists = autocompleteArtistOptions;
 	    	}
@@ -396,7 +375,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         
     };
     $scope.addArtists = function(artistName){	
-    	var url = "api/artist/setmine/" + artistName;
+    	var url = "api/artist/info/setmine/" + artistName;
 
         $http.get(url).success(function(data) {
         	console.log(data)
