@@ -3,7 +3,10 @@
 	.header {
 
     @include breakpoint(small) {
-      height: 550px;
+      height: 750px;
+    }
+    @include breakpoint(medium) {
+      height: 370px;
     }
     
 		.button-white {
