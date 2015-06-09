@@ -90,10 +90,15 @@ setmine.getEventLineupByName = function(eventName, callback) {
     }
     else {
         callback()
-    }
-    
+    } 
 }
 
+setmine.getSocialMediaMetrics = function(artistName, callback) {
+    rest.get("http://setmine.com/api/v/7/artist/metrics/social/" + artistName).on('complete', function(response) {
+        callback(response)
+    })
+
+}
 
 // First parameter 'data' must be an array with elements that look like this:
 // {

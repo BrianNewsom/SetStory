@@ -51,7 +51,7 @@ socialmedia.twitter = function(data, supercallback) {
                 }
                 connection.query(sql, function(err, response) {
                     if(err) {
-                        console.log("Error caching Facebook likes data.")
+                        console.log("Error caching Twitter likes data.")
                         console.log(err)
                         supercallback(err)
                     }
