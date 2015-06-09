@@ -25,6 +25,9 @@ socialmedia.twitter = function(data, supercallback) {
         return
     }
     data = _.filter(data, function(artist) {
+        if(!artist.artist_id) {
+            artist['artist_id'] = artist.id
+        }
         return artist.twitter_link != null
     })
     var count = 0
@@ -51,7 +54,7 @@ socialmedia.twitter = function(data, supercallback) {
                 }
                 connection.query(sql, function(err, response) {
                     if(err) {
-                        console.log("Error caching Twitter likes data.")
+                        console.log("Error caching Twitter follower data.")
                         console.log(err)
                         supercallback(err)
                     }
@@ -89,6 +92,9 @@ socialmedia.facebook = function(data, supercallback) {
     }
 
     data = _.filter(data, function(artist) {
+        if(!artist.artist_id) {
+            artist['artist_id'] = artist.id
+        }
         return artist.fb_link != null
     })
 
@@ -141,6 +147,9 @@ socialmedia.instagram = function(data, supercallback) {
         return
     }
     data = _.filter(data, function(artist) {
+        if(!artist.artist_id) {
+            artist['artist_id'] = artist.id
+        }
         return artist.instagram_link != null
     })
     console.log(data.length)
@@ -235,6 +244,9 @@ socialmedia.soundcloud = function(data, supercallback) {
         return
     }
     data = _.filter(data, function(artist) {
+        if(!artist.artist_id) {
+            artist['artist_id'] = artist.id
+        }
         return artist.soundcloud_link != null
     })
     var count = 0
@@ -324,7 +336,6 @@ socialmedia.soundcloud = function(data, supercallback) {
             }
         )
     }
-    
 }
 
 socialmedia.youtube = function(data, supercallback) {
@@ -334,6 +345,9 @@ socialmedia.youtube = function(data, supercallback) {
         return
     }
     data = _.filter(data, function(artist) {
+        if(!artist.artist_id) {
+            artist['artist_id'] = artist.id
+        }
         return artist.youtube_id != null
     })
     var count = 0
