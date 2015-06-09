@@ -164,9 +164,30 @@ p {
 
 .header {
   position: relative;
-  height: 380px;
+  height: 370px;
   width: 100%;
   background: transparent;
+}
+.header .indicator {
+  height: 200px;
+  left: auto;
+  position: relative;
+  text-align: center;
+  top: 28%;
+  position: relative;
+  text-align: center;
+}
+@media (min-width: 320px) {
+  .header .indicator {
+    width: 100%;
+    font-size: 3em;
+  }
+}
+@media (min-width: 768px) {
+  .header .indicator {
+    width: 25%;
+    font-size: 2em;
+  }
 }
 .header .header--top {
   padding: 25px;
@@ -184,6 +205,9 @@ p {
   height: 100%;
   top: 0;
   left: 0;
+}
+.header .header--top h2 {
+  text-align: center;
 }
 .header .header--picture {
   position: absolute;
@@ -203,6 +227,30 @@ p {
   z-index: 1;
   top: 0;
   width: 100%;
+}
+
+.header--content.second {
+  top: 76px;
+  display: inline-flex;
+  background: #56626e;
+  width: 100%;
+  height: 100%;
+  /* top: 0; */
+  left: 0;
+}
+
+.builder {
+  height: auto;
+  width: 100%;
+  padding: 2em;
+}
+
+.lineup-container .horizontal-scroll {
+  width: auto;
+  height: 210px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 @media (min-width: 320px) {
@@ -240,7 +288,7 @@ p {
 }
 @media (min-width: 768px) {
   .visits {
-    width: 40%;
+    width: 50%;
   }
 }
 .visits .module--visit--score {
@@ -317,7 +365,7 @@ p {
 }
 @media (min-width: 768px) {
   .outlook {
-    width: 60%;
+    width: 100%;
   }
 }
 .outlook svg {
@@ -972,7 +1020,7 @@ p {
 }
 @media (min-width: 768px) {
   .concerts .social {
-    width: 60%;
+    width: 100%;
   }
 }
 

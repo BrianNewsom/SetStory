@@ -6,18 +6,76 @@
 			</div>
 			<!-- <a href="#/" class="button-white">Back to Search..</a> -->
 		</div>
+		<div class="header--content second">
+			<div class="indicator">
+				<h2> Artists </h2>
+				<h3><span class="score">{{event.lineup.length}}</h3>
+			</div>
+			<div class="module visits wow fadeIn">
+				<h2>Ticket Sales</h2>
+				<ul class="module--visit--score">
+
+				</ul>
+
+				<ul class="visit--score--dates">
+					<li><span class="ball"></span> New visitors</li>
+					<li><span class="ball blue"></span> Returning visitor</li>
+				</ul>
+
+				<d3percentage dataset="60"></d3percentage>
+			</div>
+			<div class="indicator">
+				<h2> Event Score </h2>
+				<h3><span class="score">{{eventScore}}</h3>
+			</div>
+		</div>
 		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
 	</div>
-	<div class="modules--wrapper wow fadeIn">
-		<div class="module score-page wow fadeIn">
-			<ul>
-				<li>Score<div class="score">{{eventScore}}</div></li>
-				<li>Artists<div class="score">{{event.lineup.length}}</div></li>
-				<li>Date<div class="score">{{event.date}}</div></li>
-				<!-- <li>Prices<div class="score">20 U$S</div></li> -->
-			</ul>
+	<div class="module builder wow fadeIn search-container artists">
+		<h2>Which artists you want in your festival?</h2>
+		<br>
+		<autocomplete class="search-bar" 
+			ng-model="choice"
+			attr-placeholder="Add artists to your lineup.." 
+			click-activation="true" 
+			data="artists" 
+			on-type="updateArtists" 
+			on-select="addArtists"></autocomplete>
+	
+<div class="modules--wrapper lineup-container">
+		<h2 class="wow  animated">Lineup</h2>
+		<div class="horizontal-scroll">
+			<div class="wow  animated artist-row" ng-repeat="artist in event.lineup">
+				<div class="artist-lineup-container wow slideInLeft animated">
+					<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
+						<img ng-src="{{artist.artistimageURL}}"/>
+					</div>
+					<div class="artist-lineup-text">
+						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+					</div>
+				</div>
+			</div>
 		</div>
+	</div>		
 
+		<!-- <div class="lineup-container">
+			<div class="lineup-title wow rubberBand animated centered"></div>
+			<div class="artist-row repeat-item" ng-repeat="artist in detail.lineup">
+				<div class="repeat-item artist-lineup-container wow rollIn animated">
+					<div ng-click="removeArtitst($index,artist)" class="hand artist-lineup">
+						<img src="" ng-src="{{artist.imageURL}}"/>
+
+					</div>
+					<div class="centered">
+						<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+
+	<div class="modules--wrapper wow fadeIn">
+		
 		<div class="module outlook wow fadeIn">
 			<h2>Sells progression</h2>
 			
@@ -25,19 +83,7 @@
 			<d3progress> </d3progress>
 		</div>
 
-		<div class="module visits wow fadeIn">
-			<h2>Visits</h2>
-			<ul class="module--visit--score">
-
-			</ul>
-
-			<ul class="visit--score--dates">
-				<li><span class="ball"></span> New visitors</li>
-				<li><span class="ball blue"></span> Returning visitor</li>
-			</ul>
-
-			<d3percentage dataset="60"></d3percentage>
-		</div>
+		
 
 		<div class="module social">
 			<h2>Social</h2>
@@ -45,18 +91,5 @@
 		</div>
 	</div>
 
-	<div class="modules--wrapper lineup-container">
-		<h2 class="wow  animated">Lineup</h2>
-		<div class="wow  animated artist-row" ng-repeat="artist in event.lineup">
-			<div class="artist-lineup-container wow slideInLeft animated">
-				<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
-					<img ng-src="{{artist.artistimageURL}}"/>
-				</div>
-				<div class="artist-lineup-text">
-					<a href="" ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</a>
-				</div>
-			</div>
-			<div class="buffer"></div>
-		</div>
-	</div>
+	
 </div>

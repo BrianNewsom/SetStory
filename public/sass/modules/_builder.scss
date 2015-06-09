@@ -1,0 +1,17 @@
+.builder{
+	height: auto;
+  	width: 100%;
+  	padding: 2em;
+}
+
+.lineup-container{
+	
+	.horizontal-scroll {
+	    width: auto;
+	    height:210px;
+	    overflow-x: scroll;
+	    overflow-y: hidden;
+	    white-space: nowrap;
+    }
+
+}

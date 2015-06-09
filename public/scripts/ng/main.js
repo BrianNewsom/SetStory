@@ -362,6 +362,65 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         	$location.path("/artists/" + encoded);
         };
 	}
+	$scope.detail = {
+		lineup:[]
+	};
+
+
+		$rootScope.main = true;
+    	$rootScope.detail = false;
+        $scope.artists = [];
+        $scope.events = [];
+
+        // gives another movie array on changez
+        $scope.updateArtists = function(typed){
+            // MovieRetriever could be some service returning a promise
+            var url = '/api/autocomplete/' + typed;
+            
+            $http.get(url).success(function(data) {
+            	if (data){
+			    	$scope.artists = data;
+		    	}
+		    });
+            
+        };
+        $scope.addArtists = function(c){	
+
+
+        	
+        	var url = "api/search/" + c;
+
+	        $http.get(url).success(function(data) {
+	            var artist = data[0];
+	            processArtistImage(data[0]);
+	            $scope.detail.lineup.push(data[0]);
+	            var socialMediaURL = "api/artist/social_media/" + c;
+	            (function(smURL,item){
+	            	$http.get(smURL).success(function(data) {
+	            		item.socialMedia = data;
+	            		calculateSocialAverage();
+	            	});
+	            })(socialMediaURL,artist);
+	            
+	            
+	        });
+	        $scope.choice = '';
+	        $scope.artists= [];
+
+		};
+		$scope.detail.calculateEventScore = function() {
+			return $scope.detail.lineup.length * 1300;
+		};
+
+
+			
+
+
+		$scope.removeArtitst = function(i,a){
+			 $scope.detail.lineup.splice(i, 1);
+			 calculateSocialAverage();
+		};
+
 
 
 });
@@ -381,8 +440,8 @@ myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $int
 
 		$rootScope.main = true;
     	$rootScope.detail = false;
-        $scope.artists = [];
-        $scope.events = [];
+
+
 
         // gives another movie array on changez
         $scope.updateArtists = function(typed){
