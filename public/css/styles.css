@@ -246,8 +246,9 @@ p {
 }
 
 .lineup-container .horizontal-scroll {
-  width: auto;
+  width: 100%;
   height: 210px;
+  display: inline-flex;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
@@ -517,7 +518,7 @@ p {
 }
 
 .artist-row {
-  float: left;
+  display: inline-table;
 }
 @media (min-width: 320px) {
   .artist-row {
@@ -1012,6 +1013,9 @@ p {
   position: absolute;
   bottom: 25px;
   right: 25px;
+}
+.concerts autocomplete.search-bar {
+  color: #5a5a5a;
 }
 @media (min-width: 320px) {
   .concerts .social {

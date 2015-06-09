@@ -18,11 +18,6 @@ config(['$routeProvider', function($routeProvider) {
       controller: 'EventsController'
     });
  
-   $routeProvider.when('/lineup/builder', 
-    {
-      templateUrl: '/scripts/ng/partials/lineup-builder.html', 
-      controller: 'LineupBuilderController'
-    });
 }]);
 
 
@@ -139,6 +134,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	maxYoutube = 10000000;
 	maxSoundCloud = 10000000;
 	maxSetMine  = 10000000;
+
 	//TODO : INTEGRATE SETMINE!
 	setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
 	setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
@@ -400,8 +396,10 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	};
 	$scope.detail.calculateEventScore = function() {
-		return $scope.detail.lineup.length * 1300;
+		$scope.eventScore = $scope.detail.lineup.length * 1300;
 	};
+
+	
 
 
 	$scope.removeArtist = function(i,a){
@@ -410,69 +408,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	};
 
 
-
-});
-myApp.controller('LineupBuilderController', function($scope,$sce,$filter,   $interval, $rootScope,$routeParams,$location, $http) {
-	
-
-	$scope.detail = {
-		lineup:[]
-	};
-
-	$scope.gotoArtist = function(artist){
-		var encoded = encodeURIComponent(artist.artist);
-		$scope.gotoArtist = function(c){	
-        	$location.path("/artists/" + encoded);
-        };
-	}
-
-		$rootScope.main = true;
-    	$rootScope.detail = false;
-
-
-
-        // gives another movie array on changez
-        $scope.updateArtists = function(typed){
-            // MovieRetriever could be some service returning a promise
-            var url = '/api/autocomplete/artists/' + typed;
-            
-            $http.get(url).success(function(data) {
-            	if (data){
-			    	$scope.artists = data;
-		    	}
-		    });
-            
-        };
-        $scope.addArtists = function(artistName){	
-        	var url = "api/artist/info/setmine/" + artistName;
-
-	        $http.get(url).success(function(data) {
-	        	console.log(data)
-	            var artist = data[0];
-	            processArtistImage(data[0]);
-	            $scope.detail.lineup.push(data[0]);
-	            var socialMediaURL = "api/artist/social_media/" + artistName;
-	            (function(smURL,item){
-	            	$http.get(smURL).success(function(data) {
-	            		item.socialMedia = data;
-	            		calculateSocialAverage();
-	            	});
-	            })(socialMediaURL,artist);
-	            
-	            
-	        });
-	        $scope.choice = '';
-	        $scope.artists= [];
-
-		};
-		$scope.detail.calculateEventScore = function() {
-			return $scope.detail.lineup.length * 1300;
-		};
-
-		$scope.removeArtist = function(i,a){
-			 $scope.detail.lineup.splice(i, 1);
-			 calculateSocialAverage();
-		};
 
 });
 

@@ -2,9 +2,10 @@
   font-family: $font;
   font-weight: $light;
   width: 100%;
+
   background-color: $bg-grey-light;
   @include clearfix;
-
+  
   h2 {
     padding: 30px;
   }
@@ -15,8 +16,8 @@
 }
 
 .artist-row {
-  float: left;
-
+  display: inline-table;
+  
   @include breakpoint(small) {
       width: (100%)/3;
       height: (100vw)/3;

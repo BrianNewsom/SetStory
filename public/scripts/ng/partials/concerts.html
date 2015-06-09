@@ -26,7 +26,7 @@
 			</div>
 			<div class="indicator">
 				<h2> Event Score </h2>
-				<h3><span class="score">{{eventScore}}</h3>
+				<h3><span class="score">{{detail.calculateEventScore()}}</h3>
 			</div>
 		</div>
 		<div class="header--picture" style="background: url(../images/bg-landing.jpg) no-repeat center center;"></div>
@@ -46,7 +46,8 @@
 			<div class="modules--wrapper lineup-container">
 				<h2 class="wow animated">Lineup</h2>
 				<div class="horizontal-scroll">
-					<span class="wow  animated artist-row" ng-repeat="artist in event.lineup">
+
+					<div class="wow  animated artist-row" ng-repeat="artist in event.lineup">
 						<div class="artist-lineup-container wow slideInLeft animated">
 							<div ng-click="gotoArtist(artist)" class="hand artist-lineup">
 								<img ng-src="{{artist.artistimageURL}}"/>
@@ -55,7 +56,7 @@
 								<div ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</div>
 							</div>
 						</div>
-					</span>
+					</div>
 				</div>
 			</div>		
 
