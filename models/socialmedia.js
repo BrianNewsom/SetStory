@@ -176,6 +176,7 @@ socialmedia.instagram = function(data, supercallback) {
             },
             function(err) {
                 if(err) {
+                    console.log("Error fetching instagram data. Invalid instagram Link.")
                     supercallback(data)
                 } else {
                     console.log("Done")

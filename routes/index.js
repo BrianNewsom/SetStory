@@ -72,7 +72,7 @@ router.get('/api/artist/getMBID', function(req, res, next){
 
 // Get any sourceAPI's Artist object by artist name
 
-router.get('/api/artist/:sourceAPI/:name', function(req, res, next) {
+router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
     if(req.params.sourceAPI == "setmine") {
         var result = [];
         var artists = setmine.artists
@@ -83,7 +83,11 @@ router.get('/api/artist/:sourceAPI/:name', function(req, res, next) {
         };
         res.json(result);
     } else {
-        musicgraph.getArtistInfo(req.params.artistName, function(data){
+        console.log("musicgraph")
+        musicgraph.getArtistInfo(req.params.name, function(data){
+            console.log("got artist info")
+            console.log(data)
+
             res.json(data);
         });
     }
@@ -118,28 +122,11 @@ router.get('/api/autocomplete/:models/:name', function(req, res, next) {
     res.json(result) 
 });
 
-router.get('/api/artist/:artistName/:page/:count', function(req, res, next){
-    // TODO: Make dynamic
-    if (parseInt(req.params.page) > 5){
-        res.json({sets:[]});
-    }
-    else{
-        res.json(skrillex);
-    }
-});
-
-router.get('/api/artist/:artistName', function(req,res,next){
-    musicgraph.getArtistInfo(req.params.artistName, function(data){
-        res.json(data);
-    });
-});
-
 router.get('/api/getArtistPic/:artistName', function(req, res, next){
     openaura.getArtistImage(req.params.artistName, function(data){
         res.json(data);
     })
 })
-
 
 router.get('/api/genres/:artistName', function(req, res, next){
     try{
@@ -164,7 +151,7 @@ router.get('/api/gigs/:artistName', function(req, res, next){
     })
 });
 
-router.get('/api/getSocialMedia', function(req, res, next){
+router.get('/api/getSocialMedia', function(req, res, next) {
     openaura.getSocialFeed(req.query.artist,req.query.limit ,req.query.offset,function(data){
         res.json(data);
     })
@@ -204,6 +191,12 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
 
 router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.get('/api/socialmedia/setrecords', function(req,res,next){
+    artist_social_media.updateDemoLineupArtists(function(data) {
         res.json({"response": data});
     })
 })

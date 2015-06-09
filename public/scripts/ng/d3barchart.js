@@ -17,9 +17,6 @@ angular.module('myApp')
       var chartData = [];
       var w = 515;
       var h = 660;
-      
-
-    
 
       //initial svg creation
       var svg = d3.select("#test-chart")

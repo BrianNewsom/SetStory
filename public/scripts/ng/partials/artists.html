@@ -31,10 +31,6 @@
 				</li>
 		</div>
 		
-
-
-
-		
 		<div class="module timeline">
 			<h2>timeline</h2>
 			<div class="line"></div>
@@ -53,21 +49,9 @@
 	    			</div>
 		    		<div class="inner">
 		    			<div class="inner--module">
-		    				<h3 > Info</h3>
-			    			<div class="insight-box" style="padding-left:0">
-			    				<h2>{{concert.meta.duration|| "-"}} <span>minutes </span></h2>
-			    			</div>
-			    			<div class="insight-box">
-			    				<h2>{{concert.meta.bpm_average || "-"}} <span>bpm</span></h2>
-
-			    			</div>
+		    				<h3> Info</h3>
 			    			<div class="insight-box">
 			    				<h2>{{concert.tracks.length || "-"}} <span>tracks </span></h2>
-
-			    				
-			    			</div>
-			    			<div class="insight-box">
-			    				<h2>{{concert.media.length || "-"}} <span> media</span> </h2>
 			    			</div>
 		    			</div>
 		    			<div class="inner--module setlist-container wow fadeIn">
@@ -83,8 +67,6 @@
 		    			  	</div>
 		    			</div>
 	    			
-	    			
-
 	    			<div class="inner--module genres-viz wow fadeIn flex-row">
 	    				<div class="media-container flex-column">
 		    				<h3 ng-show="concert.media.length > 0"> Social </h3>
