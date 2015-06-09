@@ -4,8 +4,17 @@
 	width: 100%;
 	background: transparent;
 	
+
 	.indicator{
-	  height: 200px;
+		@include breakpoint(small) {
+			
+			top: 35px;
+			
+
+		}
+
+	  
+	  
 	  left: auto;
 	  position: relative;
 	  text-align: center;
@@ -49,12 +58,16 @@
 		
 	}
 }
-.header--content.second {
-	top: 76px;
-    display: inline-flex;
-	background: #56626e;
-	width: 100%;
-	height: 100%;
-	/* top: 0; */
-	left: 0;
-}
+	.header--content.second {
+		top: 76px;
+		@include breakpoint(medium) {
+			display: inline-flex;
+		 }
+
+
+		background: #56626e;
+		width: 100%;
+		height: 100%;
+		/* top: 0; */
+		left: 0;
+	}
