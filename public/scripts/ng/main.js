@@ -137,8 +137,8 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	var youtubeOverTime =[];
 	var soundcloudOverTime =[];
 
-	maxYoutube = 100000;
- 	maxSoundCloud = 100000;
+	maxYoutube = 10000000;
+ 	maxSoundCloud = 10000000;
 	//TODO : INTEGRATE SETMINE!
 	setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
 	setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
