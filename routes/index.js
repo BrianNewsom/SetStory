@@ -50,11 +50,14 @@ router.get('/api/artist/social_media/updateById', function(req, res, next){
 
 router.get('/api/artist/social_media/:artistName', function(req, res, next){
     /* TODO: Get MBID from artists table once it's populated - this should always work but often requires two calls to openaura. */
-    openaura.getMBID(req.params.artistName, function(musicbrainz_id) {
-        artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
-            res.json(data);
-        })
-    });
+    // openaura.getMBID(req.params.artistName, function(musicbrainz_id) {
+    //     artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
+    //         res.json(data);
+    //     })
+    // });
+    setmine.getSocialMediaMetrics(req.params.artistName, function(data) {
+        res.json(data)
+    })
 })
 
 router.get('/api/artist/getMBID', function(req, res, next){
@@ -195,7 +198,7 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
     })
 })
 
-router.get('/api/socialmedia/setrecords', function(req,res,next){
+router.get('/api/socialmedia/demolineup', function(req,res,next){
     artist_social_media.updateDemoLineupArtists(function(data) {
         res.json({"response": data});
     })

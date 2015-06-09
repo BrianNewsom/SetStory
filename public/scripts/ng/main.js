@@ -106,6 +106,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 		    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
 		    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
 		 $scope.socialset = data;
+		 
 
 		 $scope.playsOverTime = {
 			setmine: [
@@ -163,8 +164,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
 
     	});
-
-		
 
     }
 
@@ -322,6 +321,9 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	loadData("/api/lineup/event/" + $scope.eventName)
 
+	// Pulls from latest database values from setmine/api/v/7/artist/metrics/social/:artistName for all artists in lineup.
+	// If none found, pull from the route that live generates
+
 	var getSocialMediaData = function(lineup) {
 
 	}
@@ -329,7 +331,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	$scope.calculateEventScore = function() {
 		$scope.eventScore = $scope.event.lineup.length * 13000;
-
 	}
 
 	$scope.gotoArtist = function(artist){
@@ -397,9 +398,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         $scope.artists= [];
 
 	};
-
-	
-
 
 	$scope.removeArtist = function(i,a){
 		 $scope.detail.lineup.splice(i, 1);
