@@ -17,7 +17,7 @@
 
 .artist-row {
   display: inline-table;
-
+  
   @include breakpoint(small) {
       width: 50%;
       height: 50vw;
@@ -31,6 +31,18 @@
   @include breakpoint(large) {
       width: (100%)/6;
       height: (100vw)/6;
+  }
+  .delete{
+    z-index: 3000;
+    position: absolute;
+    display:none;
+    a {
+      text-decoration: none;
+    }
+  }
+  
+  :hover .delete{
+    display:block;
   }
 
   .artist-lineup-container {

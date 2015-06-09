@@ -402,8 +402,8 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 
 	$scope.removeArtist = function(i,a){
-		 $scope.detail.lineup.splice(i, 1);
-		 calculateSocialAverage();
+		 $scope.event.lineup.splice(i, 1);
+         $scope.calculateEventScore();
 	};
 
 
@@ -413,16 +413,17 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 
 function processArtistImage(artist){
+	if (artist){
 
-
-	if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
-	{
-		 artist.imageURL ='';
-		 artist.artistimageURL =	artist.imageURL;
-	}
-	else {
-		artist.imageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  artist.imageURL;	
-		artist.artistimageURL =	artist.imageURL;
+		if ( artist.imageURL === 'ca6a250fc84f30e571a622185fc8c2c16c7ce64b4.png')
+		{
+			 artist.imageURL ='';
+			 artist.artistimageURL =	artist.imageURL;
+		}
+		else {
+			artist.imageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  artist.imageURL;	
+			artist.artistimageURL =	artist.imageURL;
+		}
 	}
 
 }

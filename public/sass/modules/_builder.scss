@@ -1,5 +1,5 @@
 .builder{
-	height: 410px;
+	height: 455px;
   	width: 100%;
   	padding: 2em;
 }
@@ -8,8 +8,15 @@
 	
 	.horizontal-scroll {
 	    width: 100%;
-	    height:210px;
+	    
 
+	    @include breakpoint(small) {
+        	height:210px;
+	      }
+
+	      @include breakpoint(medium) {
+	        height:245px;
+	      }
 		display: inline-flex;	    
 		overflow-x: scroll;
 	    overflow-y: hidden;

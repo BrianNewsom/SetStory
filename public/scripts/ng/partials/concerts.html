@@ -55,13 +55,15 @@
 				<h2 class="wow animated">Lineup</h2>
 				<div class="horizontal-scroll">
 
-					<div class="wow  animated artist-row" ng-repeat="artist in event.lineup">
+					<div class="wow animated artist-row" ng-repeat="artist in event.lineup">
 						<div ng-click="gotoArtist(artist)" class="artist-lineup-container wow slideInLeft animated">
-							<div  ng-click="gotoArtist(artist)" class="hand artist-lineup">
+							<div class="hand delete"><a href=""  ng-click="removeArtist($index)"><h1>X</h1></a> </div>
+							<div ng-click="gotoArtist(artist)" class=" artist-lineup">
 								<img ng-src="{{artist.artistimageURL}}"/>
 							</div>
-							<div class="artist-lineup-text">
-								<div ng-click="gotoArtist(artist)">{{artist.artist | limitTo:20}}</div>
+							<div class="hand artist-lineup-text">
+								<div>
+									<a href="" ng-click="gotoArtist(artist)"> {{artist.artist | limitTo:20}} </a></div>
 							</div>
 						</div>
 					</div>

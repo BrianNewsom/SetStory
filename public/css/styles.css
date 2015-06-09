@@ -248,18 +248,27 @@ p {
 }
 
 .builder {
-  height: 410px;
+  height: 455px;
   width: 100%;
   padding: 2em;
 }
 
 .lineup-container .horizontal-scroll {
   width: 100%;
-  height: 210px;
   display: inline-flex;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+}
+@media (min-width: 320px) {
+  .lineup-container .horizontal-scroll {
+    height: 210px;
+  }
+}
+@media (min-width: 768px) {
+  .lineup-container .horizontal-scroll {
+    height: 245px;
+  }
 }
 
 @media (min-width: 320px) {
@@ -567,6 +576,17 @@ p {
     width: 16.66667%;
     height: 16.66667vw;
   }
+}
+.artist-row .delete {
+  z-index: 3000;
+  position: absolute;
+  display: none;
+}
+.artist-row .delete a {
+  text-decoration: none;
+}
+.artist-row :hover .delete {
+  display: block;
 }
 .artist-row .artist-lineup-container {
   position: relative;
