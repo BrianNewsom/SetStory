@@ -35,9 +35,21 @@
   .delete{
     z-index: 3000;
     position: absolute;
+    top: 5px;
+    left: 5px;
     display:none;
-    a {
+    a{
       text-decoration: none;
+      i.fa{
+        background-color:$grey-dark;
+        color: white;
+      }
+      i.fa:hover{
+        background-color:$grey-dark;
+        color: white;
+        box-shadow: 0 0 0 1px white inset;
+        
+      }
     }
   }
   

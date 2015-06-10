@@ -11,11 +11,11 @@ var soundcloud = require('../apiHandlers/soundcloud')
 var instagram = require('../apiHandlers/instagram')
 var stubhub = require('../apiHandlers/stubhub')
 
-
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
 var scripts = require('../controllers/scripts')
+var ava = require('../controllers/ava')
 
 var jf = require('jsonfile')
 
@@ -96,6 +96,13 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
     }
 
 });
+
+// Get AVA booking
+router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
+    ava.calculateBookingValue(req.params.artist, function(data) {
+        res.json("response": data)
+    })
+})
 
 // Get :models names of Artists or events by matching :name
 

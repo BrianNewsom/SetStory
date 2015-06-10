@@ -70,7 +70,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
     	var url = '/api/artist/avascore/' + $scope.choice;
 
     	console.log(url);
-
+    	$scope.artistScore = 12345;
     	$http.get(url).success(function(metadata) {
     		console.log(metadata);
     		$scope.artistScore = metadata.ava_score || 12345;

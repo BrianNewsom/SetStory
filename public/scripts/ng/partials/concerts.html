@@ -57,7 +57,7 @@
 
 					<div class="wow animated artist-row" ng-repeat="artist in event.lineup">
 						<div ng-click="gotoArtist(artist)" class="artist-lineup-container wow slideInLeft animated">
-							<div class="hand delete"><a href=""  ng-click="removeArtist($index)"><h1>X</h1></a> </div>
+							<div class="hand delete"><a href=""  ng-click="removeArtist($index)"><i class="fa fa-2x fa-cross">x</i></a> </div>
 							<div ng-click="gotoArtist(artist)" class=" artist-lineup">
 								<img ng-src="{{artist.artistimageURL}}"/>
 							</div>

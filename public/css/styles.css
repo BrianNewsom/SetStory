@@ -580,10 +580,21 @@ p {
 .artist-row .delete {
   z-index: 3000;
   position: absolute;
+  top: 5px;
+  left: 5px;
   display: none;
 }
 .artist-row .delete a {
   text-decoration: none;
+}
+.artist-row .delete a i.fa {
+  background-color: #5a5a5a;
+  color: white;
+}
+.artist-row .delete a i.fa:hover {
+  background-color: #5a5a5a;
+  color: white;
+  box-shadow: 0 0 0 1px white inset;
 }
 .artist-row :hover .delete {
   display: block;
