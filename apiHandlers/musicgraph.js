@@ -10,8 +10,7 @@ musicgraph.getSongInfo = function(artist,title,cb){
     });
 };
 
-musicgraph.getArtistInfo = function(artist, cb){
-    var artistName = artist.artist
+musicgraph.getArtistInfo = function(artistName, cb){
     rest.get('http://api.musicgraph.com/api/v2/artist/search', {
         query: {'api_key': musicgraph.api_key, 'name': artistName, 'limit' : 1}
     }).on('complete', function(data) {

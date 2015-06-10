@@ -15,8 +15,8 @@ angular.module('myApp')
 
 
   // Set the dimensions of the canvas / graph
-              var margin  = {top: 30, right: 20, bottom: 30, left: 100},
-                  width   = 400 - margin.left - margin.right,
+              var margin  = {top: 30, right: 20, bottom: 30, left: 20},
+                  width   = 600,
                   height  = 270 - margin.top - margin.bottom;
 
               
@@ -26,7 +26,7 @@ angular.module('myApp')
 
               // Define the axes
               var xAxis = d3.svg.axis().scale(x)
-              .orient("bottom").ticks(5);
+              .orient("bottom").tickFormat(d3.format("d"));
 
               var yAxis = d3.svg.axis().scale(y)
               .orient("left").ticks(5);
@@ -39,16 +39,15 @@ angular.module('myApp')
               // Adds the svg canvas
               var svg = d3.select(".progress-graph")
               .append("svg")
-                  .attr("width", width + margin.left + margin.right)
+                  .attr("width", "100%")
                   .attr("height", height + margin.top + margin.bottom)
               .append("g")
                   .attr("transform", 
                         "translate(" + margin.left + "," + margin.top + ")");
 
               // Get the data
-              d3.csv("tickets-year-cochela.csv", function(error, data) {
+              d3.csv("ticket-history-edc.csv", function(error, data) {
                 data.forEach(function(d) {
-                    
                     d.year = parseInt(d.years);
                     d.tickets = parseInt(d.tickets);
                 });

@@ -5,7 +5,7 @@
 			<div class="header--artist--title wow fadeIn">
 					<h1>{{choice}}</h1>
 					<h2>{{sets.length}} concerts</h2>
-					<h2 class="bookingvalue">Booking Value</h2>
+					<h2 class="bookingvalue">Booking Rating</h2>
 					<h1 class="score">{{artistScore}}</h1>
 			</div> 
 			<ul class="header--artist--info">
@@ -20,7 +20,7 @@
 	<div class="wow fadeIn modules--wrapper content">
 		<div class="module social">
 			<h2>Social</h2>
-			<d3barchart dataset="socialset"> </d3barchart>
+			<d3barchart dataset="artistSocialSet"> </d3barchart>
 		</div>
 		<div ng-repeat="play in plays" class="module totalplays {{play.name}}-module">
 			<h2>Total Plays <i class="fa fa-{{play.name}}"></i></h2>

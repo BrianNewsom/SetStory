@@ -64,7 +64,6 @@ angular.module('myApp')
 
 
         scope.$watch('dataset', function(dataset) {
-          console.log(dataset);
 
           chartData = dataset;
           

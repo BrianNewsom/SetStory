@@ -21,9 +21,27 @@
 		}
 
 		@include breakpoint(medium) {
-			width: 25%;
 			font-size:2em;
 		}
+		.flex-row {
+			padding:8px 0;
+			margin: 0 20%;
+			border-bottom: 1px solid @blue;
+			strong {
+				color:$green;
+			}
+		}
+	}
+	.artists-number {
+		color:$blue;
+		padding-top: 8px;
+		.score {
+			padding:5px 0;
+		}
+	}
+	.booking-value {
+		padding:5px 0;
+		font-size:1.5rem;
 	}
 	.header--top {
 		padding:25px;

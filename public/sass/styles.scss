@@ -22,3 +22,18 @@
 @import 'sections/concerts';
 @import 'sections/artists';
 
+.flex-row {
+	@include flex-row
+}
+.flex-column {
+	@include flex-column
+}
+.flex {
+	@include flex(1,1,auto)
+}
+.flex-zero {
+	@include flex(0,1,auto)
+}
+.flex-fixed {
+	@include flex(1,1,0)
+}

@@ -81,6 +81,17 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
     $scope.getArtistScore();
 
+    // Openaura Social Media
+
+    // $scope.getArtistSocialMedia() = function() {
+    // 	var url = "/api/getSocialMedia/?query=" + $scope.choice
+
+    // 	$http.get(url).success(function(data) {
+    // 		console.log(data)
+    // 	})
+    // }
+
+	// Setmine Social Media
 
     $scope.getArtistSocialMedia = function() {
     	var url = 'http://setmine.com/api/v/7/artist/metrics/social/' + $scope.choice;
@@ -104,28 +115,16 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			    data.push({number: 3, value: social.instagram_followers, name: "instagram", max: 356000000});
 			    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
 			    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
-			 $scope.socialset = data;
-			 
 
-			 $scope.playsOverTime = {
+			$scope.artistSocialSet = data;
+			
+			$scope.playsOverTime = {
 				setmine: [
 					2000,
 					3000,
 					4000,
 					5000
-				],
-				soundcloud: [
-					2500,
-					3500,
-					4500,
-					5500
-				],
-				youtube: [
-					2800,
-					3800,
-					4800,
-					5800
-				],
+				]
 			}
 			var setmineOverTime =[];
 			var youtubeOverTime =[];
@@ -136,6 +135,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			maxSetMine  = 10000000;
 
 			//TODO : INTEGRATE SETMINE!
+
 			setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
 			setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
 			setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
@@ -148,13 +148,13 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			youtubeOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.youtube.overtime[4][1]});
 
 
-				soundcloudOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.soundcloud.overtime[1][1]});
+			soundcloudOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.soundcloud.overtime[1][1]});
 			soundcloudOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.soundcloud.overtime[2][1]});
 			soundcloudOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.soundcloud.overtime[3][1]});
 			soundcloudOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.soundcloud.overtime[4][1]});
 
 
-			plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
+			// plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
 			plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
 			plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
 
@@ -170,7 +170,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
               .domain([0, item.max])
               .range([0, 160]);
         var styles = {height: scaleY(play) + "px"};
-        console.log(styles);      
 		return styles;
 
 	};
@@ -252,26 +251,23 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	$scope.choice = decodeURIComponent($scope.choice);
 
 });
+
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
 
 	
-	$scope.socialset =
+	$scope.eventSocialSet =
 	    [{"number":1, "value":20, "max":20},
 	    {"number":2, "value":20, "max":20},
 	    {"number":3, "value":20, "max":20},
 	    {"number":4, "value":20, "max":20},
-	    {"number":5, "value":20, "max":20},
-	    {"number":6, "value":20, "max":20},
-	    {"number":7, "value":20, "max":20}];
+	    {"number":5, "value":20, "max":20}];
 
     var sources = [];
-	    sources.push({name: "google-plus", max: 10000000  * 1.2});
-	    sources.push({name: "vimeo-square", max: 90000 * 1.2});
 	    sources.push({name: "facebook", max: 100000000 * 1.2});
 	    sources.push({name: "twitter", max: 70697964 * 1.2});
+	    sources.push({name: "instagram", max: 1000000});
 	    sources.push({name: "youtube", max: 30000000000});
 	    sources.push({name: "soundcloud", max: 1000000});
-	    sources.push({name: "setmine", max: 1000000});
 
 
 	$interval(function(){
@@ -285,21 +281,30 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         	"value": Math.floor(Math.random()*s.max)});
       }
 
-    	$scope.socialset = data;  
+    	$scope.eventSocialSet = data;  
   	},3000);
     
-
 	$scope.eventName = $routeParams.name;
-
 	
 	var loadData = function(url){
 		console.log(url)
 		$http.get(url).success(function(data) {
+			console.log(data)
 			$scope.event = data.response;
 
 			$scope.calculateEventScore();
-			
+			var lowestBooking = $scope.event.lineup[0].booking_value;
+			var highestBooking = $scope.event.lineup[$scope.event.lineup.length-1].booking_value;
+			var totalBooking = 0;
+
 			for (var i = 0; i < $scope.event.lineup.length; i++) {
+				totalBooking += $scope.event.lineup[i].booking_value
+				if($scope.event.lineup[i].booking_value < lowestBooking) {
+					lowestBooking = $scope.event.lineup[i].booking_value
+				}
+				if($scope.event.lineup[i].booking_value > highestBooking) {
+					highestBooking = $scope.event.lineup[i].booking_value
+				}
 				if ( $scope.event.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
 				{
 					 $scope.event.lineup[i].artistimageURL = '';
@@ -307,9 +312,16 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 				else {
 					 $scope.event.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  $scope.event.lineup[i].artistimageURL;	
 				}
+				console.log("Current: " + $scope.event.lineup[i].booking_value)
 
 						
 			};
+
+			$scope.event.averageBooking = parseInt(totalBooking/$scope.event.lineup.length);
+			$scope.event.lowestBooking = lowestBooking;
+			$scope.event.highestBooking = highestBooking;
+
+
 		});
 	}
 

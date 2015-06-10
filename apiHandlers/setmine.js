@@ -68,7 +68,6 @@ setmine.getArtistByName = function(artistName, callback) {
 
 setmine.getArtistPopularity = function(artist, callback) {
     var artistID = artist;
-    console.log("getArtistPopularity")
     if(isNaN(artist)) {
         var matchedArtist = _.findWhere(setmine.artists, {artist: artistID}).id
         if(matchedArtist) {
@@ -91,8 +90,31 @@ setmine.getEventLineupByID = function(eventID, callback) {
     rest.get("http://setmine.com/api/v/7/lineup/" + eventID).on('complete', function(response) {
         if(response.status == "success") {
             response.payload.lineup = _.extend(response.payload.lineup, {date: "June 19th-21st"})
-            console.log(response.payload.lineup)
-            callback(response.payload.lineup)
+
+            // For Demo Lineup
+            // TODO: Either do this for all lineups, generate booking values upon initialization
+
+            if(eventID == 762) {
+                connection.query("SELECT * FROM booking_values", function(err, bookingValues) {
+                    if(err) console.log(err)
+                    else {
+                        response.payload.lineup.lineup = _.filter(response.payload.lineup.lineup, function(artist) {
+                            var artist_booking_value = _.findWhere(bookingValues, {artist_id: +artist.id})
+                            if(artist_booking_value) {
+                                artist = _.extend(artist, {booking_value: artist_booking_value.raw_score})
+                            } else {
+                                artist = _.extend(artist, {booking_value: 0})
+                            }
+                            return artist
+                        })
+                        callback(response.payload.lineup)
+
+                    }
+                })  
+            } else {
+                callback(response.payload.lineup)
+
+            }
         }
     })
 }

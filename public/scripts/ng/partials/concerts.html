@@ -7,33 +7,41 @@
 			<!-- <a href="#/" class="button-white">Back to Search..</a> -->
 		</div>
 		<div class="header--content second">
-			<div class="indicator">
-				<h2>Artists</h2>
-				<h3><span class="score">{{event.lineup.length}}</h3>
-				<h2><strong>Booking Value</strong></h2>
-				<h2>Average</h2>
-				<h3><span class="average-booking-value">{{event.lineup.length}}</h3>
-				<h2>Lowest</h2>
-				<h3><span class="score">{{event.lineup.length}}</h3>
-				<h2>Highest</h2>
-				<h3><span class="score">{{event.lineup.length}}</h3>
-
+			<div class="indicator flex-column">
+				<span class="flex-column artists-number">
+					<h2 class="flex">Artists</h2>
+					<span class="score flex">{{event.lineup.length}}</span>
+				</span>
+				<span class="flex-row">
+					<h2 class="flex-fixed"><strong>Booking Value</strong></h2>
+				</span>
+				<span class="flex-row">
+					<h2 class="flex-fixed">Average</h2>
+					<span class="flex-fixed average booking-value">{{event.averageBooking}}</span>
+				</span>
+				<span class="flex-row">
+					<h2 class="flex-fixed">Lowest</h2>
+					<span class="flex-fixed lowest booking-value">{{event.lowestBooking}}</span>
+				</span>
+				<span class="flex-row">
+					<h2 class="flex-fixed">Highest</h2>
+					<span class="flex-fixed highest booking-value">{{event.highestBooking}}</span>
+				</span>
 			</div>
 			<div class="module visits wow fadeIn">
 				<h2>Ticket Sales</h2>
 				<ul class="module--visit--score">
-
 				</ul>
 
 				<ul class="visit--score--dates">
-					<li><span class="ball"></span> New visitors</li>
-					<li><span class="ball blue"></span> Returning visitor</li>
+					<!-- <li><span class="ball"></span> New visitors</li>
+					<li><span class="ball blue"></span> Returning visitor</li> -->
 				</ul>
 
 				<d3percentage dataset="60"></d3percentage>
 			</div>
 			<div class="indicator">
-				<h2> Event Score </h2>
+				<h2> Event Rating </h2>
 				<h3><span class="score">{{eventScore}}</h3>
 			</div>
 		</div>
@@ -57,7 +65,7 @@
 
 					<div class="wow animated artist-row" ng-repeat="artist in event.lineup">
 						<div ng-click="gotoArtist(artist)" class="artist-lineup-container wow slideInLeft animated">
-							<div class="hand delete"><a href=""  ng-click="removeArtist($index)"><i class="fa fa-2x fa-cross">x</i></a> </div>
+							<div class="hand delete"><a href=""  ng-click="removeArtist($index)"><i class="wow animated fa fa-2x fa-cross">x</i></a> </div>
 							<div ng-click="gotoArtist(artist)" class=" artist-lineup">
 								<img ng-src="{{artist.artistimageURL}}"/>
 							</div>
@@ -86,7 +94,7 @@
 
 		<div class="module social">
 			<h2>Social</h2>
-			<d3barchart dataset="socialset"> </d3barchart>
+			<d3barchart dataset="eventSocialSet"> </d3barchart>
 		</div>
 	</div>
 
