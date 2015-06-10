@@ -67,7 +67,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
 	$scope.getArtistScore = function() {
 
-    	var url = '/api/artist/avascore/' + $scope.choice;
+    	var url = '/api/artist/ava/bookingvalue/' + $scope.choice;
 
     	console.log(url);
     	$scope.artistScore = 12345;
