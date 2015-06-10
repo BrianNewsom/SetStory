@@ -100,7 +100,7 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
 // Get AVA booking
 router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
     ava.calculateBookingValue(req.params.artist, function(data) {
-        res.json("response": data)
+        res.json({"response": data})
     })
 })
 
