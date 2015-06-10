@@ -7,29 +7,23 @@
 
 	.indicator{
 		@include breakpoint(small) {
-			
 			top: 35px;
-			
-
 		}
-
-	  
-	  
-	  left: auto;
-	  position: relative;
-	  text-align: center;
-	  top: 28%;
+		left: auto;
+		position: relative;
+		text-align: center;
+		top: 28%;
   		position: relative;
   		text-align: center;
-  		 @include breakpoint(small) {
-        	width: 100%;
-        	font-size:3em;
-	      }
+		@include breakpoint(small) {
+			width: 100%;
+			font-size:3em;
+		}
 
-	      @include breakpoint(medium) {
-	        width: 25%;
-	        font-size:2em;
-	      }
+		@include breakpoint(medium) {
+			width: 25%;
+			font-size:2em;
+		}
 	}
 	.header--top {
 		padding:25px;
@@ -55,7 +49,6 @@
 		z-index: 1;
 		top: 0;
 		width: 100%;
-		
 	}
 }
 	.header--content.second {

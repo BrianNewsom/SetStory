@@ -1202,12 +1202,20 @@ path.color1 {
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   transform: translateY(-50%);
-  -moz-transform: translateY(-90%);
-  -ms-transform: translateY(-90%);
-  -webkit-transform: translateY(-90%);
-  transform: translateY(-90%);
   text-align: center;
   z-index: 1;
+}
+.artist .header .header--artist--title .bookingvalue {
+  padding-top: 5px;
+}
+.artist .header .header--artist--title .score {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  color: #35c9a9;
+  background-color: white;
+  border-radius: 100vh;
+  padding: 5px;
 }
 .artist .header .header--artist--info {
   position: absolute;

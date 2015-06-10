@@ -19,38 +19,58 @@ echonest.getTrackPopularity = function(trackTitle, cb){
 };
 
 echonest.getArtistPopularity = function(artist, cb){
-    rest.get('http://developer.echonest.com/api/v4/artist/search', {
-        query : {
-            "api_key": api_key,
-            "name": artist
-        }
-    }).on('complete', function(data){
-        // Use matching artist's id to get popularity
-        if (!data.response.artists[0]){
-            cb(0);
-            return 1;
-        }
-        else {
-            var artist_id = data.response.artists[0].id;
-            rest.get('http://developer.echonest.com/api/v4/artist/hotttnesss', {
-                query: {
-                    "api_key" : api_key,
-                    "id" : artist_id
-                }
-            }).on('complete', function(artist_data){
-                if(!artist_data) {
-                    cb(0);
-                    return 1;
-                }
-                var popularity = artist_data.response.artist.hotttnesss;
-                cb({
-                    "artist_name":artist,
-                    "popularity":popularity
-                })
-                return 0;
+    if(artist.musicbrainz_id) {
+        var artist_id = artist.musicbrainz_id
+        rest.get('http://developer.echonest.com/api/v4/artist/hotttnesss', {
+            query: {
+                "api_key" : api_key,
+                "id" : artist_id
+            }
+        }).on('complete', function(artist_data){
+            console.log("echonest")
+            console.log(artist_data)
+
+            if(!artist_data) {
+                cb(0);
+                return 1;
+            }
+            var popularity = artist_data.response.artist.hotttnesss;
+            cb(popularity)
+            return 0;
         });
-        }
-    })
+    } else {
+        rest.get('http://developer.echonest.com/api/v4/artist/search', {
+            query : {
+                "api_key": api_key,
+                "name": artist.artist
+            }
+        }).on('complete', function(data){
+            // Use matching artist's id to get popularity
+            console.log(data)
+            if (!data.response.artists[0]){
+                cb(0);
+                return 1;
+            }
+            else {
+                var artist_id = data.response.artists[0].id;
+                rest.get('http://developer.echonest.com/api/v4/artist/hotttnesss', {
+                    query: {
+                        "api_key" : api_key,
+                        "id" : artist_id
+                    }
+                }).on('complete', function(artist_data){
+                    if(!artist_data) {
+                        cb(0);
+                        return 1;
+                    }
+                    var popularity = artist_data.response.artist.hotttnesss;
+                    cb(popularity)
+                    return 0;
+                });
+            }
+        })
+    }
+    
 }
 
 module.exports = echonest;

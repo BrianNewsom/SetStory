@@ -11,9 +11,10 @@ musicgraph.getSongInfo = function(artist,title,cb){
 };
 
 musicgraph.getArtistInfo = function(artist, cb){
+    var artistName = artist.artist
     rest.get('http://api.musicgraph.com/api/v2/artist/search', {
-        query: {'api_key': musicgraph.api_key, 'name': artist, 'limit' : 1}
-    }).on('complete', function(data){
+        query: {'api_key': musicgraph.api_key, 'name': artistName, 'limit' : 1}
+    }).on('complete', function(data) {
         try {
             cb(data.data[0])
 

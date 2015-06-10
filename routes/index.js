@@ -86,11 +86,7 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
         };
         res.json(result);
     } else {
-        console.log("musicgraph")
         musicgraph.getArtistInfo(req.params.name, function(data){
-            console.log("got artist info")
-            console.log(data)
-
             res.json(data);
         });
     }
@@ -169,12 +165,6 @@ router.get('/api/getSocialMedia', function(req, res, next) {
 
 router.get('/api/story/:artistName', function(req, res, next){
     unified.story(req.params.artistName, function(data) {
-        res.json(data);
-    })
-})
-
-router.get('/api/popularity/set/:artist/:event', function(req, res, next){
-    setmine.popularity(req.params.artist, req.params.event, function(data) {
         res.json(data);
     })
 })

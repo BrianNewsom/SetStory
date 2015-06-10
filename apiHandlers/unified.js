@@ -18,7 +18,6 @@ unified.story = function(artist, supercallback){
             })
         }
     ], function(err, results) {
-        console.log(results)
         supercallback(results[0])
     })
 

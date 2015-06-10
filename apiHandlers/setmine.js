@@ -64,8 +64,22 @@ setmine.getArtistByName = function(artistName, callback) {
 }
 
 setmine.getArtistPopularity = function(artist, callback) {
-    setmine.getArtistByID(artist.id, function(artist) {
-        callback(artist[0].popularity)
+    var artistID = artist;
+    if(isNaN(artist)) {
+        var matchedArtist = _.findWhere(setmine.artists, {artist: artistID}).id
+        if(matchedArtist) {
+            artistID = matchedArtist.id
+        } else {
+            callback()
+            return
+        }
+    }
+    setmine.getArtistByID(artistID, function(artist) {
+        var totalSetPopularity = 0;
+        for(var i in artist.sets) {
+            totalSetPopularity += artist.sets[i].popularity
+        }
+        callback(totalSetPopularity)
     })
 }
 
