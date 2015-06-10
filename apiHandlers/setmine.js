@@ -1,9 +1,12 @@
 var rest = require('restler');
 var async = require('async')
+var _ = require('underscore')
+
 var setmine = {};
 var api_version = "7"
-var _ = require('underscore')
+
 var socialmedia = require('../models/socialmedia')
+var artistModel = require('../models/artists')
 
 var settings = require('../config/settings');
 var mysql = require('mysql');
@@ -65,6 +68,7 @@ setmine.getArtistByName = function(artistName, callback) {
 
 setmine.getArtistPopularity = function(artist, callback) {
     var artistID = artist;
+    console.log("getArtistPopularity")
     if(isNaN(artist)) {
         var matchedArtist = _.findWhere(setmine.artists, {artist: artistID}).id
         if(matchedArtist) {
@@ -111,7 +115,17 @@ setmine.getSocialMediaMetrics = function(artistName, callback) {
     rest.get("http://setmine.com/api/v/7/artist/metrics/social/" + artistName).on('complete', function(response) {
         callback(response)
     })
+}
 
+setmine.getDemoLineupBookingValues = function(callback) {
+    var ava = require('../controllers/ava')
+
+    setmine.getEventLineupByID(762, function(lineup) {
+        var demolineup = lineup.lineup
+        for(var i in demolineup) {
+            ava.calculateBookingValue(demolineup[i])
+        }
+    })
 }
 
 // First parameter 'data' must be an array with elements that look like this:

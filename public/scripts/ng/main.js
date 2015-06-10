@@ -73,7 +73,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
     	$http.get(url).success(function(data) {
     		console.log(data.response);
-    		$scope.artistScore = data.response || "No Score";
+    		$scope.artistScore = data.response.raw_score || "No Score";
     	});
 		
 
@@ -82,94 +82,88 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
     $scope.getArtistScore();
 
 
-    $scope.getArtistMediaData = function() {
+    $scope.getArtistSocialMedia = function() {
     	var url = 'http://setmine.com/api/v/7/artist/metrics/social/' + $scope.choice;
 
     	console.log(url);
 
     	$http.get(url).success(function(metadata) {
-    	
-    	console.log(metadata);
-    	
-    	var social = {
-			facebook_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.facebook.total),
-			twitter_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.twitter.total),
-			instagram_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.instagram.total),
-			soundcloud_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.soundcloud.total_plays),
-			youtube_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.youtube.total_plays),
-		}
+			console.log(metadata);
+			
+			var social = {
+				facebook_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.facebook.total),
+				twitter_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.twitter.total),
+				instagram_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.instagram.total),
+				soundcloud_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.soundcloud.total_plays),
+				youtube_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.youtube.total_plays),
+			}
 
-	    var data = [];
-		    data.push({number: 1, value: social.facebook_followers, name: "facebook", max: 10000000 * 1.2});
-		    data.push({number: 2, value: social.twitter_followers, name: "twitter", max: 70697964 * 1.2});
-		    data.push({number: 3, value: social.instagram_followers, name: "instagram", max: 356000000});
-		    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
-		    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
-		 $scope.socialset = data;
-		 
+		    var data = [];
+			    data.push({number: 1, value: social.facebook_followers, name: "facebook", max: 10000000 * 1.2});
+			    data.push({number: 2, value: social.twitter_followers, name: "twitter", max: 70697964 * 1.2});
+			    data.push({number: 3, value: social.instagram_followers, name: "instagram", max: 356000000});
+			    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
+			    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
+			 $scope.socialset = data;
+			 
 
-		 $scope.playsOverTime = {
-			setmine: [
-				2000,
-				3000,
-				4000,
-				5000
-			],
-			soundcloud: [
-				2500,
-				3500,
-				4500,
-				5500
-			],
-			youtube: [
-				2800,
-				3800,
-				4800,
-				5800
-			],
-		}
-	var setmineOverTime =[];
-	var youtubeOverTime =[];
-	var soundcloudOverTime =[];
+			 $scope.playsOverTime = {
+				setmine: [
+					2000,
+					3000,
+					4000,
+					5000
+				],
+				soundcloud: [
+					2500,
+					3500,
+					4500,
+					5500
+				],
+				youtube: [
+					2800,
+					3800,
+					4800,
+					5800
+				],
+			}
+			var setmineOverTime =[];
+			var youtubeOverTime =[];
+			var soundcloudOverTime =[];
 
-	maxYoutube = 10000000;
-	maxSoundCloud = 10000000;
-	maxSetMine  = 10000000;
+			maxYoutube = 10000000;
+			maxSoundCloud = 10000000;
+			maxSetMine  = 10000000;
 
-	//TODO : INTEGRATE SETMINE!
-	setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
-	setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
-	setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
-	setmineOverTime.push({name:"MAY", plays: $scope.playsOverTime.setmine[3]});
-
-
-	youtubeOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.youtube.overtime[1][1]});
-	youtubeOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.youtube.overtime[2][1]});
-	youtubeOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.youtube.overtime[3][1]});
-	youtubeOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.youtube.overtime[4][1]});
+			//TODO : INTEGRATE SETMINE!
+			setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
+			setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
+			setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
+			setmineOverTime.push({name:"MAY", plays: $scope.playsOverTime.setmine[3]});
 
 
- 	soundcloudOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.soundcloud.overtime[1][1]});
-	soundcloudOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.soundcloud.overtime[2][1]});
-	soundcloudOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.soundcloud.overtime[3][1]});
-	soundcloudOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.soundcloud.overtime[4][1]});
+			youtubeOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.youtube.overtime[1][1]});
+			youtubeOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.youtube.overtime[2][1]});
+			youtubeOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.youtube.overtime[3][1]});
+			youtubeOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.youtube.overtime[4][1]});
 
 
-	plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
-	plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
-	plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
-
-	$scope.plays = plays;
-
+				soundcloudOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.soundcloud.overtime[1][1]});
+			soundcloudOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.soundcloud.overtime[2][1]});
+			soundcloudOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.soundcloud.overtime[3][1]});
+			soundcloudOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.soundcloud.overtime[4][1]});
 
 
-    	});
+			plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
+			plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
+			plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
 
-    }
+			$scope.plays = plays;
+		});
 
-    $scope.getArtistMediaData();
+	}
 
-	
+    $scope.getArtistSocialMedia();
 	
 	$scope.scaleHeight = function(item, play){
 		var scaleY = d3.scale.linear()

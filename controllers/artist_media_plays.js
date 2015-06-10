@@ -4,7 +4,7 @@ var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.setstory);
 
 var artist_media_plays = {};
-var artists = require('../controllers/artists');
+var artists = require('../models/artists');
 
 var youtube = require('../apiHandlers/youtube');
 var soundcloud = require('../apiHandlers/soundcloud');

@@ -12,6 +12,7 @@ var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
 
 var ava = {}
+ava.version = 1
 
 // Gets last calculated value of the artist's booking value
 // @param artist:
@@ -56,17 +57,31 @@ ava.calculateBookingValue = function(artistName, supercallback) {
             setmine: results[0],
             echonest: results[1]
         }
-        ava.algorithm(rawScores, function(rawAVAScore) {
+        ava.calculateRaw(rawScores, function(rawAVAScore) {
             var roundedRawAVA = Math.floor(rawAVAScore)
-            supercallback(roundedRawAVA)
+
+            //Saves and timestamps the calculated booking value
+            connection.query("INSERT INTO booking_values(artist_id, raw_score, ava_version) VALUES (?,?,?)", [matchedArtist.id, roundedRawAVA, ava.version], function(err, data) {
+                if(err) console.log(err)
+                else {
+                    console.log(data)
+                    supercallback({
+                        artist_id: matchedArtist.id,
+                        raw_score: roundedRawAVA,
+                        ava_version: ava.version
+                    })
+                }
+            })
         })
     })
 }
 
-ava.algorithm = function(rawNumbers, callback) {
+ava.calculateRaw = function(rawNumbers, callback) {
     console.log("Setmine: " + rawNumbers.setmine)
-    console.log("Echonest: " + rawNumbers.echonest)
-    var rawAVAScore = 1 + (rawNumbers.setmine * rawNumbers.echonest);
+    console.log("Echonest: ", rawNumbers.echonest)
+
+    var rawAVAScore = ((.95*(rawNumbers.echonest.hotttnesss)) + (.05*(1/rawNumbers.echonest.hotttnesss_rank)))*100
+
     console.log("RAWAVA: " + rawAVAScore)
     callback(rawAVAScore)
 }

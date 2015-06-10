@@ -462,7 +462,7 @@ p {
   transform: translate(-50%, 0);
 }
 .social .bars li .bars--item {
-  background: #35c9a9;
+  background: #19B5FE;
   height: 5%;
   width: 100%;
   position: absolute;
@@ -1190,7 +1190,7 @@ path.color1 {
   -khtml-opacity: 0.8;
   -moz-opacity: 0.8;
   filter: alpha(opacity=80);
-  background-color: #19B5FE;
+  background-color: #35c9a9;
   width: 100%;
   height: 100%;
   top: 0;

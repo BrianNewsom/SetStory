@@ -49,6 +49,7 @@ openaura.getMBID = function( artist, cb ) {
   } ).on( 'complete', function( res ) {
     try {
       // Found matching artist
+      console.log(res)
       var musicbrainz_id = res[0].musicbrainz_id;
       cb(musicbrainz_id);
     }

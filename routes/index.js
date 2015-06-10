@@ -15,12 +15,13 @@ var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
 var scripts = require('../controllers/scripts')
-var ava = require('../controllers/ava')
+var ava;
 
 var jf = require('jsonfile')
 
 setmine.init(function() {
     console.log("setmine models stored.")
+    ava = require('../controllers/ava')
 })
 
 /* GET home page. */
@@ -95,6 +96,7 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
 
 // Get AVA booking
 router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
+    console.log(req.params.artist)
     ava.calculateBookingValue(req.params.artist, function(data) {
         res.json({"response": data})
     })
@@ -197,6 +199,18 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
 
 router.get('/api/socialmedia/demolineup', function(req,res,next){
     artist_social_media.updateDemoLineupArtists(function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.get('/api/socialmedia/links/demolineup', function(req,res,next){
+    artist_social_media.findDemoLineupSocialMediaLinks(function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.get('/api/musicbrainz/demolineup', function(req,res,next){
+    setmine.getDemoLineupBookingValues(function(data) {
         res.json({"response": data});
     })
 })

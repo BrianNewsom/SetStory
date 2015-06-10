@@ -6,7 +6,7 @@ var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.setstory);
 
 var artist_social_media = {};
-var artists = require('../controllers/artists');
+var artists = require('../models/artists');
 var openaura = require('../apiHandlers/openaura');
 var setmine = require('../apiHandlers/setmine')
 
@@ -37,7 +37,6 @@ artist_social_media.updateArtistByName = function(artistName, cb){
     artist_social_media.updateArtistById(musicbrainz_id, cb)
   })
 }
-
 
 artist_social_media.getArtist = function(id, id_type, cb) {
   connection = mysql.createPool(settings.db.setstory);
