@@ -26,36 +26,36 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
 
     $rootScope.main = true;
     $rootScope.detail = false;
-        $scope.artists = [];
-        $scope.events = [];
+    $scope.artists = [];
+    $scope.events = [];
 
-        // gives another movie array on changez
-        $scope.updateArtists = function(typed){
-            // MovieRetriever could be some service returning a promise
-            var url = '/api/autocomplete/artists/' + typed;
-            
-            $http.get(url).success(function(data) {
-            	console.log(data);
-		    	$scope.artists = data;
-		    });
-            
-        };
-        $scope.gotoArtist = function(c){	
-        	$location.path("/artists/" + c);
-        };
+    // gives another movie array on changez
+    $scope.updateArtists = function(typed){
+        // MovieRetriever could be some service returning a promise
+        var url = '/api/autocomplete/artists/' + typed;
+        
+        $http.get(url).success(function(data) {
+        	console.log(data);
+	    	$scope.artists = data;
+	    });
+        
+    };
+    $scope.gotoArtist = function(c){	
+    	$location.path("/artists/" + c);
+    };
 
-        $scope.updateEvents = function(typed){
-            // MovieRetriever could be some service returning a promise
-            var url = '/api/autocomplete/events/' + typed;
-            
-            $http.get(url).success(function(data) {
-		    	$scope.events = data;
-		    });
-            
-        };
-        $scope.gotoEvent = function(c){	
-        	$location.path("/events/" + c);
-        };
+    $scope.updateEvents = function(typed){
+        // MovieRetriever could be some service returning a promise
+        var url = '/api/autocomplete/events/' + typed;
+        
+        $http.get(url).success(function(data) {
+	    	$scope.events = data;
+	    });
+        
+    };
+    $scope.gotoEvent = function(c){	
+    	$location.path("/events/" + c);
+    };
     
 });
 
@@ -91,6 +91,16 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
     // 	})
     // }
 
+    // Setstory Social Media
+
+    // $scope.getArtistSocialMedia() = function() {
+    // 	var url = "/api/getSocialMedia/?query=" + $scope.choice
+
+    // 	$http.get(url).success(function(data) {
+    // 		console.log(data)
+    // 	})
+    // }
+
 	// Setmine Social Media
 
     $scope.getArtistSocialMedia = function() {
@@ -115,8 +125,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			    data.push({number: 3, value: social.instagram_followers, name: "instagram", max: 356000000});
 			    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
 			    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
-
-			$scope.artistSocialSet = data;
 			
 			$scope.playsOverTime = {
 				setmine: [
@@ -141,7 +149,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
 			setmineOverTime.push({name:"MAY", plays: $scope.playsOverTime.setmine[3]});
 
-
 			youtubeOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.youtube.overtime[1][1]});
 			youtubeOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.youtube.overtime[2][1]});
 			youtubeOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.youtube.overtime[3][1]});
@@ -159,6 +166,8 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 			plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
 
 			$scope.plays = plays;
+			$scope.artistSocialSet = data;
+
 		});
 
 	}
@@ -241,7 +250,7 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 		else {return false; }
 
 	};
-	var url = "/api/story/"+ $scope.choice; 
+	var url = "/api/story/"+ encodeURIComponent($scope.choice); 
 	
 	$http.get(url).success(function(data) {
 		$scope.sets = data;
@@ -253,36 +262,6 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 });
 
 myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $rootScope,$routeParams,$location, $http) {
-
-	
-	$scope.eventSocialSet =
-	    [{"number":1, "value":20, "max":20},
-	    {"number":2, "value":20, "max":20},
-	    {"number":3, "value":20, "max":20},
-	    {"number":4, "value":20, "max":20},
-	    {"number":5, "value":20, "max":20}];
-
-    var sources = [];
-	    sources.push({name: "facebook", max: 100000000 * 1.2});
-	    sources.push({name: "twitter", max: 70697964 * 1.2});
-	    sources.push({name: "instagram", max: 1000000});
-	    sources.push({name: "youtube", max: 30000000000});
-	    sources.push({name: "soundcloud", max: 1000000});
-
-
-	$interval(function(){
-		  var data = [];
-      for(var i = 0; i < sources.length; i++) {
-      	var s = sources[i]
-        data.push({
-        	"name": s.name, 
-        	"number":i, 
-        	"max": s.max,
-        	"value": Math.floor(Math.random()*s.max)});
-      }
-
-    	$scope.eventSocialSet = data;  
-  	},3000);
     
 	$scope.eventName = $routeParams.name;
 	
@@ -293,34 +272,8 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 			$scope.event = data.response;
 
 			$scope.calculateEventScore();
-			var lowestBooking = $scope.event.lineup[0].booking_value;
-			var highestBooking = $scope.event.lineup[$scope.event.lineup.length-1].booking_value;
-			var totalBooking = 0;
-
-			for (var i = 0; i < $scope.event.lineup.length; i++) {
-				totalBooking += $scope.event.lineup[i].booking_value
-				if($scope.event.lineup[i].booking_value < lowestBooking) {
-					lowestBooking = $scope.event.lineup[i].booking_value
-				}
-				if($scope.event.lineup[i].booking_value > highestBooking) {
-					highestBooking = $scope.event.lineup[i].booking_value
-				}
-				if ( $scope.event.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
-				{
-					 $scope.event.lineup[i].artistimageURL = '';
-				}
-				else {
-					 $scope.event.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  $scope.event.lineup[i].artistimageURL;	
-				}
-				console.log("Current: " + $scope.event.lineup[i].booking_value)
-
-						
-			};
-
-			$scope.event.averageBooking = parseInt(totalBooking/$scope.event.lineup.length);
-			$scope.event.lowestBooking = lowestBooking;
-			$scope.event.highestBooking = highestBooking;
-
+			$scope.calculateLineupScore();
+			$scope.calculateLineupSocialMedia();
 
 		});
 	}
@@ -330,13 +283,57 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	// Pulls from latest database values from setmine/api/v/7/artist/metrics/social/:artistName for all artists in lineup.
 	// If none found, pull from the route that live generates
 
-	var getSocialMediaData = function(lineup) {
+	$scope.calculateEventScore = function() {
+		$scope.eventScore = 94;
+		$scope.venueCapacity = resumedNumberStringToNumber("150000")
+		$scope.trendingHashtags = 4
+	}
+
+	$scope.calculateLineupScore = function() {
+		var lowestBooking = $scope.event.lineup[0].booking_value;
+		var highestBooking = $scope.event.lineup[$scope.event.lineup.length-1].booking_value;
+		var totalBooking = 0;
+
+		for (var i = 0; i < $scope.event.lineup.length; i++) {
+			totalBooking += $scope.event.lineup[i].booking_value
+			if($scope.event.lineup[i].booking_value < lowestBooking) {
+				lowestBooking = $scope.event.lineup[i].booking_value
+			}
+			if($scope.event.lineup[i].booking_value > highestBooking) {
+				highestBooking = $scope.event.lineup[i].booking_value
+			}
+			if ( $scope.event.lineup[i].artistimageURL === 'ca6a250fc84f30e571a62286fc8c2c16c7ce64b4.png')
+			{
+				 $scope.event.lineup[i].artistimageURL = '';
+			}
+			else {
+				 $scope.event.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  $scope.event.lineup[i].artistimageURL;	
+			}
+			console.log("Current: " + $scope.event.lineup[i].booking_value)
+
+					
+		};
+
+		$scope.event.totalBooking = totalBooking;
+		$scope.event.averageBooking = parseInt(totalBooking/$scope.event.lineup.length);
+		$scope.event.lowestBooking = lowestBooking;
+		$scope.event.highestBooking = highestBooking;
 
 	}
 
-
-	$scope.calculateEventScore = function() {
-		$scope.eventScore = $scope.event.lineup.length * 13000;
+	$scope.calculateLineupSocialMedia = function() {
+		var url = '/api/lineup/social/' + $scope.event.id;
+		console.log(url)
+		$http.get(url).success(function(data) {
+			console.log(data)
+			var totalSMR = 0;
+			$scope.eventSocialSet = data.response
+			for(var i in data.response) {
+				totalSMR += data.response[i].value
+			}
+			$scope.totalSocialMediaReach = totalSMR;
+		})
+		
 	}
 
 	$scope.gotoArtist = function(artist){
@@ -345,11 +342,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         	$location.path("/artists/" + encoded);
         };
 	}
-
-	$scope.detail = {
-		lineup:[]
-	};
-
 
 	$rootScope.main = true;
 	$rootScope.detail = false;
@@ -365,7 +357,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         	if (data) {
         		var autocompleteArtistOptions = data
         		var lineup = $scope.event.lineup
-
 
         		// Splices allArtists and returns the artists not in lineup
 
@@ -390,14 +381,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
             processArtistImage(data[0]);
             $scope.event.lineup.unshift(data[0]);
             $scope.calculateEventScore();
-            var socialMediaURL = "api/artist/social_media/" + artistName;
-            (function(smURL,item){
-            	$http.get(smURL).success(function(data) {
-            		item.socialMedia = data;
-            		calculateSocialAverage();
-            	});
-            })(socialMediaURL,artist);
-            
+            $scope.calculateLineupSocialMedia();
             
         });
         $scope.choice = '';

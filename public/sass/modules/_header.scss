@@ -25,11 +25,19 @@
 		}
 		.flex-row {
 			padding:8px 0;
-			margin: 0 20%;
-			border-bottom: 1px solid @blue;
-			strong {
-				color:$green;
+			margin: 0 12.5%;
+			border-bottom: 1px solid $blue;
+			.text {
+				margin: auto;
 			}
+			.header-rating {
+				color:$green;
+				font-weight: 800;
+			}
+		}
+		.rating-value {
+			padding:5px 0;
+			font-size:1.5rem;
 		}
 	}
 	.artists-number {
@@ -39,10 +47,7 @@
 			padding:5px 0;
 		}
 	}
-	.booking-value {
-		padding:5px 0;
-		font-size:1.5rem;
-	}
+	
 	.header--top {
 		padding:25px;
 		@include bg-color($blue);

@@ -6,8 +6,11 @@
   background-color: $bg-grey-light;
   @include clearfix;
   
-  h2 {
+  .lineup-header {
     padding: 30px;
+    .score {
+      color:$blue;
+    }
   }
 
   .ng-scope {

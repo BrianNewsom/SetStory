@@ -16,12 +16,16 @@ var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
 var scripts = require('../controllers/scripts')
 var ava;
+var eva;
+
 
 var jf = require('jsonfile')
 
 setmine.init(function() {
     console.log("setmine models stored.")
     ava = require('../controllers/ava')
+    eva = require('../controllers/eva')
+
 })
 
 /* GET home page. */
@@ -96,7 +100,6 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
 
 // Get AVA booking
 router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
-    console.log(req.params.artist)
     ava.calculateBookingValue(req.params.artist, function(data) {
         res.json({"response": data})
     })
@@ -189,13 +192,21 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
     })
 })
 
-// Fetch metrics for all setrecords artists
+// Fetch social metrics for all setrecords artists
 
 router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
         res.json({"response": data});
     })
 })
+
+router.get('/api/socialmedia/setrecords', function(req,res,next){
+    artist_social_media.updateSetrecordsArtists(function(data) {
+        res.json({"response": data});
+    })
+})
+
+// Fetch social metrics for all demo lineup artists (EDC Las Vegas 2015)
 
 router.get('/api/socialmedia/demolineup', function(req,res,next){
     artist_social_media.updateDemoLineupArtists(function(data) {
@@ -217,6 +228,12 @@ router.get('/api/musicbrainz/demolineup', function(req,res,next){
 
 router.get('/api/lineup/event/:eventName', function(req,res,next){
     setmine.getEventLineupByName(req.params.eventName, function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.get('/api/lineup/social/:eventID', function(req,res,next){
+    eva.calculateLineupSocialMedia(req.params.eventID, function(data) {
         res.json({"response": data});
     })
 })

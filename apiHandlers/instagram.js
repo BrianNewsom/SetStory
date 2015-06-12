@@ -18,7 +18,7 @@ instagram.getFollowersByUserId = function(user_id, cb) {
         if(token) {
             rest.get('http://api.instagram.com/v1/users/' + user_id + '/?access_token=' + token)
                 .on('complete', function(data){
-                    console.log(data)
+                    console.log("FollowerByID: " + user_id, data)
                     if(data.data) {
                         cb(data.data.counts.followed_by);
                     } else {
@@ -41,7 +41,13 @@ instagram.getIdFromName = function(name, cb){
         if(token) {
             rest.get('https://api.instagram.com/v1/users/search?q=' + name + '&access_token=' + instagram.access_token)
                 .on('complete', function(data) {
-                    cb(data.data[0].id);
+                    // console.log("getIdFromName: " + name, data)
+                    if(data.data.length == 0) {
+                        cb()
+                    } else {
+                        cb(data.data[0].id);
+                    }
+
             });
         } else {
             cb()
@@ -55,9 +61,8 @@ instagram.getIdFromName = function(name, cb){
 
 instagram.getAccessToken = function(cb) {
     var authRoot = "https://instagram.com/oauth/authorize/?client_id=" + instagram.client_id
-    rest.get("https://api.instagram.com/v1/users/search?q=SetMineApp&access_token=" + instagram.access_token)
+    rest.get("https://api.instagram.com/v1/users/search?q=setmine&access_token=" + instagram.access_token)
         .on('complete', function(data){
-            console.log(data)
             if(data.meta.code == "400") {
                 cb()
                 // request(authRoot + "&redirect_uri=http://setstory.io&response_type=code", function(err, response, html) {

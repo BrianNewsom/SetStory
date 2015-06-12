@@ -39,14 +39,25 @@ ava.getBookingValue = function(artist, callback) {
 }
 
 ava.calculateBookingValue = function(artistName, supercallback) {
+    console.log(artistName)
     var matchedArtist = _.findWhere(setmine.artists, {artist: artistName})
     async.parallel([
         function(callback) {
-            setmine.getArtistPopularity(matchedArtist.id, function(popularity) {
-                callback(null, popularity)
-            })
+            console.log("setmine")
+
+            if(matchedArtist) {
+                setmine.getArtistPopularity(matchedArtist.id, function(popularity) {
+                    callback(null, popularity)
+                })
+            } else {
+                callback(null, 0)
+            }
+
+            
         },
         function(callback) {
+            console.log("echonest")
+
             echonest.getArtistPopularity(matchedArtist, function(popularity) {
                 callback(null, popularity)
             })

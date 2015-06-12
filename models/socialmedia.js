@@ -2,20 +2,25 @@ var socialmedia = {};
 var cheerio = require('cheerio');
 var request = require( 'request' );
 var async = require( 'async' );
+var _ = require('lodash');
+
 var facebook = require('../apiHandlers/facebook')
 var soundcloud = require('../apiHandlers/soundcloud')
 var youtube = require('../apiHandlers/youtube')
 var instagram = require('../apiHandlers/instagram')
-var _ = require('lodash');
+var echonest = require('../apiHandlers/echonest')
 
+var artists = require('../models/artists')
 
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
 
-// First parameter 'data' must be an array with elements that look like this:
+// First parameter 'data' must be an array of Artist elements that look like this:
 // {
-//     "twitter_link": "https://twitter.com/Anonymuzkilla"
+//     "id": 1234,
+//     "artist": "Diplo",
+//     "twitter_link": "https://twitter.com/Anonymuzkilla",
 // }
 
 socialmedia.twitter = function(data, supercallback) {
@@ -24,11 +29,31 @@ socialmedia.twitter = function(data, supercallback) {
         supercallback(data)
         return
     }
+    // Get rid of elements (Artists) in the array that have NULL twitter links
     data = _.filter(data, function(artist) {
         if(!artist.artist_id) {
             artist['artist_id'] = artist.id
         }
-        return artist.twitter_link != null
+        // Fetch twitter links from Echonest
+        if(artist.twitter_link == null) {
+            echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
+                if(twitterLink) {
+                    artist.twitter_link = twitterLink
+                    // Run artist recursively through top-level social media function to cache data
+                    socialmedia.twitter([artist], function(data) {
+                        console.log("Twitter Data for artist '" + artist.artist + "' cached")
+                    })
+                    // Cache artist link
+                    artists.updateTwitterLink(artist, artist.twitter_link, function(response, artistName) {
+                        console.log("Twitter Link for artist '" + artistName + "' cached")
+                    })
+                } else {
+                    console.log("Twitter Link for artist '" + artist.artist + "' not found.")
+                }
+            })
+        } else {
+            return artist.twitter_link
+        }
     })
     var count = 0
     if(data.length == 0) {
@@ -91,11 +116,35 @@ socialmedia.facebook = function(data, supercallback) {
         return
     }
 
+    // Get rid of elements (Artists) in the array that have NULL facebook links
     data = _.filter(data, function(artist) {
         if(!artist.artist_id) {
             artist['artist_id'] = artist.id
         }
-        return artist.fb_link != null
+        // Fetch twitter links from Echonest
+        if(artist.fb_link == null) {
+            echonest.getFacebookLinkByArtist(artist.artist, function(facebookLink) {
+
+                if(facebookLink) {
+                    artist.fb_link = facebookLink
+
+                    // Run artist recursively through top-level social media function to cache data
+                    socialmedia.facebook([artist], function(data) {
+                        console.log("Facebook Data for artist '" + artist.artist + "' cached")
+                    })
+                    // Cache artist link
+                    artists.updateFacebookLink(artist.artist, artist.fb_link, function(response, artistName) {
+                        console.log("Facebook Link for artist '" + artistName + "' cached")
+                    })
+                } else {
+                    console.log("Facebook Link for artist '" + artist.artist + "' not found.")
+                }
+
+                
+            })
+        } else {
+            return artist.fb_link
+        }
     })
 
     var count = 0
@@ -136,7 +185,6 @@ socialmedia.facebook = function(data, supercallback) {
             }
         )
     }
-    
 }
 
 socialmedia.instagram = function(data, supercallback) {
@@ -152,82 +200,80 @@ socialmedia.instagram = function(data, supercallback) {
         }
         return artist.instagram_link != null
     })
-    console.log(data.length)
     var count = 0
     if(data.length == 0) {
         supercallback(data)
     } else {
-        console.log("Fetching instagram data for " + data.length + " artists...")
+        console.log(data.length + " artists to fetch instagram data for...")
         async.whilst(
             function() { return count < data.length },
             function(callback) {
-                if(data[count].instagram_link.lastIndexOf("/") == data[count].instagram_link.length - 1) {
-                    data[count].instagram_link = data[count].instagram_link.substring(0, data[count].instagram_link.length - 1)
-                }
-                var instagram_name = data[count].instagram_link.substring(data[count].instagram_link.lastIndexOf("/") + 1, data[count].instagram_link.length)
-                instagram.getIdFromName(instagram_name, function(id) {
-                    if(id) {
-                        instagram.getFollowersByUserId(id, function(followers) {
-                            data[count]['instagram_id'] = id
-                            if(followers) {
-                                data[count]['instagram_followers'] = followers
-                                count++
-                                callback()
-                            } else {
-                                data.shift()
-                                callback(true)
-                            }
-                        })
-                    } else {
-                        callback(true)
+                console.log("Fetching instagram data for " + data[count].artist)
+                // console.log("Fetching instagram data for ", data[count])
+
+                if(data[count].instagram_id != null) {
+                    instagram.getFollowersByUserId(data[count].instagram_id, function(followers) {
+                        if(followers) {
+                            data[count]['instagram_followers'] = followers
+                            count++
+                            callback()
+                        } else {
+                            data.shift(count)
+                            callback()
+                        }
+                    })
+                } else {
+
+                    // Get name from instagram_link to search Instagram API for instagram_id
+                    if(data[count].instagram_link.lastIndexOf("/") == data[count].instagram_link.length - 1) {
+                        data[count].instagram_link = data[count].instagram_link.substring(0, data[count].instagram_link.length - 1)
                     }
-                })
+                    var instagram_name = data[count].instagram_link.substring(data[count].instagram_link.lastIndexOf("/") + 1, data[count].instagram_link.length)
+
+                    instagram.getIdFromName(instagram_name, function(id) {
+                        // console.log("IG ID: ", id)
+                        if(id) {
+                            console.log("Instagram ID: "+id+" found. Caching and fetching followers.")
+                            data[count].instagram_id = id
+                            // Run artist recursively through top-level social media function to cache data
+                            socialmedia.instagram([data[count]], function(response) {
+                                // console.log("socialmedia.instagram response", response)
+                                console.log("Instagram Data for artist cached")
+                            })
+                            artists.updateInstagramID(data[count].artist, data[count].instagram_id, function(rows, artistName) {
+                                // console.log("artists.updateInstagramID response", rows)
+                                console.log("Instagram ID for artist '" + artistName + "' cached")
+                            })
+                            data.shift(count)
+                            callback()
+                        } else {
+                            // Remove artist if no instagram ID can be found
+                            data.shift(count)
+                            callback()
+                        }
+                    })
+                }
+
+                
             },
             function(err) {
-                if(err) {
-                    console.log("Error fetching instagram data. Invalid instagram Link.")
+                if(data.length == 0) {
+                    console.log("No instagram data to cache.")
                     supercallback(data)
                 } else {
-                    console.log("Done")
-                    var updateSQL = "UPDATE artists SET instagram_id = (case when id = " + data[0].artist_id + " then \"" + data[0].instagram_id + "\""
-                    for(var i = 1; i < data.length; i++) {
-                      updateSQL += " when id = " + data[i].artist_id + " then \"" + data[i].instagram_id + "\""
-                    }
-                    updateSQL += " end)"
-                    console.log(updateSQL)
                     var insertSQL = "INSERT INTO instagram_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].instagram_followers + ")"
                     for(var i = 1; i < data.length; i++) {
                       insertSQL += ",(" + data[i].artist_id + "," + data[i].instagram_followers + ")"
                     }
                     console.log(insertSQL)
-                    async.parallel([
-                        function(callback) {
-                            connection.query(updateSQL, function(err, response) {
-                                if(err) {
-                                    console.log("Error caching Instagram id data.")
-                                    console.log(err)
-                                    callback(null, err)
-                                }
-                                else {
-                                    console.log("Instagram id data cached.")
-                                    callback(null, response)
-                                }
-                            })
-                        },
-                        function(callback) {
-                            connection.query(insertSQL, function(err, response) {
-                                if(err) {
-                                    console.log("Error caching Instagram followers data.")
-                                    console.log(err)
-                                    callback(null, err)
-                                }
-                                else {
-                                    console.log("Instagram followers data cached.")
-                                    callback(null, response)
-                                }
-                            })
+                    connection.query(insertSQL, function(err, response) {
+                        if(err) {
+                            console.log("Error caching Instagram followers data.")
+                            console.log(err)
                         }
-                    ], function(err, results) {
+                        else {
+                            console.log("Instagram followers data cached.")
+                        }
                         supercallback(data)
                     })
                 }
@@ -285,20 +331,22 @@ socialmedia.soundcloud = function(data, supercallback) {
                 }
                 followerSQL = followerSQL.slice(0, -1)
 
-                // console.log(followerSQL)
+                console.log(followerSQL)
 
-                var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays, tracks) VALUES ("
+                var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays, tracks) VALUES "
 
                 if(data[0].soundcloud_track_count) {
-                    playsSQL += data[0].artist_id + "," + data[0].soundcloud_plays + "," + data[0].soundcloud_track_count + ")"
+                    playsSQL += "(" + data[0].artist_id + "," + data[0].soundcloud_plays + "," + data[0].soundcloud_track_count + "),"
                 }
                 for(var i = 1; i < data.length; i++) {
                     if(data[i].soundcloud_track_count) {
-                        playsSQL += ",(" + data[i].artist_id + "," + data[i].soundcloud_plays + "," + data[i].soundcloud_track_count + ")"
+                        playsSQL += "(" + data[i].artist_id + "," + data[i].soundcloud_plays + "," + data[i].soundcloud_track_count + "),"
                     }
                 }
+                playsSQL = playsSQL.slice(0, -1)
 
-                // console.log(playsSQL)
+
+                console.log(playsSQL)
 
 
                 async.parallel([

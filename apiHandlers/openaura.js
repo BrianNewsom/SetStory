@@ -40,7 +40,7 @@ openaura.getSocialFeed = function(artist, limit, offset, cb){
     })
 };
 
-var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook' ];
+var relevantMediaProviders = [ 'Twitter', 'Instagram', 'Facebook', 'Soundcloud', 'Youtube' ];
 
 openaura.getMBID = function( artist, cb ) {
   // TODO - BIG: Often gives back fan pages rather than authentic pages, find max followers and assume that is official
@@ -81,7 +81,6 @@ openaura.getFollowers = function( musicbrainz_id, cb ) {
           if (!output.name && source.name){
             output.name = source.name;
           }
-          var followersKey = source.provider_name + "_followers";
           var urlKey = source.provider_name + "_url";
 
           output[followersKey.toLowerCase()] = source.follower_count;

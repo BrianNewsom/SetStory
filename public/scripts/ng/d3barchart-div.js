@@ -20,8 +20,6 @@ angular.module('myApp')
       //Display everything on 10M 10k and over
       var formatValue = d3.format(".1s"); 
 
-    
-
       //initial svg creation
       var svg = d3.select("#test-chart")
         .append("div")

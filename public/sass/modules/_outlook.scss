@@ -1,14 +1,23 @@
 .outlook {
-	padding: 30px;
-	background: $blue; /* Old browsers */
-	background: -moz-linear-gradient(top,  $blue 0%, $green 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$blue), color-stop(100%,$green)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, $blue 0%, $green 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  $blue 0%, $green 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  $blue 0%, $green 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  $blue 0%, $green 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$blue', endColorstr='$green',GradientType=0 ); /* IE6-9 */
-	overflow: hidden;
+
+	.outlook--header {
+		padding: 30px;
+	}
+
+	.outlook--content {
+		background-image: url("/images/setstorySalesMetricsDemo.png");
+		background-position: center center;
+		background-size: auto 100%;
+
+		background-repeat: no-repeat;
+
+		height:100%;
+		width:100%;
+		@include breakpoint(medium) {
+			background-size: 100% auto;
+		}
+	}
+	
 
 	@include breakpoint(small) {
 		width: 100%;

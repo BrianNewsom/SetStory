@@ -22,7 +22,7 @@ setmine.init = function(callback) {
 
     async.parallel([
         function(callback) {
-            rest.get('http://setmine.com/api/v/7/artist', {
+            rest.get('http://setmine.com/api/v/7/artist?all=true', {
                 query : {}
             }).on('complete', function(data) {
                 setmine.artists = data.payload.artist;
@@ -54,6 +54,8 @@ setmine.getArtistByID = function(artistID, callback) {
 	rest.get("http://setmine.com/api/v/7/artist/" + artistID).on('complete', function(response) {
 		if(response.status == "success") {
             callback(response.payload.artist)
+        } else {
+            callback()
         }
 	})
 }
@@ -79,8 +81,10 @@ setmine.getArtistPopularity = function(artist, callback) {
     }
     setmine.getArtistByID(artistID, function(artist) {
         var totalSetPopularity = 0;
-        for(var i in artist.sets) {
-            totalSetPopularity += artist.sets[i].popularity
+        if(artist) {
+            for(var i in artist.sets) {
+                totalSetPopularity += artist.sets[i].popularity
+            }
         }
         callback(totalSetPopularity)
     })
@@ -135,6 +139,12 @@ setmine.getEventLineupByName = function(eventName, callback) {
 
 setmine.getSocialMediaMetrics = function(artistName, callback) {
     rest.get("http://setmine.com/api/v/7/artist/metrics/social/" + artistName).on('complete', function(response) {
+        callback(response)
+    })
+}
+
+setmine.getLineupSocialMedia = function(lineupID, callback) {
+    rest.get("http://setmine.com/api/v/7/lineup/social/" + lineupID).on('complete', function(response) {
         callback(response)
     })
 }

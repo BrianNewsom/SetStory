@@ -194,15 +194,26 @@ p {
 }
 .header .indicator .flex-row {
   padding: 8px 0;
-  margin: 0 20%;
-  border-bottom: 1px solid white;
+  margin: 0 12.5%;
+  border-bottom: 1px solid #19B5FE;
 }
-.header .indicator .flex-row strong {
+.header .indicator .flex-row .text {
+  margin: auto;
+}
+.header .indicator .flex-row .header-rating {
   color: #35c9a9;
+  font-weight: 800;
 }
-.header .booking-value {
+.header .indicator .rating-value {
   padding: 5px 0;
   font-size: 1.5rem;
+}
+.header .artists-number {
+  color: #19B5FE;
+  padding-top: 8px;
+}
+.header .artists-number .score {
+  padding: 5px 0;
 }
 .header .header--top {
   padding: 25px;
@@ -389,25 +400,21 @@ p {
   fill: white;
 }
 
-.outlook {
+.outlook .outlook--header {
   padding: 30px;
-  background: #19B5FE;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #19B5FE 0%, #35c9a9 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #19B5FE), color-stop(100%, #35c9a9));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #19B5FE 0%, #35c9a9 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #19B5FE 0%, #35c9a9 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #19B5FE 0%, #35c9a9 100%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #19b5fe 0%, #35c9a9 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$blue', endColorstr='$green',GradientType=0 );
-  /* IE6-9 */
-  overflow: hidden;
+}
+.outlook .outlook--content {
+  background-image: url("/images/setstorySalesMetricsDemo.png");
+  background-position: center center;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .outlook .outlook--content {
+    background-size: 100% auto;
+  }
 }
 @media (min-width: 320px) {
   .outlook {
@@ -559,8 +566,11 @@ p {
   display: table;
   clear: both;
 }
-.lineup-container h2 {
+.lineup-container .lineup-header {
   padding: 30px;
+}
+.lineup-container .lineup-header .score {
+  color: #19B5FE;
 }
 .lineup-container .ng-scope {
   background-color: transparent;

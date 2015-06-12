@@ -73,8 +73,34 @@ artists.updateMBID = function(artistName, mbID, cb) {
       }
     });
   }
-  
 };
+
+artists.updateFacebookLink = function(artistName, facebookLink, cb) {
+  connection.query("UPDATE artists SET fb_link='" + facebookLink + "' WHERE fb_link IS NULL AND artist='" + artistName + "'", function(err, rows){
+    if(err) console.log(err);
+    else {
+      cb(rows, artistName);
+    }
+  });
+}
+
+artists.updateTwitterLink = function(artistName, twitterLink, cb) {
+  connection.query("UPDATE artists SET twitter_link='" + twitterLink + "' WHERE twitter_link IS NULL AND artist='" + artistName + "'", function(err, rows){
+    if(err) console.log(err);
+    else {
+      cb(rows, artistName);
+    }
+  });
+}
+
+artists.updateInstagramID = function(artistName, instagramID, cb) {
+  connection.query("UPDATE artists SET instagram_id='" + instagramID + "' WHERE instagram_id IS NULL AND artist='" + artistName + "'", function(err, rows){
+    if(err) console.log(err);
+    else {
+      cb(rows, artistName);
+    }
+  });
+}
 
 artists.updateSoundCloud = function(id, cb){
   // Update soundcloud information for given musicbrainz_id

@@ -21,10 +21,60 @@ echonest.getTrackPopularity = function(trackTitle, cb){
     })
 };
 
+echonest.getFacebookLinkByArtist = function(artistName, cb) {
+    rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:facebook').on('complete', function(response){
+        console.log(response)
+        if(response.response.artists.length == 0) {
+            cb();
+            return 1;
+        } else {
+            console.log(response)
+
+            var artistResponse = response.response.artists[0]
+            console.log(artistResponse)
+
+            if(artistResponse.foreign_ids) {
+                var facebookID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
+                console.log(facebookID)
+
+                var facebookLink = "https://facebook.com/" + facebookID
+                cb(facebookLink)
+                return 0
+            }
+        }
+        
+    });
+}
+
+echonest.getTwitterLinkByArtist = function(artistName, cb) {
+    rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:twitter').on('complete', function(response){
+        console.log(response)
+        if(response.response.artists.length == 0) {
+            cb();
+            return 1;
+        } else {
+            console.log(response)
+
+            var artistResponse = response.response.artists[0]
+            console.log(artistResponse)
+
+            if(artistResponse.foreign_ids) {
+                var twitterID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
+                console.log(twitterID)
+
+                var twitterLink = "https://twitter.com/" + twitterID
+                cb(twitterLink)
+                return 0
+            }
+        }
+        
+    });
+}
+
 echonest.getArtistPopularity = function(artist, cb){
     // if(artist.musicbrainz_id) {
         var artist_id = artist.musicbrainz_id
-        rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + artist.artist + '&bucket=hotttnesss&bucket=hotttnesss_rank&bucket=id:musicbrainz').on('complete', function(response){
+        rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artist.artist) + '&bucket=hotttnesss&bucket=hotttnesss_rank&bucket=id:musicbrainz').on('complete', function(response){
             console.log("echonest complete")
             console.log(response)
             if(response.response.status.code != 0) {
