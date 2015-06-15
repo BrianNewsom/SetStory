@@ -49,7 +49,9 @@ myApp.controller('SearchController', function($scope,$rootScope,$location, $http
         var url = '/api/autocomplete/events/' + typed;
         
         $http.get(url).success(function(data) {
+        	console.log(data)
 	    	$scope.events = data;
+	    	console.log($scope.events)
 	    });
         
     };
@@ -69,18 +71,12 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
     	var url = '/api/artist/ava/bookingvalue/' + $scope.choice;
 
-    	console.log(url);
-
     	$http.get(url).success(function(data) {
-    		console.log(data.response);
     		$scope.artistScore = data.response.raw_score || "No Score";
     	});
 		
 
     }
-
-    $scope.getArtistScore();
-
     // Openaura Social Media
 
     // $scope.getArtistSocialMedia() = function() {
@@ -103,87 +99,23 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 
 	// Setmine Social Media
 
-    $scope.getArtistSocialMedia = function() {
-    	var url = 'http://setmine.com/api/v/7/artist/metrics/social/' + $scope.choice;
-
-    	console.log(url);
-
-    	$http.get(url).success(function(metadata) {
-			console.log(metadata);
-			
-			var social = {
-				facebook_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.facebook.total),
-				twitter_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.twitter.total),
-				instagram_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.instagram.total),
-				soundcloud_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.soundcloud.total_plays),
-				youtube_followers: resumedNumberStringToNumber(metadata.payload.metrics.social.youtube.total_plays),
-			}
-
-		    var data = [];
-			    data.push({number: 1, value: social.facebook_followers, name: "facebook", max: 10000000 * 1.2});
-			    data.push({number: 2, value: social.twitter_followers, name: "twitter", max: 70697964 * 1.2});
-			    data.push({number: 3, value: social.instagram_followers, name: "instagram", max: 356000000});
-			    data.push({number: 4, value: social.soundcloud_followers, name: "soundcloud", max: 100000000});
-			    data.push({number: 5, value: social.youtube_followers,name:"youtube", max: 30000000000});
-			
-			$scope.playsOverTime = {
-				setmine: [
-					2000,
-					3000,
-					4000,
-					5000
-				]
-			}
-			var setmineOverTime =[];
-			var youtubeOverTime =[];
-			var soundcloudOverTime =[];
-
-			maxYoutube = 10000000;
-			maxSoundCloud = 10000000;
-			maxSetMine  = 10000000;
-
-			//TODO : INTEGRATE SETMINE!
-
-			setmineOverTime.push({name:"FEB", plays: $scope.playsOverTime.setmine[0]});
-			setmineOverTime.push({name:"MAR", plays: $scope.playsOverTime.setmine[1]});
-			setmineOverTime.push({name:"APR", plays: $scope.playsOverTime.setmine[2]});
-			setmineOverTime.push({name:"MAY", plays: $scope.playsOverTime.setmine[3]});
-
-			youtubeOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.youtube.overtime[1][1]});
-			youtubeOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.youtube.overtime[2][1]});
-			youtubeOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.youtube.overtime[3][1]});
-			youtubeOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.youtube.overtime[4][1]});
-
-
-			soundcloudOverTime.push({name:"FEB", plays: metadata.payload.metrics.social.soundcloud.overtime[1][1]});
-			soundcloudOverTime.push({name:"MAR", plays:  metadata.payload.metrics.social.soundcloud.overtime[2][1]});
-			soundcloudOverTime.push({name:"APR", plays:  metadata.payload.metrics.social.soundcloud.overtime[3][1]});
-			soundcloudOverTime.push({name:"MAY", plays:  metadata.payload.metrics.social.soundcloud.overtime[4][1]});
-
-
-			// plays.push({name:'setmine', max :maxSetMine, months:setmineOverTime});
-			plays.push({name:'youtube', max: maxYoutube, months:youtubeOverTime});
-			plays.push({name:'soundcloud', max:maxSoundCloud, months:soundcloudOverTime});
-
-			$scope.plays = plays;
-			$scope.artistSocialSet = data;
-
-		});
-
-	}
-
-    $scope.getArtistSocialMedia();
-	
 	$scope.scaleHeight = function(item, play){
 		var scaleY = d3.scale.linear()
               .domain([0, item.max])
               .range([0, 160]);
         var styles = {height: scaleY(play) + "px"};
 		return styles;
-
 	};
 
-	var format = d3.format('.1s');
+    $scope.getArtistSocialMedia = function() {
+    	var url = '/api/artist/social/' + $scope.choice;
+    	console.log(url)
+    	$http.get(url).success(function(data) {
+    		console.log(data)
+    		$scope.artistSocialSet = data.response
+    	})
+
+	}
 
 	$scope.formatOutput = function(play) {
 		return format(play);
@@ -206,28 +138,18 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 		});
 		
 	}
-	$scope.getArtistPhoto();
 
-    $scope.getArtistData = function(){
-        var url = "api/artist/info/musicgraph/" + $scope.choice;
-        $http.get(url).success(function(data) {
-            $scope.artistData = data;
-        })
+	$scope.getArtistData = function(){
+	    var url = "api/artist/info/musicgraph/" + $scope.choice;
+	    console.log(url)
+	    $http.get(url).success(function(data) {
+	    	console.log(data)
 
-    }
+	        $scope.artistData = data;
+	    })
 
-    $scope.getArtistData();
-
-	$scope.back = function(){
-		window.history.back();
 	}
-	var media =[];
-	  $scope.sets = [];
-	  $scope.page= 1;
-	  // $scope.loadMore = function() {
-	   
-	  // };
-	  // $scope.loadMore();
+
 	$scope.showVideo = function(media){
 		if (!media) return false;
 		return media.type ==='video';
@@ -250,6 +172,28 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 		else {return false; }
 
 	};
+
+	$scope.getArtistScore();
+
+    $scope.getArtistSocialMedia();
+
+	var format = d3.format('.1s');
+
+	$scope.getArtistPhoto();
+
+    $scope.getArtistData();
+
+	$scope.back = function(){
+		window.history.back();
+	}
+	var media =[];
+	  $scope.sets = [];
+	  $scope.page= 1;
+	  // $scope.loadMore = function() {
+	   
+	  // };
+	  // $scope.loadMore();
+	
 	var url = "/api/story/"+ encodeURIComponent($scope.choice); 
 	
 	$http.get(url).success(function(data) {
@@ -285,7 +229,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	$scope.calculateEventScore = function() {
 		$scope.eventScore = 94;
-		$scope.venueCapacity = resumedNumberStringToNumber("150000")
+		$scope.venueCapacity = 150000
 		$scope.trendingHashtags = 4
 	}
 
@@ -309,7 +253,6 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 			else {
 				 $scope.event.lineup[i].artistimageURL = 'http://stredm.s3-website-us-east-1.amazonaws.com/namecheap/' +  $scope.event.lineup[i].artistimageURL;	
 			}
-			console.log("Current: " + $scope.event.lineup[i].booking_value)
 
 					
 		};
@@ -323,9 +266,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	$scope.calculateLineupSocialMedia = function() {
 		var url = '/api/lineup/social/' + $scope.event.id;
-		console.log(url)
 		$http.get(url).success(function(data) {
-			console.log(data)
 			var totalSMR = 0;
 			$scope.eventSocialSet = data.response
 			for(var i in data.response) {
@@ -358,7 +299,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
         		var autocompleteArtistOptions = data
         		var lineup = $scope.event.lineup
 
-        		// Splices allArtists and returns the artists not in lineup
+        		// Splices allArtists and returns the artists not already in lineup
 
         		for(var i in lineup) {
         			var index = autocompleteArtistOptions.indexOf(lineup[i].artist)

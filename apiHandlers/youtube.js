@@ -21,7 +21,7 @@ youtube.getStatsForChannelByName = function(name, cb){
   // TODO: Maybe it's better to have this as Id rather than name
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&forUsername=' + name).on( 'complete', function( res ) {
     console.log(res);
-    if ( res instanceof(Error) || !res.items[0] ) {
+    if ( res instanceof(Error) || !res.items ) {
       console.log( JSON.stringify( res ));
       cb(null);
     }
@@ -38,11 +38,11 @@ youtube.getStatsForChannelById = function(id, cb){
   // Get stats for a users channel by username (unique)
   // TODO: There's lots of nice info in snippet if we want it
   rest.get( 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key=' + youtube.key + '&id=' + id).on( 'complete', function( res ) {
-    if ( res instanceof(Error) || !res.items[0] ) {
+    if ( res instanceof(Error) || !res.items ) {
       console.log( JSON.stringify( res ) );
     }
     else {
-      var stats = res.items[0 ].statistics;
+      var stats = res.items[0].statistics;
       stats.channelId = res.items[0 ].id;
       cb(res.items[0 ].statistics);
     }
@@ -66,7 +66,7 @@ youtube.getChannelFromArtistName = function(name, cb){
   // Not to be trusted wholly, but should be accurate often.
   rest.get('https://www.googleapis.com/youtube/v3/search?part=snippet&key=' + youtube.key + '&type=channel' +
         '&q=' + name ).on('complete', function(res){
-    if ( res instanceof(Error) || !res.items[0 ]) { console.log( JSON.stringify( res ) ); }
+    if ( res instanceof(Error) || !res.items) { console.log( JSON.stringify( res ) ); }
     else {
       // Give back top channel
       var channel = res.items[0];

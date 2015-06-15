@@ -7,14 +7,15 @@
 	.outlook--content {
 		background-image: url("/images/setstorySalesMetricsDemo.png");
 		background-position: center center;
-		background-size: auto 100%;
+		background-size: 100% auto;
 
 		background-repeat: no-repeat;
 
 		height:100%;
 		width:100%;
 		@include breakpoint(medium) {
-			background-size: 100% auto;
+			background-size: auto 100%;
+
 		}
 	}
 	

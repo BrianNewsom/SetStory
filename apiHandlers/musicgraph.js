@@ -3,6 +3,7 @@ musicgraph.api_key = "a31ca1efc8a5661d9cdcc0935fa41724";
 var rest = require('restler');
 
 musicgraph.getSongInfo = function(artist,title,cb){
+    console.log("getSongInfo")
     rest.get('http://api.musicgraph.com/api/v2/track/search', {
         query: {'api_key': musicgraph.api_key, 'artist_name': artist, 'title': title, 'limit' : 1}
     }).on('complete', function(data){
@@ -11,6 +12,8 @@ musicgraph.getSongInfo = function(artist,title,cb){
 };
 
 musicgraph.getArtistInfo = function(artistName, cb){
+    console.log("getArtistInfo")
+
     rest.get('http://api.musicgraph.com/api/v2/artist/search', {
         query: {'api_key': musicgraph.api_key, 'name': artistName, 'limit' : 1}
     }).on('complete', function(data) {

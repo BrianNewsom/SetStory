@@ -10,7 +10,7 @@ var _ = require('lodash');
 var unified = {};
 
 unified.story = function(artist, supercallback){
-
+    console.log("unified.story")
     async.parallel([
         function(callback) {
             setlistfmStory(artist, function(data) {

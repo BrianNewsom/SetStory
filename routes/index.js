@@ -116,11 +116,15 @@ router.get('/api/autocomplete/:models/:name', function(req, res, next) {
     if(req.params.name.length > 2) {
         if(req.params.models == "events") {
             var events = setmine.events
-            for (var i = 0; i < events.length; i++) {
-                if(events[i].event.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
-                    result.push(events[i].event)
-                }
-            }
+            console.log(events[0].event)
+            result.push(events[0].event)
+
+            // Uncomment to enable autocomplete searching
+            // for (var i = 0; i < events.length; i++) {
+            //     if(events[i].event.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
+            //         result.push(events[i].event)
+            //     }
+            // }
         } else {
             var artists = setmine.artists
             for (var i = 0; i < artists.length; i++) {
@@ -202,8 +206,10 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
 
 router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
-        res.json({"response": data});
+        console.log("Setrecords artists updated.")
     })
+    res.json({"response": "Updating setrecords artists"});
+
 })
 
 // Fetch social metrics for all demo lineup artists (EDC Las Vegas 2015)
@@ -234,6 +240,12 @@ router.get('/api/lineup/event/:eventName', function(req,res,next){
 
 router.get('/api/lineup/social/:eventID', function(req,res,next){
     eva.calculateLineupSocialMedia(req.params.eventID, function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.get('/api/artist/social/:artistName', function(req,res,next){
+    ava.getSocialMedia(req.params.artistName, function(data) {
         res.json({"response": data});
     })
 })

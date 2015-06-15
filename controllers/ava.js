@@ -39,7 +39,6 @@ ava.getBookingValue = function(artist, callback) {
 }
 
 ava.calculateBookingValue = function(artistName, supercallback) {
-    console.log(artistName)
     var matchedArtist = _.findWhere(setmine.artists, {artist: artistName})
     async.parallel([
         function(callback) {
@@ -95,6 +94,42 @@ ava.calculateRaw = function(rawNumbers, callback) {
 
     console.log("RAWAVA: " + rawAVAScore)
     callback(rawAVAScore)
+}
+
+ava.getSocialMedia = function(artistName, callback) {
+    var matchedArtist = _.findWhere(setmine.artists, {artist: artistName})
+    if(matchedArtist) {
+        setmine.getSocialMediaMetrics(matchedArtist.id, function(response) {
+            console.log(response)
+            if(response.status == "success") {
+                var artist = response.payload.artist
+                var social = artist.social_media
+
+                // Finds max value
+                var followersOnly = _.pluck(_.values(social), 'followers')
+                var maxSourceValue = _.max(_.values(followersOnly))
+
+                // Generates social set
+                var artistSocialSet = [];
+                var index = 1;
+                for(var prop in social) {
+                    console.log(social[prop].followers)
+                    artistSocialSet.push({
+                        number: index,
+                        value: (social[prop])? social[prop].followers : null,
+                        name: prop,
+                        max: maxSourceValue
+                    });
+                    index++
+                }
+
+                callback(artistSocialSet)
+            } else {
+                callback({error: "No Artist Found"})
+            }
+            
+        })
+    }
 }
 
 module.exports = ava;

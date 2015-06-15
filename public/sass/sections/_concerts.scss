@@ -3,7 +3,7 @@
 	.header {
 
     @include breakpoint(small) {
-      height: 750px;
+      height: 860px;
     }
     @include breakpoint(medium) {
       height: 370px;

@@ -32,13 +32,8 @@ setmine.init = function(callback) {
             });
         },
         function(callback) {
-            rest.get('http://setmine.com/api/v/7/festival').on('complete', function(data) {
-                setmine.events = data.payload.festival;
-                //TODO: Hard fix for events
-                setmine.events.push({
-                    id: '762',
-                    event:'EDC Las Vegas 2015'
-                });
+            rest.get('http://setmine.com/api/v/7/upcoming/?id=762').on('complete', function(data) {
+                setmine.events = data.payload.upcoming.soonestEvents;
                 if(callback) {
                     callback()
                 }
@@ -138,7 +133,7 @@ setmine.getEventLineupByName = function(eventName, callback) {
 }
 
 setmine.getSocialMediaMetrics = function(artistName, callback) {
-    rest.get("http://setmine.com/api/v/7/artist/metrics/social/" + artistName).on('complete', function(response) {
+    rest.get("http://setmine.com/api/v/7/artist/social/" + artistName).on('complete', function(response) {
         callback(response)
     })
 }

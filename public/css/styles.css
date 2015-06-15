@@ -199,6 +199,7 @@ p {
 }
 .header .indicator .flex-row .text {
   margin: auto;
+  text-align: left;
 }
 .header .indicator .flex-row .header-rating {
   color: #35c9a9;
@@ -406,14 +407,14 @@ p {
 .outlook .outlook--content {
   background-image: url("/images/setstorySalesMetricsDemo.png");
   background-position: center center;
-  background-size: auto 100%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
   height: 100%;
   width: 100%;
 }
 @media (min-width: 768px) {
   .outlook .outlook--content {
-    background-size: 100% auto;
+    background-size: auto 100%;
   }
 }
 @media (min-width: 320px) {
@@ -460,7 +461,7 @@ p {
 .social .bars i {
   position: absolute;
   font-size: 20px;
-  color: #4d545c;
+  color: white;
   z-index: 0;
 }
 .social .bars li {
@@ -480,7 +481,7 @@ p {
 }
 .social .bars li .bars--item {
   background: #19B5FE;
-  height: 5%;
+  height: 5px;
   width: 100%;
   position: absolute;
   overflow: visible;
@@ -1100,7 +1101,7 @@ p {
 
 @media (min-width: 320px) {
   .concerts .header {
-    height: 750px;
+    height: 860px;
   }
 }
 @media (min-width: 768px) {
