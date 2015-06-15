@@ -32,7 +32,6 @@ ava.getBookingValue = function(artist, callback) {
     connection.query("SELECT * FROM booking_values", function(err, data) {
         if(err) console.log(err)
         else {
-            console.log(data)
             callback(data)
         }
     } )
@@ -100,7 +99,6 @@ ava.getSocialMedia = function(artistName, callback) {
     var matchedArtist = _.findWhere(setmine.artists, {artist: artistName})
     if(matchedArtist) {
         setmine.getSocialMediaMetrics(matchedArtist.id, function(response) {
-            console.log(response)
             if(response.status == "success") {
                 var artist = response.payload.artist
                 var social = artist.social_media
@@ -113,7 +111,6 @@ ava.getSocialMedia = function(artistName, callback) {
                 var artistSocialSet = [];
                 var index = 1;
                 for(var prop in social) {
-                    console.log(social[prop].followers)
                     artistSocialSet.push({
                         number: index,
                         value: (social[prop])? social[prop].followers : null,

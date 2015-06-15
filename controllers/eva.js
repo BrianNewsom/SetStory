@@ -16,7 +16,6 @@ eva.version = 1
 
 eva.calculateLineupSocialMedia = function(lineupID, callback) {
     setmine.getLineupSocialMedia(lineupID, function(data) {
-        console.log(data)
         var social_media = {
           twitter: 0,
           facebook: 0,

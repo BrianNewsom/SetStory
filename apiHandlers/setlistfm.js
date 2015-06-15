@@ -9,7 +9,9 @@ var setlistFM = {
         rest.get('http://api.setlist.fm/rest/0.1/search/setlists', {
                 query:{'artistName' : artist}
             })
-            .on('complete', function(data){
+            .on('complete', function(data) {
+                console.log("getArtistGigs")
+                console.log(data)
                 // Build obj
                 var output = [];
                 try{
@@ -64,5 +66,3 @@ var setlistFM = {
 
 
 module.exports = setlistFM;
-
-setlistFM.getArtistGigs('Skrillex', function(data){});

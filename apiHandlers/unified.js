@@ -14,6 +14,7 @@ unified.story = function(artist, supercallback){
     async.parallel([
         function(callback) {
             setlistfmStory(artist, function(data) {
+                console.log(data)
                 callback(null, data)
             })
         }

@@ -194,11 +194,10 @@ myApp.controller('ArtistsController', function($scope, $interval, $filter, $sce,
 	  // };
 	  // $scope.loadMore();
 	
-	var url = "/api/story/"+ encodeURIComponent($scope.choice); 
+	var url = "/api/story/"+ $scope.choice; 
 	
 	$http.get(url).success(function(data) {
 		$scope.sets = data;
-		console.log(data)
 	});
 
 	$scope.choice = decodeURIComponent($scope.choice);
