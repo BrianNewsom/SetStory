@@ -216,7 +216,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 			$scope.calculateEventScore();
 			$scope.calculateLineupScore();
-			$scope.calculateLineupSocialMedia();
+			$scope.getLineupSocialMedia();
 
 		});
 	}
@@ -228,7 +228,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	$scope.calculateEventScore = function() {
 		$scope.eventScore = 94;
-		$scope.venueCapacity = 150000
+		$scope.venueCapacity = "131K"
 		$scope.trendingHashtags = 4
 	}
 
@@ -263,15 +263,51 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 
 	}
 
-	$scope.calculateLineupSocialMedia = function() {
+	$scope.getLineupSocialMedia = function() {
 		var url = '/api/lineup/social/' + $scope.event.id;
 		$http.get(url).success(function(data) {
 			var totalSMR = 0;
 			$scope.eventSocialSet = data.response
+			console.log(data.response)
 			for(var i in data.response) {
 				totalSMR += data.response[i].value
 			}
 			$scope.totalSocialMediaReach = totalSMR;
+		})
+		
+	}
+
+	$scope.updateLineupSocialMedia = function(add) {
+		var url = '/api/lineup/social/' + $scope.event.id;
+		var new_lineup = []
+		for(var i in $scope.event.lineup) {
+			new_lineup.push($scope.event.lineup[i].id)
+		}
+		$http.post(url, {
+			new_lineup: new_lineup
+		}).success(function(data) {
+			console.log(data)
+			var newSMR = 0;
+			for(var i in data.response) {
+				for(var j in $scope.eventSocialSet) {
+					if($scope.eventSocialSet[j].name == i) {
+						if(add) {
+							$scope.eventSocialSet[j].value += (data.response[i].length > 0)? data.response[i][i + '_followers'] : 0
+							newSMR += (data.response[i].length > 0)? parseInt(data.response[i][0][i + '_followers']) : 0
+						} else {
+							$scope.eventSocialSet[j].value -= (data.response[i].length > 0)? data.response[i][i + '_followers'] : 0
+							newSMR += (data.response[i].length > 0)? parseInt(data.response[i][0][i + '_followers']) : 0
+						}
+						
+					}
+				}
+
+			}
+			if(add) {
+				$scope.totalSocialMediaReach += newSMR;
+			} else {
+				$scope.totalSocialMediaReach -= newSMR;
+			}
 		})
 		
 	}
@@ -312,7 +348,8 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	    });
         
     };
-    $scope.addArtists = function(artistName){	
+    $scope.addArtists = function(artistName){
+
     	var url = "api/artist/info/setmine/" + artistName;
 
         $http.get(url).success(function(data) {
@@ -321,7 +358,7 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
             processArtistImage(data[0]);
             $scope.event.lineup.unshift(data[0]);
             $scope.calculateEventScore();
-            $scope.calculateLineupSocialMedia();
+            $scope.updateLineupSocialMedia(true);
             
         });
         $scope.choice = '';
@@ -332,6 +369,8 @@ myApp.controller('EventsController', function($interval, $scope,$sce,$filter, $r
 	$scope.removeArtist = function(i,a){
 		 $scope.event.lineup.splice(i, 1);
          $scope.calculateEventScore();
+         $scope.updateLineupSocialMedia(false);
+
 	};
 
 

@@ -7,6 +7,8 @@ var echonest = require('../apiHandlers/echonest')
 
 var socialmedia = require('../models/socialmedia')
 
+var artist_social_media = require('../controllers/artist_social_media');
+
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
@@ -14,7 +16,7 @@ var connection = mysql.createPool(settings.db.main);
 var eva = {}
 eva.version = 1
 
-eva.calculateLineupSocialMedia = function(lineupID, callback) {
+eva.getLineupSocialMedia = function(lineupID, callback) {
     setmine.getLineupSocialMedia(lineupID, function(data) {
         var social_media = {
           twitter: 0,
@@ -52,7 +54,19 @@ eva.calculateLineupSocialMedia = function(lineupID, callback) {
         
         callback(socialSet)
     })
+}
 
+eva.calculateLineupSocialMedia = function(lineupIDs, callback) {
+  var lineup = []
+  for(var i in lineupIDs) {
+    var matchedArtist = _.findWhere(setmine.artists, {id: lineupIDs[i]}) // BUG only getting ids of new lineup artist
+    if(matchedArtist) {
+      lineup.push(matchedArtist)
+    }
+  }
+  artist_social_media.updateLineupArtists(lineup, function(data) {
+    callback(data)
+  })
 }
     
 module.exports = eva;

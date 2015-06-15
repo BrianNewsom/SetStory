@@ -239,13 +239,20 @@ router.get('/api/lineup/event/:eventName', function(req,res,next){
 })
 
 router.get('/api/lineup/social/:eventID', function(req,res,next){
-    eva.calculateLineupSocialMedia(req.params.eventID, function(data) {
+    eva.getLineupSocialMedia(req.params.eventID, function(data) {
         res.json({"response": data});
     })
 })
 
 router.get('/api/artist/social/:artistName', function(req,res,next){
     ava.getSocialMedia(req.params.artistName, function(data) {
+        res.json({"response": data});
+    })
+})
+
+router.post('/api/lineup/social/:eventID', function(req,res,next){
+    var lineup = req.body.new_lineup
+    eva.calculateLineupSocialMedia(lineup, function(data) {
         res.json({"response": data});
     })
 })

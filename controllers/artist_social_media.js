@@ -120,7 +120,6 @@ artist_social_media.updateDemoLineupArtists = function(supercallback) {
   setmine.getEventLineupByID(762, function(event) {
     console.log(event.lineup.length)
     var lineup = event.lineup
-    console.log(lineup[0])
     async.parallel({
       twitter: function(callback) {
         setmine.socialmedia.twitter(lineup, function(data) {
@@ -153,6 +152,40 @@ artist_social_media.updateDemoLineupArtists = function(supercallback) {
     
   })
 }
+
+artist_social_media.updateLineupArtists = function(lineup, supercallback) {
+  console.log(lineup[0])
+  async.parallel({
+    twitter: function(callback) {
+      setmine.socialmedia.twitter(lineup, function(data) {
+        callback(null, data)
+      })
+    },
+    facebook: function(callback) {
+      setmine.socialmedia.facebook(lineup, function(data) {
+          callback(null, data);
+      })
+    },
+    instagram: function(callback) {
+      setmine.socialmedia.instagram(lineup, function(data) {
+          callback(null, data);
+      })
+    },
+    soundcloud: function(callback) {
+      setmine.socialmedia.soundcloud(lineup, function(data) {
+        callback(null, data)
+      })
+    },
+    youtube: function(callback) {
+      setmine.socialmedia.youtube(lineup, function(data) {
+          callback(null, data)
+      })
+    }
+  }, function(err, results) {
+    supercallback(results)
+  })
+}
+
 
 artist_social_media.updateSocialMetricsByName = function(artistName, supercallback) {
   var artist = _.findWhere(setmine.artists, {artist: artistName})

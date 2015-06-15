@@ -19,7 +19,6 @@ setmine.events = []
 setmine.lineups = []
 
 setmine.init = function(callback) {
-
     async.parallel([
         function(callback) {
             rest.get('http://setmine.com/api/v/7/artist?all=true', {
@@ -42,7 +41,6 @@ setmine.init = function(callback) {
     ], function(err, results) {
         callback()
     })
-    
 }
 
 setmine.getArtistByID = function(artistID, callback) {
@@ -88,7 +86,8 @@ setmine.getArtistPopularity = function(artist, callback) {
 setmine.getEventLineupByID = function(eventID, callback) {
     rest.get("http://setmine.com/api/v/7/lineup/" + eventID).on('complete', function(response) {
         if(response.status == "success") {
-            response.payload.lineup = _.extend(response.payload.lineup, {date: "June 19th-21st"})
+
+            setmine.lineups.push(response.payload.lineup)
 
             // For Demo Lineup
             // TODO: Either do this for all lineups, generate booking values upon initialization
@@ -107,12 +106,10 @@ setmine.getEventLineupByID = function(eventID, callback) {
                             return artist
                         })
                         callback(response.payload.lineup)
-
                     }
                 })  
             } else {
                 callback(response.payload.lineup)
-
             }
         }
     })
