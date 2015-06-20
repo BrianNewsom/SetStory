@@ -16,55 +16,77 @@ echonest.getTrackPopularity = function(trackTitle, cb){
             'bucket': 'song_hotttnesss',
         }
     }).on('complete', function(data){
-        console.log(data)
-        cb(data)
+        if(response.response.status.code != 0) {
+            if(response.response.status.code == 3) {
+                console.log("Rate limit reached.")
+            }
+            cb(0);
+            return 1;
+        } else {
+            cb(data)
+        }
     })
 };
 
 echonest.getFacebookLinkByArtist = function(artistName, cb) {
     rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:facebook').on('complete', function(response){
-        console.log(response)
-        if(response.response.artists.length == 0) {
-            cb();
+        if(response.response.status.code != 0) {
+            if(response.response.status.code == 3) {
+                console.log("Rate limit reached.")
+            }
+            cb(0);
             return 1;
         } else {
-            console.log(response)
+            if(response.response.status.code == 0) {
+                if(response.response.artists.length == 0) {
+                    cb();
+                    return 1;
+                } else {
 
-            var artistResponse = response.response.artists[0]
-            console.log(artistResponse)
+                    var artistResponse = response.response.artists[0]
 
-            if(artistResponse.foreign_ids) {
-                var facebookID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
-                console.log(facebookID)
+                    if(artistResponse.foreign_ids) {
+                        var facebookID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
 
-                var facebookLink = "https://facebook.com/" + facebookID
-                cb(facebookLink)
-                return 0
+                        var facebookLink = "https://facebook.com/" + facebookID
+                        cb(facebookLink)
+                        return 0
+                    }
+                }
+            } else {
+                console.log("Rate limit reached")
+                cb();
+                return 1;
             }
         }
+        
         
     });
 }
 
 echonest.getTwitterLinkByArtist = function(artistName, cb) {
     rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:twitter').on('complete', function(response){
-        console.log(response)
-        if(response.response.artists.length == 0) {
-            cb();
+        if(response.response.status.code != 0) {
+            if(response.response.status.code == 3) {
+                console.log("Rate limit reached.")
+            }
+            cb(0);
             return 1;
         } else {
-            console.log(response)
+            if(response.response.artists.length == 0) {
+                cb();
+                return 1;
+            } else {
 
-            var artistResponse = response.response.artists[0]
-            console.log(artistResponse)
+                var artistResponse = response.response.artists[0]
 
-            if(artistResponse.foreign_ids) {
-                var twitterID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
-                console.log(twitterID)
+                if(artistResponse.foreign_ids) {
+                    var twitterID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
 
-                var twitterLink = "https://twitter.com/" + twitterID
-                cb(twitterLink)
-                return 0
+                    var twitterLink = "https://twitter.com/" + twitterID
+                    cb(twitterLink)
+                    return 0
+                }
             }
         }
         
@@ -75,9 +97,11 @@ echonest.getArtistPopularity = function(artist, cb){
     // if(artist.musicbrainz_id) {
         var artist_id = artist.musicbrainz_id
         rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artist.artist) + '&bucket=hotttnesss&bucket=hotttnesss_rank&bucket=id:musicbrainz').on('complete', function(response){
-            console.log("echonest complete")
-            console.log(response)
+            
             if(response.response.status.code != 0) {
+                if(response.response.status.code == 3) {
+                    console.log("Rate limit reached.")
+                }
                 cb(0);
                 return 1;
             } else {
@@ -88,9 +112,7 @@ echonest.getArtistPopularity = function(artist, cb){
                 }
                 if(artistResponse.foreign_ids) {
                     var mbID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
-                    console.log(mbID)
                     artists.updateMBID(artist.artist, mbID, function(rows) {
-                        console.log(rows)
                         console.log("Artist " + artist.artist + " has been updated with Musicbrainz ID: " + mbID)
                     })
                 }

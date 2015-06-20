@@ -18,7 +18,6 @@ var setmine = require('../apiHandlers/setmine')
 artist_social_media.updateArtistByMusicbrainzID = function(musicbrainz_id, cb) {
   setstoryConnection = mysql.createPool(settings.db.setstory);
   openaura.getFollowers(musicbrainz_id, function(data){
-    console.log(data);
     setstoryConnection.query("UPDATE artists SET musicbrainz_id = ?, fb_link = ?, twitter_link = ?, instagram_link = ?, soundcloud_link = ?, youtube_link = ?",
       [musicbrainz_id, data.facebook_link, data.twitter_link, data.instagram_link, data.soundcloud_link, data.youtube_link], function(err, rows) {
         if (err){
@@ -37,7 +36,6 @@ artist_social_media.updateArtistByMusicbrainzID = function(musicbrainz_id, cb) {
 artist_social_media.updateArtistByName = function(artistName, cb){
   artists.getMBIDByName(artistName, function(musicbrainz_id){
     // TODO: Add this ID to artists table if it doesn't have it, or add a row if it doesn't exist
-    console.log(musicbrainz_id);
     artist_social_media.updateArtistById(musicbrainz_id, cb)
   })
 }
@@ -84,30 +82,30 @@ artist_social_media.getTwitterLink = function(artist, cb) {
 artist_social_media.updateSetrecordsArtists = function(supercallback) {
   mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, data) {
     async.parallel({
-      twitter: function(callback) {
-        setmine.socialmedia.twitter(data, function(data) {
-          callback(null, data)
-        })
-      },
-      facebook: function(callback) {
-        setmine.socialmedia.facebook(data, function(data) {
-            callback(null, data);
-        })
-      },
+      // twitter: function(callback) {
+      //   setmine.socialmedia.twitter(data, function(data) {
+      //     callback(null, data)
+      //   })
+      // },
+      // facebook: function(callback) {
+      //   setmine.socialmedia.facebook(data, function(data) {
+      //       callback(null, data);
+      //   })
+      // },
       instagram: function(callback) {
         setmine.socialmedia.instagram(data, function(data) {
             callback(null, data);
         })
-      },
-      soundcloud: function(callback) {
-        setmine.socialmedia.soundcloud(data, function(data) {
-          callback(null, data)
-        })
-      },
-      youtube: function(callback) {
-        setmine.socialmedia.youtube(data, function(data) {
-            callback(null, data)
-        })
+      // },
+      // soundcloud: function(callback) {
+      //   setmine.socialmedia.soundcloud(data, function(data) {
+      //     callback(null, data)
+      //   })
+      // },
+      // youtube: function(callback) {
+      //   setmine.socialmedia.youtube(data, function(data) {
+      //       callback(null, data)
+      //   })
       }
     }, function(err, results) {
       supercallback(results)
@@ -118,7 +116,6 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
 
 artist_social_media.updateDemoLineupArtists = function(supercallback) {
   setmine.getEventLineupByID(762, function(event) {
-    console.log(event.lineup.length)
     var lineup = event.lineup
     async.parallel({
       twitter: function(callback) {
@@ -154,7 +151,6 @@ artist_social_media.updateDemoLineupArtists = function(supercallback) {
 }
 
 artist_social_media.updateLineupArtists = function(lineup, supercallback) {
-  console.log(lineup[0])
   async.parallel({
     twitter: function(callback) {
       setmine.socialmedia.twitter(lineup, function(data) {
@@ -186,10 +182,8 @@ artist_social_media.updateLineupArtists = function(lineup, supercallback) {
   })
 }
 
-
 artist_social_media.updateSocialMetricsByName = function(artistName, supercallback) {
   var artist = _.findWhere(setmine.artists, {artist: artistName})
-  console.log(artist)
   async.parallel({
     twitter: function(callback) {
       setmine.socialmedia.twitter([artist], function(data) {

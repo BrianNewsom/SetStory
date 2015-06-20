@@ -200,12 +200,7 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
 
 router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
-        res.json({"response": data});
-    })
-})
-
-router.get('/api/socialmedia/setrecords', function(req,res,next){
-    artist_social_media.updateSetrecordsArtists(function(data) {
+        console.log(data)
         console.log("Setrecords artists updated.")
     })
     res.json({"response": "Updating setrecords artists"});
