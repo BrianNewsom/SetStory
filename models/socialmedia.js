@@ -77,6 +77,7 @@ socialmedia.twitter = function(data, supercallback) {
                 for(var i = 1; i < data.length; i++) {
                     sql += ",(" + data[i].artist_id + "," + data[i].twitter_followers + ")"
                 }
+                console.log(sql)
                 connection.query(sql, function(err, response) {
                     if(err) {
                         console.log("Error caching Twitter follower data.")
