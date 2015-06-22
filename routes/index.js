@@ -114,9 +114,11 @@ router.get('/api/autocomplete/:models/:name', function(req, res, next) {
     // Must differentiate between events and artists autocomplete
 
     if(req.params.name.length > 2) {
+
         if(req.params.models == "events") {
+
             var events = setmine.events
-            console.log(events[0].event)
+
             result.push(events[0].event)
 
             // Uncomment to enable autocomplete searching

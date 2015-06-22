@@ -254,7 +254,6 @@ socialmedia.instagram = function(data, supercallback) {
                         }
                     })
                 }
-
                 
             },
             function(err) {

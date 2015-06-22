@@ -31,8 +31,8 @@ setmine.init = function(callback) {
             });
         },
         function(callback) {
-            rest.get('http://setmine.com/api/v/7/upcoming/?id=762').on('complete', function(data) {
-                setmine.events = data.payload.upcoming.soonestEvents;
+            rest.get('http://setmine.com/api/v/7/lineup/762').on('complete', function(data) {
+                setmine.events.push(data.payload.lineup);
                 if(callback) {
                     callback()
                 }
