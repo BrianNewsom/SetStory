@@ -27,7 +27,7 @@
     "request": "*",
     "underscore": "*",
     "serve-favicon": "~2.2.0"
-  }
+  },
   "scripts": {
     "start": "forever stopall; forever start app.js",
     "stop": "forever stopall"
