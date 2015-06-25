@@ -141,7 +141,6 @@ socialmedia.facebook = function(data, supercallback) {
                     console.log("Facebook Link for artist '" + artist.artist + "' not found.")
                 }
 
-                
             })
         } else {
             return artist.fb_link
@@ -161,28 +160,43 @@ socialmedia.facebook = function(data, supercallback) {
                 }
                 var fb_user_id = data[count].fb_link.substring(data[count].fb_link.lastIndexOf("/") + 1, data[count].fb_link.length)
                 facebook.getLikesFromUserId(fb_user_id, function(likes) {
-                    data[count]['facebook_followers'] = likes
-                    count++
-                    callback()
+                    if(likes) {
+                        data[count]['facebook_followers'] = likes
+                        count++
+                        callback()
+                    } else {
+                        console.log(data[count].artist_id)
+                        data.splice(count, 1)
+                        callback()
+                    }
                 })
             },
             function(err) {
-                console.log("Facebook data received. Caching...")
-                var sql = "INSERT INTO facebook_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].facebook_followers + ")"
-                for(var i = 1; i < data.length; i++) {
-                    sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")"
+                console.log(data.length)
+
+                if(data.length > 0) {
+                    console.log("Facebook data received. Caching...")
+                    var sql = "INSERT INTO facebook_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].facebook_followers + ")"
+                    for(var i = 1; i < data.length; i++) {
+                        sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")"
+                    }
+                    console.log(sql)
+                    connection.query(sql, function(err, response) {
+                        if(err) {
+                            console.log("Error caching Facebook likes data.")
+                            console.log(err)
+                            supercallback(err)
+                        }
+                        else {
+                            console.log("Facebook likes data cached.")
+                            supercallback(data)
+                        }
+                    })
+                } else {
+                    console.log("No facebook data to cache.")
+                    supercallback(data)
                 }
-                connection.query(sql, function(err, response) {
-                    if(err) {
-                        console.log("Error caching Facebook likes data.")
-                        console.log(err)
-                        supercallback(err)
-                    }
-                    else {
-                        console.log("Facebook likes data cached.")
-                        supercallback(data)
-                    }
-                })
+                
             }
         )
     }
@@ -219,7 +233,7 @@ socialmedia.instagram = function(data, supercallback) {
                             count++
                             callback()
                         } else {
-                            data.shift(count)
+                            data.splice(count, 1)
                             callback()
                         }
                     })
@@ -245,11 +259,11 @@ socialmedia.instagram = function(data, supercallback) {
                                 // console.log("artists.updateInstagramID response", rows)
                                 console.log("Instagram ID for artist '" + artistName + "' cached")
                             })
-                            data.shift(count)
+                            data.splice(count, 1)
                             callback()
                         } else {
                             // Remove artist if no instagram ID can be found
-                            data.shift(count)
+                            data.splice(count, 1)
                             callback()
                         }
                     })

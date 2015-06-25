@@ -18,7 +18,7 @@ instagram.getFollowersByUserId = function(user_id, cb) {
         if(token) {
             rest.get('https://api.instagram.com/v1/users/' + user_id + '/?access_token=' + token)
                 .on('complete', function(data){
-                    console.log("FollowerByID: " + user_id, data)
+                    console.log("FollowerByID: " + user_id)
                     if(data.data) {
                         cb(data.data.counts.followed_by);
                     } else {
