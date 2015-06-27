@@ -1,0 +1,4 @@
+#!/bin/bash
+
+curl localhost:3001/api/socialmedia/setrecords
+curl localhost:3001/api/socialmedia/demolineup
