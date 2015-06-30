@@ -1,5 +1,6 @@
 var rest = require('restler');
 var _ = require('lodash');
+var winston = require('winston');
 var soundcloud = {};
 soundcloud.client_id = '66b598e554ce0083e7c7b55e983062b0';
 
@@ -42,12 +43,12 @@ soundcloud.getUserFromName = function(name, cb){
 
 /* Examples */
 //soundcloud.getUserFromName('Alt-J', function(data){
-//    console.log(data);
+//    winston.log(data);
 //})
 //
 // soundcloud.getUserFromName('alt-j', function(user_id){
 //    soundcloud.getTotalPlays(user_id, function(plays){
-//        console.log(plays);
+//        winston.log(plays);
 //    });
 // });
 

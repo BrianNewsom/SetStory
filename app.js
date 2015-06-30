@@ -5,8 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
+var winston = require('winston');
 var routes = require('./routes/index');
 var openaura = require('./apiHandlers/openaura.js');
+var winston = require('winston');
+var moment = require('moment');
 
 var app = express();
 
@@ -23,6 +26,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+
+// Set up logging throughout project
+var now = moment();
+var formatted = now.format('YYYY-MM-DD');
+
+winston.add(winston.transports.File, { filename: 'logs/' + formatted + '.log' });
 
 
 // catch 404 and forward to error handler
@@ -50,7 +59,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-    console.log(err);
+    winston.error(err);
   res.render('error', {
     message: err.message,
     error: {}

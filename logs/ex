@@ -1,0 +1,14 @@
+{"level":"info","message":"Listening on port 3001","timestamp":"2015-06-30T01:58:12.580Z"}
+{"level":"info","message":"Listening on port 3001","timestamp":"2015-06-30T01:58:15.310Z"}
+{"level":"info","message":"Listening on port 3001","timestamp":"2015-06-30T02:13:45.272Z"}
+{"level":"info","message":"setmine models stored.","timestamp":"2015-06-30T02:13:46.189Z"}
+{"level":"info","message":"Listening on port 3001","timestamp":"2015-06-30T02:13:56.524Z"}
+{"level":"info","message":"setmine models stored.","timestamp":"2015-06-30T02:13:56.831Z"}
+{"level":"info","message":"getArtistInfo","timestamp":"2015-06-30T02:14:21.265Z"}
+{"level":"info","message":"unified.story","timestamp":"2015-06-30T02:14:21.266Z"}
+{"level":"info","message":"getArtistGigs","timestamp":"2015-06-30T02:14:21.507Z"}
+{"0":1253,"1":{"hotttnesss":0.691997,"hotttnesss_rank":1783},"level":"error","message":"","timestamp":"2015-06-30T02:14:21.768Z"}
+{"level":"info","message":"Setmine: 1253","timestamp":"2015-06-30T02:14:21.768Z"}
+{"hotttnesss":0.691997,"hotttnesss_rank":1783,"level":"info","message":"Echonest: ","timestamp":"2015-06-30T02:14:21.768Z"}
+{"level":"info","message":"RAWAVA: 65.74251926247896","timestamp":"2015-06-30T02:14:21.768Z"}
+{"level":"info","message":"Artist Cosmic Gate has been updated with Musicbrainz ID: 5f3b32e5-efb5-4096-9260-587c155e50b7","timestamp":"2015-06-30T02:14:21.969Z"}

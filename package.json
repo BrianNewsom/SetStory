@@ -27,6 +27,7 @@
     "restler": "*",
     "request": "*",
     "underscore": "*",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "winston": "*"
   }
 }

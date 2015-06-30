@@ -10,6 +10,7 @@ var artistModel = require('../models/artists')
 
 var settings = require('../config/settings');
 var mysql = require('mysql');
+var winston = require('winston');
 var connection = mysql.createPool(settings.db.main);
 
 var artists = []
@@ -94,7 +95,7 @@ setmine.getEventLineupByID = function(eventID, callback) {
 
             if(eventID == 762) {
                 connection.query("SELECT * FROM booking_values", function(err, bookingValues) {
-                    if(err) console.log(err)
+                    if(err) winston.error(err)
                     else {
                         response.payload.lineup.lineup = _.filter(response.payload.lineup.lineup, function(artist) {
                             var artist_booking_value = _.findWhere(bookingValues, {artist_id: +artist.id})

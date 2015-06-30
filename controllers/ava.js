@@ -10,6 +10,7 @@ var socialmedia = require('../models/socialmedia')
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
+var winston = require('winston');
 
 var ava = {}
 ava.version = 1
@@ -30,7 +31,7 @@ ava.getBookingValue = function(artist, callback) {
         }
     }
     connection.query("SELECT * FROM booking_values", function(err, data) {
-        if(err) console.log(err)
+        if(err) winston.error(err)
         else {
             callback(data)
         }
@@ -41,7 +42,7 @@ ava.calculateBookingValue = function(artistName, supercallback) {
     var matchedArtist = _.findWhere(setmine.artists, {artist: artistName})
     async.parallel([
         function(callback) {
-            console.log("setmine")
+            winston.debug("setmine")
 
             if(matchedArtist) {
                 setmine.getArtistPopularity(matchedArtist.id, function(popularity) {
@@ -54,14 +55,14 @@ ava.calculateBookingValue = function(artistName, supercallback) {
             
         },
         function(callback) {
-            console.log("echonest")
+            winston.debug("echonest")
 
             echonest.getArtistPopularity(matchedArtist, function(popularity) {
                 callback(null, popularity)
             })
         }
     ], function(err, results) {
-        console.log(results)
+        winston.error(results)
         var rawScores = {
             setmine: results[0],
             echonest: results[1]
@@ -71,9 +72,9 @@ ava.calculateBookingValue = function(artistName, supercallback) {
 
             //Saves and timestamps the calculated booking value
             connection.query("INSERT INTO booking_values(artist_id, raw_score, ava_version) VALUES (?,?,?)", [matchedArtist.id, roundedRawAVA, ava.version], function(err, data) {
-                if(err) console.log(err)
+                if(err) winston.log(err)
                 else {
-                    console.log(data)
+                    winston.debug(data)
                     supercallback({
                         artist_id: matchedArtist.id,
                         raw_score: roundedRawAVA,
@@ -86,12 +87,12 @@ ava.calculateBookingValue = function(artistName, supercallback) {
 }
 
 ava.calculateRaw = function(rawNumbers, callback) {
-    console.log("Setmine: " + rawNumbers.setmine)
-    console.log("Echonest: ", rawNumbers.echonest)
+    winston.info("Setmine: " + rawNumbers.setmine)
+    winston.info("Echonest: ", rawNumbers.echonest)
 
     var rawAVAScore = ((.95*(rawNumbers.echonest.hotttnesss)) + (.05*(1/rawNumbers.echonest.hotttnesss_rank)))*100
 
-    console.log("RAWAVA: " + rawAVAScore)
+    winston.info("RAWAVA: " + rawAVAScore)
     callback(rawAVAScore)
 }
 

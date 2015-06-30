@@ -1,10 +1,13 @@
 var rest = require('restler');
+var winston = require('winston');
 var echonest = {};
 var api_key= 'QQELH8UNTWLVBRQIB';
 var consumer_key= '019584e62e8fca4752f9ee885d84c050';
 var shared_secret= 'RwkQVo9ASH2dSIMlR7D4fg';
 
-var artists = require("../models/artists")
+var artists = require("../models/artists");
+var winston = require('winston');
+
 
 echonest.getTrackPopularity = function(trackTitle, cb){
     // Use decibel to get all genres for a given artist
@@ -18,7 +21,7 @@ echonest.getTrackPopularity = function(trackTitle, cb){
     }).on('complete', function(data){
         if(response.response.status.code != 0) {
             if(response.response.status.code == 3) {
-                console.log("Rate limit reached.")
+                winston.error("Rate limit reached.")
             }
             cb(0);
             return 1;
@@ -32,7 +35,7 @@ echonest.getFacebookLinkByArtist = function(artistName, cb) {
     rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:facebook').on('complete', function(response){
         if(response.response.status.code != 0) {
             if(response.response.status.code == 3) {
-                console.log("Rate limit reached.")
+                winston.error("Rate limit reached.")
             }
             cb(0);
             return 1;
@@ -54,7 +57,7 @@ echonest.getFacebookLinkByArtist = function(artistName, cb) {
                     }
                 }
             } else {
-                console.log("Rate limit reached")
+                winston.error("Rate limit reached")
                 cb();
                 return 1;
             }
@@ -68,7 +71,7 @@ echonest.getTwitterLinkByArtist = function(artistName, cb) {
     rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:twitter').on('complete', function(response){
         if(response.response.status.code != 0) {
             if(response.response.status.code == 3) {
-                console.log("Rate limit reached.")
+                winston.error("Rate limit reached.")
             }
             cb(0);
             return 1;
@@ -100,7 +103,7 @@ echonest.getArtistPopularity = function(artist, cb){
             
             if(response.response.status.code != 0) {
                 if(response.response.status.code == 3) {
-                    console.log("Rate limit reached.")
+                    winston.error("Rate limit reached.")
                 }
                 cb(0);
                 return 1;
@@ -113,7 +116,7 @@ echonest.getArtistPopularity = function(artist, cb){
                 if(artistResponse.foreign_ids) {
                     var mbID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
                     artists.updateMBID(artist.artist, mbID, function(rows) {
-                        console.log("Artist " + artist.artist + " has been updated with Musicbrainz ID: " + mbID)
+                        winston.info("Artist " + artist.artist + " has been updated with Musicbrainz ID: " + mbID)
                     })
                 }
                 cb(popularity)
@@ -130,7 +133,7 @@ echonest.getArtistPopularity = function(artist, cb){
     //         }
     //     }).on('complete', function(data){
     //         // Use matching artist's id to get popularity
-    //         console.log(data)
+    //         winston.log(data)
     //         if (!data.response.artists[0]){
     //             cb(0);
     //             return 1;

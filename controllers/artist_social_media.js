@@ -2,6 +2,7 @@
 var settings = require('../config/settings');
 var async = require( 'async' );
 var _ = require( 'underscore' );
+var winston = require('winston');
 
 
 var mysql = require('mysql');
@@ -21,7 +22,7 @@ artist_social_media.updateArtistByMusicbrainzID = function(musicbrainz_id, cb) {
     setstoryConnection.query("UPDATE artists SET musicbrainz_id = ?, fb_link = ?, twitter_link = ?, instagram_link = ?, soundcloud_link = ?, youtube_link = ?",
       [musicbrainz_id, data.facebook_link, data.twitter_link, data.instagram_link, data.soundcloud_link, data.youtube_link], function(err, rows) {
         if (err){
-          console.log(err);
+          winston.error(err);
           cb(null);
         }
         else{
@@ -52,15 +53,15 @@ artist_social_media.getArtist = function(id, id_type, cb) {
   query += " ORDER BY timestamp DESC LIMIT 1"
   setstoryConnection.query(query, function( err, res ) {
       if ( err ) {
-        console.log( err );
+        winston.error( err );
       }
       else {
         if(res[0] && res != []){
-          console.log("Data pulled from artist_social_media successfully.");
+          winston.info("Data pulled from artist_social_media successfully.");
           cb( res[0] );
         } else {
           // No matching data in table, use openaura to get data and add to table
-          console.log("Pulling data from openaura");
+          winston.info("Pulling data from openaura");
           artist_social_media.updateArtistById(id, function(socialData){
             cb(socialData);
           })

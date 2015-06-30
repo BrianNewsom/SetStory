@@ -1,4 +1,5 @@
 var rest = require('restler');
+var winston = require('winston');
 var decibel = {};
 decibel.appId = '9425f121';
 decibel.appKey = 'bfb407871363c8a369d7fa3315608af1';
@@ -12,7 +13,7 @@ decibel.getArtistGenres = function(artist, cb){
                     'DecibelAppKey' : decibel.appKey}})
         .on('complete', function(data){
         // TODO: Do we want more than just the first result?
-        //console.log('results decibel', data.length);
+        //winston.log('results decibel', data.length);
         var genres = data.Results[0].Genres;
         // TODO: Map
         var cleanGenres = [];
@@ -23,7 +24,7 @@ decibel.getArtistGenres = function(artist, cb){
 
         return 0;
     }).on('error', function(data){
-        console.log(data);
+        winston.log(data);
         cb(data);
 
         return 0;
@@ -37,14 +38,14 @@ decibel.getSongInfo = function(title,artist,cb) {
         query: {'name': artist},
         headers: {'DecibelAppID': decibel.appId, 'DecibelAppKey': decibel.appKey}
     }).on('complete', function (data) {
-        //console.log(data)
+        //winston.log(data)
         cb(data);
     })
 };
     //rest.get('https://rest.decibel.net/v3/Recordings', {
     //    query : {'artists' : artist, artistSearchType: 'PartialName', 'depth' : 'Genres', pageSize : 3},
     //    headers : {'DecibelAppID' : decibel.appId, 'DecibelAppKey' : decibel.appKey}}).on('complete', function(data){
-    //    console.log(data);
+    //    winston.log(data);
     //    cb(data);
     //})
 
