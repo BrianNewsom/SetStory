@@ -72,7 +72,7 @@ ava.calculateBookingValue = function(artistName, supercallback) {
 
             //Saves and timestamps the calculated booking value
             connection.query("INSERT INTO booking_values(artist_id, raw_score, ava_version) VALUES (?,?,?)", [matchedArtist.id, roundedRawAVA, ava.version], function(err, data) {
-                if(err) winston.log(err)
+                if(err) winston.error(err)
                 else {
                     winston.debug(data)
                     supercallback({

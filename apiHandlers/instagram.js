@@ -13,7 +13,7 @@ instagram.access_token = settings.auth_tokens.instagram
 instagram.getFollowersByUserId = function(user_id, cb) {
     // Return follower count of a user given their id.
 
-    winston.log(user_id)
+    winston.debug(user_id)
 
     instagram.getAccessToken(function(token) {
         if(token) {

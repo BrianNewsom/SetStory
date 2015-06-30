@@ -24,7 +24,7 @@ decibel.getArtistGenres = function(artist, cb){
 
         return 0;
     }).on('error', function(data){
-        winston.log(data);
+        winston.error(data);
         cb(data);
 
         return 0;

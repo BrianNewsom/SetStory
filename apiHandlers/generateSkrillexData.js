@@ -17,12 +17,12 @@ setlistfm.getArtistGigs('Skrillex', function(sets){
 
                         if(data[0].main_genre){
                             genres[data[0].main_genre] =  (genres[data[0].main_genre]) ? genres[data[0].main_genre] += 1 : genres[data[0].main_genre] = 1;
-                            winston.log(genres);
+                            winston.debug(genres);
                         }
                         if (data[0].primary_tempo) {
                             setBPM += Number(data[0].primary_tempo);
-                            winston.log(setBPM)
-                            winston.log("div by ", setLength);
+                            winston.debug(setBPM)
+                            winston.info("div by ", setLength);
                         }
                     }
                 });
