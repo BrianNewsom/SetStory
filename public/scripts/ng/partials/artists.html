@@ -70,7 +70,7 @@
 	    			
 	    			<div class="inner--module genres-viz wow fadeIn flex-row">
 	    				<div class="media-container flex-column">
-		    				<h3 ng-show="concert.media.length > 0"> Social </h3>
+		    				<h3 ng-show="concert.media.length" class="ng-show"> Social </h3>
 		    				<div ng-repeat='media in concert.media' class="wow fadeIn concert-image-container">
 			    				<div ng-show='media.type == image' ng-repeat='m in media' >
 			    					<div ng-show="showImage(m)" >

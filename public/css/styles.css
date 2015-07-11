@@ -1306,6 +1306,22 @@ path.color1 {
   z-index: 1;
 }
 
+.center {
+  margin: auto;
+}
+.line {
+  height: 1vh; 
+  width: 75%; 
+  background-color: white;
+}
+
+.small-font {
+  font-size: 1em;
+}
+.medium-font {
+  font-size: 2em;
+}
+
 .flex-row {
   display: -webkit-box;
   display: -moz-box;

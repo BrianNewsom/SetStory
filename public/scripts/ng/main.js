@@ -12,6 +12,12 @@ config(['$routeProvider', function($routeProvider) {
       controller: 'ArtistsController'
     });
   
+   $routeProvider.when('/retailers', 
+    {
+      templateUrl: '/scripts/ng/partials/retailers.html', 
+      controller: 'RetailersController'
+    });
+
    $routeProvider.when('/events/:name', 
     {
       templateUrl: '/scripts/ng/partials/concerts.html', 
@@ -20,7 +26,11 @@ config(['$routeProvider', function($routeProvider) {
  
 }]);
 
-
+myApp.controller('RetailersController', function($scope,$rootScope,$location,$http){
+	$scope.largeCurrentFootTraffic = 8; 
+	$scope.smallYesterdayFootTraffic = 4; 
+	$scope.smalltotalFootTraffic = 2300; 
+});
 
 myApp.controller('SearchController', function($scope,$rootScope,$location, $http){
 
