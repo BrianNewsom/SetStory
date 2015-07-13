@@ -1,5 +1,6 @@
 var musicgraph = require('./musicgraph');
 var setlistfm = require('./setlistfm');
+var winston = require('winston');
 
 setlistfm.getArtistGigs('Skrillex', function(sets){
     for (var i = 14; i < 18; i++){
@@ -9,19 +10,19 @@ setlistfm.getArtistGigs('Skrillex', function(sets){
             var genres = {};
             for (var j = 0 ; j < setLength ; j++){
                 var title = sets[i].tracks[j].name
-                //console.log(title)
+                //winston.log(title)
 
                 musicgraph.getSongInfo(null, title, function(data){
                     if(data && data.length){
 
                         if(data[0].main_genre){
                             genres[data[0].main_genre] =  (genres[data[0].main_genre]) ? genres[data[0].main_genre] += 1 : genres[data[0].main_genre] = 1;
-                            console.log(genres);
+                            winston.debug(genres);
                         }
                         if (data[0].primary_tempo) {
                             setBPM += Number(data[0].primary_tempo);
-                            console.log(setBPM)
-                            console.log("div by ", setLength);
+                            winston.debug(setBPM)
+                            winston.info("div by ", setLength);
                         }
                     }
                 });

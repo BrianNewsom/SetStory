@@ -2,6 +2,7 @@ var rest = require('restler');
 var request = require('request')
 var cheerio = require('cheerio')
 var _ = require('lodash');
+var winston = require('winston');
 var instagram = {};
 var settings = require("../config/settings")
 
@@ -12,13 +13,13 @@ instagram.access_token = settings.auth_tokens.instagram
 instagram.getFollowersByUserId = function(user_id, cb) {
     // Return follower count of a user given their id.
 
-    console.log(user_id)
+    winston.debug(user_id)
 
     instagram.getAccessToken(function(token) {
         if(token) {
             rest.get('https://api.instagram.com/v1/users/' + user_id + '/?access_token=' + token)
                 .on('complete', function(data){
-                    console.log("FollowerByID: " + user_id)
+                    winston.debug("FollowerByID: " + user_id)
                     if(data.data) {
                         cb(data.data.counts.followed_by);
                     } else {
@@ -41,7 +42,7 @@ instagram.getIdFromName = function(name, cb){
         if(token) {
             rest.get('https://api.instagram.com/v1/users/search?q=' + name + '&access_token=' + instagram.access_token)
                 .on('complete', function(data) {
-                    // console.log("getIdFromName: " + name, data)
+                    // winston.log("getIdFromName: " + name, data)
                     if(data.data.length == 0) {
                         cb()
                     } else {
@@ -68,9 +69,9 @@ instagram.getAccessToken = function(cb) {
                 // request(authRoot + "&redirect_uri=http://setstory.io&response_type=code", function(err, response, html) {
                 //     var $ = cheerio.load(html)
                 //     var mtoken = $($("input")[0]).attr("value")
-                //     console.log(mtoken)
+                //     winston.log(mtoken)
                 //     var postURL = authRoot + "&redirect_uri=http://setstory.io&response_type=code"
-                //     console.log(postURL)
+                //     winston.log(postURL)
 
                 //     var postData = {
                 //         csrfmiddlewaretoken: mtoken
@@ -84,7 +85,7 @@ instagram.getAccessToken = function(cb) {
                 //     }
 
                 //     request(options, function(err, res, html) {
-                //         console.log(res)
+                //         winston.log(res)
                 //         cb(res);
                 //     })
                 // })
@@ -94,7 +95,7 @@ instagram.getAccessToken = function(cb) {
     });
     // rest.get("https://instagram.com/oauth/authorize/?client_id=" + instagram.client_id + "&redirect_uri=http://setstory.io&response_type=token")
     //     .on('complete', function(data){
-    //         console.log(data)
+    //         winston.log(data)
     //         cb(data);
     // });
 

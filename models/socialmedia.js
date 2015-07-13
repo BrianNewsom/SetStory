@@ -15,6 +15,7 @@ var artists = require('../models/artists')
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.main);
+var winston = require('winston');
 
 // First parameter 'data' must be an array of Artist elements that look like this:
 // {
@@ -25,7 +26,7 @@ var connection = mysql.createPool(settings.db.main);
 
 socialmedia.twitter = function(data, supercallback) {
     if(data.length > 200) {
-        console.log("Rate limited at 200 objects with twitter links.")
+        winston.warn("Rate limited at 200 objects with twitter links.")
         supercallback(data)
         return
     }
@@ -41,14 +42,14 @@ socialmedia.twitter = function(data, supercallback) {
                     artist.twitter_link = twitterLink
                     // Run artist recursively through top-level social media function to cache data
                     socialmedia.twitter([artist], function(data) {
-                        console.log("Twitter Data for artist '" + artist.artist + "' cached")
+                        winston.info("Twitter Data for artist '" + artist.artist + "' cached")
                     })
                     // Cache artist link
                     artists.updateTwitterLink(artist, artist.twitter_link, function(response, artistName) {
-                        console.log("Twitter Link for artist '" + artistName + "' cached")
+                        winston.info("Twitter Link for artist '" + artistName + "' cached")
                     })
                 } else {
-                    console.log("Twitter Link for artist '" + artist.artist + "' not found.")
+                    winston.info("Twitter Link for artist '" + artist.artist + "' not found.")
                 }
             })
         } else {
@@ -59,7 +60,7 @@ socialmedia.twitter = function(data, supercallback) {
     if(data.length == 0) {
         supercallback(data)
     } else {
-        console.log("Fetching Twitter data for " + data.length + " artists...")
+        winston.info("Fetching Twitter data for " + data.length + " artists...")
         async.whilst(
             function() { return count < data.length },
             function(callback) {
@@ -72,20 +73,20 @@ socialmedia.twitter = function(data, supercallback) {
                 })
             },
             function(err) {
-                console.log("Twitter data received. Caching...")
+                winston.info("Twitter data received. Caching...")
                 var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].twitter_followers + ")"
                 for(var i = 1; i < data.length; i++) {
                     sql += ",(" + data[i].artist_id + "," + data[i].twitter_followers + ")"
                 }
-                console.log(sql)
+                winston.debug(sql)
                 connection.query(sql, function(err, response) {
                     if(err) {
-                        console.log("Error caching Twitter follower data.")
-                        console.log(err)
+                        winston.info("Error caching Twitter follower data.")
+                        winston.error(err)
                         supercallback(err)
                     }
                     else {
-                        console.log("Twitter data cached.")
+                        winston.info("Twitter data cached.")
                         supercallback(data)
                     }
                 })
@@ -97,7 +98,7 @@ socialmedia.twitter = function(data, supercallback) {
     function getTwitterFollowers(twitterlink, callback) {
         request(twitterlink, function(err, resp, body) {
             if (err) {
-                console.log(err);
+                winston.error(err);
                 callback("-")
             } else {
                 var $ = cheerio.load(body);
@@ -112,7 +113,7 @@ socialmedia.twitter = function(data, supercallback) {
 
 socialmedia.facebook = function(data, supercallback) {
     if(data.length > 200) {
-        console.log("Rate limited at 200 objects with facebook links.")
+        winston.warn("Rate limited at 200 objects with facebook links.")
         supercallback(data)
         return
     }
@@ -131,14 +132,14 @@ socialmedia.facebook = function(data, supercallback) {
 
                     // Run artist recursively through top-level social media function to cache data
                     socialmedia.facebook([artist], function(data) {
-                        console.log("Facebook Data for artist '" + artist.artist + "' cached")
+                        winston.info("Facebook Data for artist '" + artist.artist + "' cached")
                     })
                     // Cache artist link
                     artists.updateFacebookLink(artist.artist, artist.fb_link, function(response, artistName) {
-                        console.log("Facebook Link for artist '" + artistName + "' cached")
+                        winston.info("Facebook Link for artist '" + artistName + "' cached")
                     })
                 } else {
-                    console.log("Facebook Link for artist '" + artist.artist + "' not found.")
+                    winston.info("Facebook Link for artist '" + artist.artist + "' not found.")
                 }
 
             })
@@ -151,7 +152,7 @@ socialmedia.facebook = function(data, supercallback) {
     if(data.length == 0) {
         supercallback(data)
     } else {
-        console.log("Fetching Facebook data for " + data.length + " artists...")
+        winston.info("Fetching Facebook data for " + data.length + " artists...")
         async.whilst(
             function() { return count < data.length },
             function(callback) {
@@ -165,35 +166,35 @@ socialmedia.facebook = function(data, supercallback) {
                         count++
                         callback()
                     } else {
-                        console.log(data[count].artist_id)
+                        winston.debug(data[count].artist_id)
                         data.splice(count, 1)
                         callback()
                     }
                 })
             },
             function(err) {
-                console.log(data.length)
+                winston.debug(data.length)
 
                 if(data.length > 0) {
-                    console.log("Facebook data received. Caching...")
+                    winston.info("Facebook data received. Caching...")
                     var sql = "INSERT INTO facebook_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].facebook_followers + ")"
                     for(var i = 1; i < data.length; i++) {
                         sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")"
                     }
-                    console.log(sql)
+                    winston.debug(sql)
                     connection.query(sql, function(err, response) {
                         if(err) {
-                            console.log("Error caching Facebook likes data.")
-                            console.log(err)
+                            winston.info("Error caching Facebook likes data.")
+                            winston.error(err)
                             supercallback(err)
                         }
                         else {
-                            console.log("Facebook likes data cached.")
+                            winston.info("Facebook likes data cached.")
                             supercallback(data)
                         }
                     })
                 } else {
-                    console.log("No facebook data to cache.")
+                    winston.info("No facebook data to cache.")
                     supercallback(data)
                 }
                 
@@ -205,7 +206,7 @@ socialmedia.facebook = function(data, supercallback) {
 socialmedia.instagram = function(data, supercallback) {
 
     if(data.length > 100) {
-        console.log("Rate limited at 100 objects with instagram links.")
+        winston.warn("Rate limited at 100 objects with instagram links.")
         supercallback(data)
         return
     }
@@ -219,12 +220,12 @@ socialmedia.instagram = function(data, supercallback) {
     if(data.length == 0) {
         supercallback(data)
     } else {
-        console.log(data.length + " artists to fetch instagram data for...")
+        winston.info(data.length + " artists to fetch instagram data for...")
         async.whilst(
             function() { return count < data.length },
             function(callback) {
-                console.log("Fetching instagram data for " + data[count].artist)
-                // console.log("Fetching instagram data for ", data[count])
+                winston.info("Fetching instagram data for " + data[count].artist)
+                // winston.log("Fetching instagram data for ", data[count])
 
                 if(data[count].instagram_id != null) {
                     instagram.getFollowersByUserId(data[count].instagram_id, function(followers) {
@@ -246,18 +247,18 @@ socialmedia.instagram = function(data, supercallback) {
                     var instagram_name = data[count].instagram_link.substring(data[count].instagram_link.lastIndexOf("/") + 1, data[count].instagram_link.length)
 
                     instagram.getIdFromName(instagram_name, function(id) {
-                        // console.log("IG ID: ", id)
+                        // winston.log("IG ID: ", id)
                         if(id) {
-                            console.log("Instagram ID: "+id+" found. Caching and fetching followers.")
+                            winston.info("Instagram ID: "+id+" found. Caching and fetching followers.")
                             data[count].instagram_id = id
                             // Run artist recursively through top-level social media function to cache data
                             socialmedia.instagram([data[count]], function(response) {
-                                // console.log("socialmedia.instagram response", response)
-                                console.log("Instagram Data for artist cached")
+                                // winston.log("socialmedia.instagram response", response)
+                                winston.info("Instagram Data for artist cached")
                             })
                             artists.updateInstagramID(data[count].artist, data[count].instagram_id, function(rows, artistName) {
-                                // console.log("artists.updateInstagramID response", rows)
-                                console.log("Instagram ID for artist '" + artistName + "' cached")
+                                // winston.log("artists.updateInstagramID response", rows)
+                                winston.info("Instagram ID for artist '" + artistName + "' cached")
                             })
                             data.splice(count, 1)
                             callback()
@@ -272,21 +273,21 @@ socialmedia.instagram = function(data, supercallback) {
             },
             function(err) {
                 if(data.length == 0) {
-                    console.log("No instagram data to cache.")
+                    winston.info("No instagram data to cache.")
                     supercallback(data)
                 } else {
                     var insertSQL = "INSERT INTO instagram_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].instagram_followers + ")"
                     for(var i = 1; i < data.length; i++) {
                       insertSQL += ",(" + data[i].artist_id + "," + data[i].instagram_followers + ")"
                     }
-                    console.log(insertSQL)
+                    winston.debug(insertSQL)
                     connection.query(insertSQL, function(err, response) {
                         if(err) {
-                            console.log("Error caching Instagram followers data.")
-                            console.log(err)
+                            winston.info("Error caching Instagram followers data.")
+                            winston.error(err)
                         }
                         else {
-                            console.log("Instagram followers data cached.")
+                            winston.info("Instagram followers data cached.")
                         }
                         supercallback(data)
                     })
@@ -299,7 +300,7 @@ socialmedia.instagram = function(data, supercallback) {
 socialmedia.soundcloud = function(data, supercallback) {
 
     if(data.length > 200) {
-        console.log("Rate limited at 200 objects with soundcloud links.")
+        winston.warn("Rate limited at 200 objects with soundcloud links.")
         supercallback(data)
         return
     }
@@ -314,7 +315,7 @@ socialmedia.soundcloud = function(data, supercallback) {
         supercallback(data)
         return
     } else {
-        console.log("Fetching Soundcloud data for " + data.length + " artists...")
+        winston.info("Fetching Soundcloud data for " + data.length + " artists...")
         async.whilst(
             function() { return count < data.length },
             function(callback) {
@@ -332,7 +333,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                 });
             },
             function(err) {
-                console.log("Soundcloud data received. Caching...")
+                winston.info("Soundcloud data received. Caching...")
                 var followerSQL = "INSERT INTO soundcloud_followers(artist_id, followers) VALUES "
 
                 if(data[0].soundcloud_followers) {
@@ -345,7 +346,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                 }
                 followerSQL = followerSQL.slice(0, -1)
 
-                console.log(followerSQL)
+                winston.debug(followerSQL)
 
                 var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays, tracks) VALUES "
 
@@ -360,19 +361,19 @@ socialmedia.soundcloud = function(data, supercallback) {
                 playsSQL = playsSQL.slice(0, -1)
 
 
-                console.log(playsSQL)
+                winston.debug(playsSQL)
 
 
                 async.parallel([
                     function(callback) {
                         connection.query(followerSQL, function(err, response) {
                             if(err) {
-                                console.log("Error caching Soundcloud followers data.")
-                                console.log(err)
+                                winston.info("Error caching Soundcloud followers data.")
+                                winston.error(err)
                                 callback(null, err)
                             }
                             else {
-                                console.log("Soundcloud followers data cached.")
+                                winston.info("Soundcloud followers data cached.")
                                 callback(null, response)
                             }
                         })
@@ -380,12 +381,12 @@ socialmedia.soundcloud = function(data, supercallback) {
                     function(callback) {
                         connection.query(playsSQL, function(err, response) {
                             if(err) {
-                                console.log("Error caching Soundcloud media data.")
-                                console.log(err)
+                                winston.info("Error caching Soundcloud media data.")
+                                winston.error(err)
                                 callback(null, err)
                             }
                             else {
-                                console.log("Soundcloud media data cached.")
+                                winston.info("Soundcloud media data cached.")
                                 callback(null, response)
                             }
                         })
@@ -402,7 +403,7 @@ socialmedia.soundcloud = function(data, supercallback) {
 
 socialmedia.youtube = function(data, supercallback) {
     if(data.length > 200) {
-        console.log("Rate limited at 200 objects with youtube ids.")
+        winston.warn("Rate limited at 200 objects with youtube ids.")
         supercallback(data)
         return
     }
@@ -416,7 +417,7 @@ socialmedia.youtube = function(data, supercallback) {
     if(data.length == 0) {
         supercallback(data)
     } else {
-        console.log("Fetching Youtube data for " + data.length + " artists...")
+        winston.info("Fetching Youtube data for " + data.length + " artists...")
         async.whilst(
             function() { return (count < data.length) },
             function(callback) {
@@ -429,7 +430,7 @@ socialmedia.youtube = function(data, supercallback) {
                 });
             },
             function(err) {
-                console.log("Youtube data received. Caching...")
+                winston.info("Youtube data received. Caching...")
 
                 var followerSQL = "INSERT INTO youtube_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].youtube_followers + ")"
                 for(var i = 1; i < data.length; i++) {
@@ -445,12 +446,12 @@ socialmedia.youtube = function(data, supercallback) {
                     function(callback) {
                         connection.query(followerSQL, function(err, response) {
                             if(err) {
-                                console.log("Error caching Youtube followers data.")
-                                console.log(err)
+                                winston.info("Error caching Youtube followers data.")
+                                winston.error(err)
                                 callback(null, response)
                             }
                             else {
-                                console.log("Youtube followers data cached.")
+                                winston.info("Youtube followers data cached.")
                                 callback(null, response)
                             }
                         })
@@ -458,12 +459,12 @@ socialmedia.youtube = function(data, supercallback) {
                     function(callback) {
                         connection.query(playsSQL, function(err, response) {
                             if(err) {
-                                console.log("Error caching Youtube media data.")
-                                console.log(err)
+                                winston.info("Error caching Youtube media data.")
+                                winston.error(err)
                                 callback(null, response)
                             }
                             else {
-                                console.log("Youtube media data cached.")
+                                winston.info("Youtube media data cached.")
                                 callback(null, response)
                             }
                         })

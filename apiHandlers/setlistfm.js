@@ -2,6 +2,7 @@ var rest = require('restler');
 var appId = 'setlistfm';
 var appKey = '463c64bb-c052-49bd-9838-8c251c427668';
 var moment = require('moment');
+var winston = require('winston');
 var setlistFM = {
     // Make a clean output of the mess that is the setlistfm api
     getArtistGigs: function(artist, cb){
@@ -10,8 +11,8 @@ var setlistFM = {
                 query:{'artistName' : artist}
             })
             .on('complete', function(data) {
-                console.log("getArtistGigs")
-                console.log(data)
+                winston.info("getArtistGigs")
+                winston.debug(data)
                 // Build obj
                 var output = [];
                 try{
@@ -39,12 +40,12 @@ var setlistFM = {
                                 track.originalArtist = currentSong.cover[0].$.name
                             }
                             // Not a cover -> Original
-                            //console.log(currentSong.$.name);
+                            //winston.log(currentSong.$.name);
                             track.name = currentSong.$.name
                             tracks.push(track);
                         }
                     }
-                    //console.log(data.setlists.setlist[i]);
+                    //winston.log(data.setlists.setlist[i]);
                     gig.tracks = tracks;
                     if (gig.tracks.length > 0){
                         output.push(gig);

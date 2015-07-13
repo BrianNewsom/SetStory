@@ -15,6 +15,7 @@ var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
 var scripts = require('../controllers/scripts')
+var winston = require('winston');
 var ava;
 var eva;
 
@@ -22,7 +23,7 @@ var eva;
 var jf = require('jsonfile')
 
 setmine.init(function() {
-    console.log("setmine models stored.")
+    winston.info("setmine models stored.")
     ava = require('../controllers/ava')
     eva = require('../controllers/eva')
 
@@ -151,7 +152,7 @@ router.get('/api/genres/:artistName', function(req, res, next){
             res.json(data);
         });
     } catch(e){
-        console.log(e);
+        winston.error(e);
 
     }
 });
@@ -202,8 +203,8 @@ router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
 
 router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
-        console.log(data)
-        console.log("Setrecords artists updated.")
+        winston.debug(data)
+        winston.info("Setrecords artists updated.")
     })
     res.json({"response": "Updating setrecords artists"});
 

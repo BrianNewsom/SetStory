@@ -4,17 +4,18 @@ var setmine = require('./setmine');
 
 var moment = require('moment');
 var async = require('async')
+var winston = require('winston');
 
 var _ = require('lodash');
 
 var unified = {};
 
 unified.story = function(artist, supercallback){
-    console.log("unified.story")
+    winston.info("unified.story")
     async.parallel([
         function(callback) {
             setlistfmStory(artist, function(data) {
-                console.log(data)
+                winston.debug(data)
                 callback(null, data)
             })
         }

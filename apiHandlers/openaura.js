@@ -1,4 +1,5 @@
 var rest = require('restler');
+var winston = require('winston');
 var openaura = {};
 var api_key = 'e92932b80a618686be74f8c720e39384ac04df55';
 var _ = require('lodash');
@@ -15,7 +16,7 @@ openaura.getArtistImage = function(artist, cb){
         })
         }
         catch(e){
-            console.log(e);
+            winston.error(e);
             cb(null);
             return 1;
         }
@@ -25,9 +26,9 @@ openaura.getArtistImage = function(artist, cb){
 openaura.getSocialFeed = function(artist, limit, offset, cb){
     rest.get('http://api.openaura.com/v1/search/artists', {
         query : {'q' : artist, 'limit' : 1, 'api_key': api_key}}).on('complete', function(data){
-            console.log(data)
+            winston.debug(data)
         if(!data[0]){
-            console.log('no artist found');
+            winston.info('no artist found');
             cb(null);
             return 1;
         } else {
@@ -49,12 +50,12 @@ openaura.getMBID = function( artist, cb ) {
   } ).on( 'complete', function( res ) {
     try {
       // Found matching artist
-      console.log(res)
+      winston.debug(res)
       var musicbrainz_id = res[0].musicbrainz_id;
       cb(musicbrainz_id);
     }
     catch( e ) {
-      console.log( e );
+      winston.error( e );
       cb( null );
     }
   } )
@@ -104,7 +105,7 @@ openaura.getFollowers = function( musicbrainz_id, cb ) {
       } );
     }
     catch( e ) {
-      console.log( e );
+      winston.error( e );
       cb( null );
     }
 }

@@ -2,6 +2,7 @@
 var settings = require('../config/settings');
 var mysql = require('mysql');
 var connection = mysql.createPool(settings.db.setstory);
+var winston = require('winston');
 
 var artist_media_plays = {};
 var artists = require('../models/artists');
@@ -20,11 +21,11 @@ artist_media_plays.getArtist = function(id, id_type, cb) {
   query += " ORDER BY timestamp DESC LIMIT " + limit;
   connection.query(query, function( err, res ) {
     if ( err ) {
-      console.log( err );
+      winston.error( err );
     }
     else {
       if(res[0] && res != []){
-        console.log("Data pulled from artist_media_plays successfully.");
+        winston.info("Data pulled from artist_media_plays successfully.");
         cb( res );
       }
     }
@@ -40,13 +41,13 @@ artist_media_plays.updatePlaysByMBId = function(musicbrainz_id, cb){
 
 artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtube_id, cb ) {
   // Update plays for a given artist based on ids
-  console.log( 'updating plays for artist' );
+  winston.info( 'updating plays for artist' );
   soundcloud.getTotalPlays( soundcloud_id, function( soundcloud_plays ) {
     youtube.getStatsForChannelById( youtube_id, function( youtube_stats ) {
       connection.query( "INSERT INTO artist_media_plays SET musicbrainz_id = ?, soundcloud_total_plays = ?, youtube_total_plays = ?",
         [ musicbrainz_id, soundcloud_plays, youtube_stats.viewCount ], function( err, rows ) {
           if ( err ) {
-            console.log( err );
+            winston.error( err );
             cb( null );
           }
           else {
@@ -59,7 +60,7 @@ artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtub
 
 /* Update plays for 3LAU */
 //artist_media_plays.updatePlaysByMBId('6461d3e3-2886-4ad4-90c9-a43e3202ebaf', function(data){
-//  console.log(data);
+//  winston.log(data);
 //})
 
   //soundcloud.getUserFromPermalink(soundcloud_url, function(user){
@@ -71,7 +72,7 @@ artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtub
   //      connection.query("INSERT INTO artist_media_plays SET soundcloud_url = ?, soundcloud_total_plays = ?, youtube_id = ?, youtube_url =?, youtube_total_plays = ?",
   //      [soundcloud_url, soundcloud_plays, youtube_stats.channelId, youtube_stats.channelName, youtube_stats.viewCount ], function(err, rows) {
   //          if (err) {
-  //            console.log(err);
+  //            winston.log(err);
   //            cb(null);
   //          } else {
   //            cb("Successfully added data into table");
@@ -85,6 +86,6 @@ artist_media_plays.updatePlays = function( musicbrainz_id, soundcloud_id, youtub
 module.exports = artist_media_plays;
 
 //artist_media_plays.updatePlays('https://soundcloud.com/skrillex', 'TheOfficialSkrillex', function(res){
-//  console.log(res);
+//  winston.log(res);
 //  return;
 //})
