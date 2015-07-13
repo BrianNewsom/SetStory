@@ -43,9 +43,14 @@ youtube.getStatsForChannelById = function(id, cb){
       winston.error( JSON.stringify( res ) );
     }
     else {
-      var stats = res.items[0].statistics;
-      stats.channelId = res.items[0 ].id;
-      cb(res.items[0 ].statistics);
+      if(res.items[0]) {
+        var stats = res.items[0].statistics;
+        stats.channelId = res.items[0].id;
+        cb(res.items[0].statistics);
+      } else {
+        cb()
+      }
+      
     }
   } )
 }

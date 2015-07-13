@@ -40,13 +40,14 @@ instagram.getIdFromName = function(name, cb){
 
     instagram.getAccessToken(function(token) {
         if(token) {
+            console.log(name)
             rest.get('https://api.instagram.com/v1/users/search?q=' + name + '&access_token=' + instagram.access_token)
                 .on('complete', function(data) {
-                    // winston.log("getIdFromName: " + name, data)
-                    if(data.data.length == 0) {
-                        cb()
-                    } else {
+                    winston.debug("getIdFromName: " + name, data)
+                    if(data.data && data.data.length > 0) {
                         cb(data.data[0].id);
+                    } else {
+                        cb()
                     }
 
             });

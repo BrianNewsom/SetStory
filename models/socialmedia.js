@@ -65,11 +65,17 @@ socialmedia.twitter = function(data, supercallback) {
             function() { return count < data.length },
             function(callback) {
                 getTwitterFollowers(data[count].twitter_link, function(followers) {
-                    var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
-                    var parsedFollowerCount = followerCount.replace(/\,/g,'')
-                    data[count]['twitter_followers'] = parsedFollowerCount
-                    count++
-                    callback()
+                    if(followers) {
+                        var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
+                        var parsedFollowerCount = followerCount.replace(/\,/g,'')
+                        data[count]['twitter_followers'] = parsedFollowerCount
+                        count++
+                        callback()
+                    } else {
+                        data.splice(count, 1)
+                        callback()
+                    }
+                    
                 })
             },
             function(err) {
@@ -422,11 +428,16 @@ socialmedia.youtube = function(data, supercallback) {
             function() { return (count < data.length) },
             function(callback) {
                 youtube.getStatsForChannelById(data[count].youtube_id, function(stats) {
-                    data[count]['youtube_followers'] = stats.subscriberCount
-                    data[count]['youtube_plays'] = stats.viewCount
-                    data[count]['youtube_videos'] = stats.videoCount
-                    count++
-                    callback()
+                    if(stats) {
+                        data[count]['youtube_followers'] = stats.subscriberCount
+                        data[count]['youtube_plays'] = stats.viewCount
+                        data[count]['youtube_videos'] = stats.videoCount
+                        count++
+                        callback()
+                    } else {
+                        data.splice(count, 1)
+                        callback()
+                    }
                 });
             },
             function(err) {
