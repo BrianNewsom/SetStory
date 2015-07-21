@@ -28,7 +28,7 @@ soundcloud.getTotalPlays = function(user_id, cb){
 
 soundcloud.getUserFromPermalink = function(url, cb){
     // Get a users info from soundcloud url
-    rest.get('http://api.soundcloud.com/resolve?client_id=' + soundcloud.client_id + '&url=' + url).on('complete', function(user){
+    rest.get('http://api.soundcloud.com/resolve?url=' + encodeURIComponent(url) + '&client_id=' + soundcloud.client_id).on('complete', function(user){
         cb(user);
     })
 };
@@ -37,7 +37,11 @@ soundcloud.getUserFromName = function(name, cb){
     // Search users for 'name' and return first result
 
     rest.get('http://api.soundcloud.com/users.json?q=' + name + '&client_id=' + soundcloud.client_id).on('complete', function(user){
-        cb(user[0]);
+        if(user.length > 0) {
+            cb(user[0]);
+        } else {
+            cb()
+        }
     })
 };
 

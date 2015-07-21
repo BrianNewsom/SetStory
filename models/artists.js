@@ -103,33 +103,12 @@ artists.updateInstagramID = function(artistName, instagramID, cb) {
   });
 }
 
-artists.updateSoundCloud = function(id, cb){
-  // Update soundcloud information for given musicbrainz_id
-  artists.getByMBID(id, function(artist){
-    soundcloud.getUserFromName(artist.artist, function(soundcloud_user){
-      if(soundcloud_user){
-      connection.query("UPDATE artists " +
-                       "SET soundcloud_link = ?, " +
-                            "soundcloud_id = ? " +
-                            "WHERE musicbrainz_id= ?;",
-        [ soundcloud_user.permalink_url, soundcloud_user.id, id],
-        function(err, rows){
-          if (err) {
-            winston.info("error in updating soundcloud");
-            winston.error(err);
-            cb(null);
-          }
-          else {
-            winston.info("successfully updated soundcloud data for artist");
-            cb(rows);
-          }
-      });
-      } else {
-        winston.info("no soundcloud user found");
-        cb(null);
-      }
-
-    });
+artists.updateSoundcloudLink = function(artistName, soundcloudLink, cb){
+  connection.query("UPDATE artists SET soundcloud_link='" + soundcloudLink + "' WHERE soundcloud_link IS NULL AND artist='" + artistName + "'", function(err, rows){
+    if(err) winston.error(err);
+    else {
+      cb(rows, artistName);
+    }
   });
 };
 

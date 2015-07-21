@@ -37,6 +37,7 @@ socialmedia.twitter = function(data, supercallback) {
         }
         // Fetch twitter links from Echonest
         if(artist.twitter_link == null) {
+            winston.info("Finding twitter link for artist '" + artist.artist)
             echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
                 if(twitterLink) {
                     artist.twitter_link = twitterLink
@@ -45,7 +46,7 @@ socialmedia.twitter = function(data, supercallback) {
                         winston.info("Twitter Data for artist '" + artist.artist + "' cached")
                     })
                     // Cache artist link
-                    artists.updateTwitterLink(artist, artist.twitter_link, function(response, artistName) {
+                    artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
                         winston.info("Twitter Link for artist '" + artistName + "' cached")
                     })
                 } else {
@@ -310,11 +311,32 @@ socialmedia.soundcloud = function(data, supercallback) {
         supercallback(data)
         return
     }
+    // Get rid of elements (Artists) in the array that have NULL soundcloud links
     data = _.filter(data, function(artist) {
         if(!artist.artist_id) {
             artist['artist_id'] = artist.id
         }
-        return artist.soundcloud_link != null
+        // Fetch soundcloud links
+        if(artist.soundcloud_link == null) {
+            winston.info("Finding soundcloud link for artist '" + artist.artist)
+            soundcloud.getUserFromName(artist.artist, function(soundcloud_user) {
+                if(soundcloud_user) {
+                    artist.soundcloud_link = soundcloud_user.permalink_url
+                    // Run artist recursively through top-level social media function to cache data
+                    socialmedia.soundcloud([artist], function(data) {
+                        winston.info("Soundcloud Data for artist '" + artist.artist + "' cached")
+                    })
+                    // Cache artist link
+                    artists.updateSoundcloudLink(artist.artist, artist.soundcloud_link, function(response, artistName) {
+                        winston.info("Soundcloud Link for artist '" + artistName + "' cached")
+                    })
+                } else {
+                    winston.info("Soundcloud Link for artist '" + artist.artist + "' not found.")
+                }
+            })
+        } else {
+            return artist.soundcloud_link
+        }
     })
     var count = 0
     if(data.length == 0) {
@@ -327,6 +349,7 @@ socialmedia.soundcloud = function(data, supercallback) {
             function(callback) {
                 soundcloud.getUserFromPermalink(data[count].soundcloud_link, function(user){
                     soundcloud.getTotalPlays(user.id, function(plays){
+                        winston.info("Soundcloud plays for " + data[count].artist + " is " + plays)
 
                         data[count]['soundcloud_followers'] = user.followers_count
                         data[count]['soundcloud_plays'] = plays
@@ -335,7 +358,6 @@ socialmedia.soundcloud = function(data, supercallback) {
                         count++
                         callback()
                     });
-                    
                 });
             },
             function(err) {
