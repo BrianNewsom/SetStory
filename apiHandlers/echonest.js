@@ -32,7 +32,7 @@ echonest.getTrackPopularity = function(trackTitle, cb){
 };
 
 echonest.getFacebookLinkByArtist = function(artistName, cb) {
-    rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:facebook').on('complete', function(response){
+    rest.get('http://developer.echonest.com/api/v4/artist/search/?api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:facebook').on('complete', function(response){
         if(response.response.status.code != 0) {
             if(response.response.status.code == 3) {
                 winston.error("Rate limit reached.")
@@ -69,26 +69,30 @@ echonest.getFacebookLinkByArtist = function(artistName, cb) {
 
 echonest.getTwitterLinkByArtist = function(artistName, cb) {
     rest.get('http://developer.echonest.com/api/v4/artist/search/?' + 'api_key=' + api_key + '&format=json&name=' + encodeURIComponent(artistName) + '&bucket=id:twitter').on('complete', function(response){
-        if(response.response.status.code != 0) {
+        if(response.response && response.response.status.code != 0) {
             if(response.response.status.code == 3) {
                 winston.error("Rate limit reached.")
             }
-            cb(0);
+            cb();
             return 1;
         } else {
-            if(response.response.artists.length == 0) {
+            if(!response || response.response.artists.length == 0) {
+                winston.info("Twitter Link for artist '" + artistName + "' not found.")
                 cb();
                 return 1;
             } else {
-
                 var artistResponse = response.response.artists[0]
 
                 if(artistResponse.foreign_ids) {
+                    winston.info("Twitter Link for artist '" + artistName + "' found.")
                     var twitterID = artistResponse.foreign_ids[0].foreign_id.substring(artistResponse.foreign_ids[0].foreign_id.lastIndexOf(":") + 1)
 
                     var twitterLink = "https://twitter.com/" + twitterID
                     cb(twitterLink)
                     return 0
+                } else {
+                    winston.info("Twitter Link for artist '" + artistName + "' not found.")
+                    cb();
                 }
             }
         }

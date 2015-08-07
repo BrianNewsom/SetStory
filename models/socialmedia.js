@@ -1,9 +1,9 @@
 var socialmedia = {};
-var cheerio = require('cheerio');
 var request = require( 'request' );
 var async = require( 'async' );
 var _ = require('lodash');
 
+var twitter = require('../apiHandlers/twitter')
 var facebook = require('../apiHandlers/facebook')
 var soundcloud = require('../apiHandlers/soundcloud')
 var youtube = require('../apiHandlers/youtube')
@@ -37,7 +37,7 @@ socialmedia.twitter = function(data, supercallback) {
         }
         // Fetch twitter links from Echonest
         if(artist.twitter_link == null) {
-            winston.info("Finding twitter link for artist '" + artist.artist)
+            winston.info("Finding twitter link for artist " + artist.artist)
             echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
                 if(twitterLink) {
                     artist.twitter_link = twitterLink
@@ -49,8 +49,6 @@ socialmedia.twitter = function(data, supercallback) {
                     artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
                         winston.info("Twitter Link for artist '" + artistName + "' cached")
                     })
-                } else {
-                    winston.info("Twitter Link for artist '" + artist.artist + "' not found.")
                 }
             })
         } else {
@@ -65,7 +63,9 @@ socialmedia.twitter = function(data, supercallback) {
         async.whilst(
             function() { return count < data.length },
             function(callback) {
-                getTwitterFollowers(data[count].twitter_link, function(followers) {
+                winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...")
+                twitter.getTwitterFollowers(data[count].twitter_link, function(followers) {
+                    // winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
                     if(followers) {
                         var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
                         var parsedFollowerCount = followerCount.replace(/\,/g,'')
@@ -101,21 +101,6 @@ socialmedia.twitter = function(data, supercallback) {
         )
     }
     
-
-    function getTwitterFollowers(twitterlink, callback) {
-        request(twitterlink, function(err, resp, body) {
-            if (err) {
-                winston.error(err);
-                callback("-")
-            } else {
-                var $ = cheerio.load(body);
-                var twitterFollowersString = $(".ProfileNav-item--followers a.ProfileNav-stat").attr("title");
-                callback(twitterFollowersString)
-            }
-
-            
-        })
-    }
 }
 
 socialmedia.facebook = function(data, supercallback) {
@@ -212,8 +197,8 @@ socialmedia.facebook = function(data, supercallback) {
 
 socialmedia.instagram = function(data, supercallback) {
 
-    if(data.length > 100) {
-        winston.warn("Rate limited at 100 objects with instagram links.")
+    if(data.length > 200) {
+        winston.warn("Rate limited at 200 objects with instagram links.")
         supercallback(data)
         return
     }
@@ -347,9 +332,10 @@ socialmedia.soundcloud = function(data, supercallback) {
         async.whilst(
             function() { return count < data.length },
             function(callback) {
+                winston.info("Fetching soundcloud data for " + data[count].artist)
                 soundcloud.getUserFromPermalink(data[count].soundcloud_link, function(user){
                     soundcloud.getTotalPlays(user.id, function(plays){
-                        winston.info("Soundcloud plays for " + data[count].artist + " is " + plays)
+                        // winston.info("Soundcloud plays for " + data[count].artist + " is " + plays)
 
                         data[count]['soundcloud_followers'] = user.followers_count
                         data[count]['soundcloud_plays'] = plays
