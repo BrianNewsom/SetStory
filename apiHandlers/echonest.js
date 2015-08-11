@@ -76,7 +76,7 @@ echonest.getTwitterLinkByArtist = function(artistName, cb) {
             cb();
             return 1;
         } else {
-            if(!response || response.response.artists.length == 0) {
+            if(!response || !response.response || response.response.artists.length == 0) {
                 winston.info("Twitter Link for artist '" + artistName + "' not found.")
                 cb();
                 return 1;
