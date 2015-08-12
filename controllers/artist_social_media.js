@@ -76,7 +76,7 @@ artist_social_media.getTwitterLink = function(artist, cb) {
 
   })
   artists.updateTwitterLink(artist.artist, twitterID, function(rows) {
-    
+
   })
 }
 
@@ -113,9 +113,17 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
     }, function(err, results) {
       supercallback(results)
     })
-    
+
   })
 }
+
+artist_social_media.getMissingArtistImagesFromTwitter = function(supercallback){
+  mainConnection.query("SELECT id, artist, image_id, twitter_link FROM artists WHERE image_id=83", function(err, artists) {
+    setmine.socialmedia.twitter(artists, function(data) {
+        supercallback(null, data)
+    })
+  });
+};
 
 artist_social_media.updateDemoLineupArtists = function(supercallback) {
   setmine.getEventLineupByID(762, function(event) {
@@ -149,7 +157,7 @@ artist_social_media.updateDemoLineupArtists = function(supercallback) {
     }, function(err, results) {
       supercallback(results)
     })
-    
+
   })
 }
 
@@ -220,5 +228,3 @@ artist_social_media.updateSocialMetricsByName = function(artistName, supercallba
 
 
 module.exports = artist_social_media;
-
-

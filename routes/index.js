@@ -137,7 +137,7 @@ router.get('/api/autocomplete/:models/:name', function(req, res, next) {
             }
         }
     }
-    res.json(result) 
+    res.json(result)
 });
 
 router.get('/api/getArtistPic/:artistName', function(req, res, next){
@@ -209,6 +209,16 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
     res.json({"response": "Updating setrecords artists"});
 
 })
+
+// Fetch
+
+router.get('/api/images/twitter', function(req,res,next){
+  artist_social_media.getMissingArtistImagesFromTwitter(function(data){
+    winston.debug(data);
+    winston.info("Artists missing Images gathered.");
+  });
+  res.json({"response": "Gathering artists where images are missing"})
+});
 
 // Fetch social metrics for all demo lineup artists (EDC Las Vegas 2015)
 
