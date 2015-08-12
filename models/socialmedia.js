@@ -113,11 +113,16 @@ socialmedia.twitter = {
             
         }
     },
-    getImages: function(data, supercallback) {
-        console.log(data);
-        twitter.getTwitterImageLinks(twitterlink,function(data) {
-            supercallback(data);
-        });
+    saveImageLinks: function(artists, supercallback) {
+        async.each(artists, saveImageLinkFromTwitter, function(err) {
+            supercallback(err)
+        })
+
+        function saveImageLinkFromTwitter(artist, callback) {
+            // Make call to twitter.getTwitterImageLink
+            // After you have the twitter image link, save it to the database
+            // After youve saved it to the database, run callback(null)
+        }
     }
 }
 

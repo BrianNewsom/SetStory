@@ -22,7 +22,7 @@ twitter.getTwitterFollowers = function(twitterlink, callback) {
 
 //get twitter image links -> download images -> upload images to s3
 //use that new image_id generated and set to specific artist
-twitter.getTwitterImageLinks = function(twitterlink, callback) {
+twitter.getTwitterImageLink = function(twitterlink, callback) {
     request(twitterlink, function(err, resp, body) {
         if (err) {
             winston.error(err);

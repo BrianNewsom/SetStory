@@ -119,7 +119,7 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
 
 artist_social_media.getMissingArtistImagesFromTwitter = function(supercallback){
   mainConnection.query("SELECT id, artist, image_id, twitter_link FROM artists WHERE image_id=83", function(err, artists) {
-    setmine.socialmedia.twitter.getImages(artists, function(data) {
+    setmine.socialmedia.twitter.saveImageLinks(artists, function(data) {
         supercallback(data);
     })
   });
