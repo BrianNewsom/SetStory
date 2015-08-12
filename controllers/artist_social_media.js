@@ -89,26 +89,26 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
             callback(null, data)
           })
         })
-      },
-      facebook: function(callback) {
-        setmine.socialmedia.facebook(artists, function(data) {
-            callback(null, data);
-        })
-      },
-      instagram: function(callback) {
-        setmine.socialmedia.instagram(artists, function(data) {
-            callback(null, data);
-        })
-      },
-      soundcloud: function(callback) {
-        setmine.socialmedia.soundcloud(artists, function(data) {
-          callback(null, data)
-        })
-      },
-      youtube: function(callback) {
-        setmine.socialmedia.youtube(artists, function(data) {
-            callback(null, data)
-        })
+      // },
+      // facebook: function(callback) {
+      //   setmine.socialmedia.facebook(artists, function(data) {
+      //       callback(null, data);
+      //   })
+      // },
+      // instagram: function(callback) {
+      //   setmine.socialmedia.instagram(artists, function(data) {
+      //       callback(null, data);
+      //   })
+      // },
+      // soundcloud: function(callback) {
+      //   setmine.socialmedia.soundcloud(artists, function(data) {
+      //     callback(null, data)
+      //   })
+      // },
+      // youtube: function(callback) {
+      //   setmine.socialmedia.youtube(artists, function(data) {
+      //       callback(null, data)
+      //   })
       }
     }, function(err, results) {
       supercallback(results)

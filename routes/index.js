@@ -207,7 +207,6 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
         winston.info("Setrecords artists updated.")
     })
     res.json({"response": "Updating setrecords artists"});
-
 })
 
 // Fetch
