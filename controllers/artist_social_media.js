@@ -81,30 +81,32 @@ artist_social_media.getTwitterLink = function(artist, cb) {
 }
 
 artist_social_media.updateSetrecordsArtists = function(supercallback) {
-  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, data) {
+  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, artists) {
     async.parallel({
       twitter: function(callback) {
-        setmine.socialmedia.twitter(data, function(data) {
-          callback(null, data)
+        setmine.socialmedia.twitter.searchForLinks(artists, function(artistsWithLinks) {
+          setmine.socialmedia.twitter.getFollowers(artistsWithLinks, function(data) {
+            callback(null, data)
+          })
         })
       },
       facebook: function(callback) {
-        setmine.socialmedia.facebook(data, function(data) {
+        setmine.socialmedia.facebook(artists, function(data) {
             callback(null, data);
         })
       },
       instagram: function(callback) {
-        setmine.socialmedia.instagram(data, function(data) {
+        setmine.socialmedia.instagram(artists, function(data) {
             callback(null, data);
         })
       },
       soundcloud: function(callback) {
-        setmine.socialmedia.soundcloud(data, function(data) {
+        setmine.socialmedia.soundcloud(artists, function(data) {
           callback(null, data)
         })
       },
       youtube: function(callback) {
-        setmine.socialmedia.youtube(data, function(data) {
+        setmine.socialmedia.youtube(artists, function(data) {
             callback(null, data)
         })
       }

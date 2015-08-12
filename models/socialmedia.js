@@ -24,83 +24,89 @@ var winston = require('winston');
 //     "twitter_link": "https://twitter.com/Anonymuzkilla",
 // }
 
-socialmedia.twitter = function(data, supercallback) {
-    if(data.length > 200) {
-        winston.warn("Rate limited at 200 objects with twitter links.")
-        supercallback(data)
-        return
-    }
-    // Get rid of elements (Artists) in the array that have NULL twitter links
-    data = _.filter(data, function(artist) {
-        if(!artist.artist_id) {
-            artist['artist_id'] = artist.id
+socialmedia.twitter = {
+    getFollowers: function(data, supercallback) {
+        if(data.length > 200) {
+            winston.warn("Rate limited at 200 objects with twitter links.")
+            supercallback(data)
+            return
         }
-        // Fetch twitter links from Echonest
-        if(artist.twitter_link == null) {
-            winston.info("Finding twitter link for artist " + artist.artist)
-            echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
-                if(twitterLink) {
-                    artist.twitter_link = twitterLink
-                    // Run artist recursively through top-level social media function to cache data
-                    socialmedia.twitter([artist], function(data) {
-                        winston.info("Twitter Data for artist '" + artist.artist + "' cached")
-                    })
-                    // Cache artist link
-                    artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
-                        winston.info("Twitter Link for artist '" + artistName + "' cached")
-                    })
-                }
-            })
+        var count = 0
+        if(data.length == 0) {
+            supercallback(data)
         } else {
-            return artist.twitter_link
-        }
-    })
-    var count = 0
-    if(data.length == 0) {
-        supercallback(data)
-    } else {
-        winston.info("Fetching Twitter data for " + data.length + " artists...")
-        async.whilst(
-            function() { return count < data.length },
-            function(callback) {
-                winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...")
-                twitter.getTwitterFollowers(data[count].twitter_link, function(followers) {
-                    // winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
-                    if(followers) {
-                        var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
-                        var parsedFollowerCount = followerCount.replace(/\,/g,'')
-                        data[count]['twitter_followers'] = parsedFollowerCount
-                        count++
-                        callback()
-                    } else {
-                        data.splice(count, 1)
-                        callback()
+            winston.info("Fetching Twitter data for " + data.length + " artists...")
+            async.whilst(
+                function() { return count < data.length },
+                function(callback) {
+                    winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...")
+                    twitter.getTwitterFollowers(data[count].twitter_link, function(followers) {
+                        // winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
+                        if(followers) {
+                            var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
+                            var parsedFollowerCount = followerCount.replace(/\,/g,'')
+                            data[count]['twitter_followers'] = parsedFollowerCount
+                            count++
+                            callback()
+                        } else {
+                            data.splice(count, 1)
+                            callback()
+                        }
+                        
+                    })
+                },
+                function(err) {
+                    winston.info("Twitter data received. Caching...")
+                    var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].twitter_followers + ")"
+                    for(var i = 1; i < data.length; i++) {
+                        sql += ",(" + data[i].artist_id + "," + data[i].twitter_followers + ")"
                     }
-                    
-                })
-            },
-            function(err) {
-                winston.info("Twitter data received. Caching...")
-                var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].twitter_followers + ")"
-                for(var i = 1; i < data.length; i++) {
-                    sql += ",(" + data[i].artist_id + "," + data[i].twitter_followers + ")"
+                    winston.debug(sql)
+                    connection.query(sql, function(err, response) {
+                        if(err) {
+                            winston.info("Error caching Twitter follower data.")
+                            winston.error(err)
+                            supercallback(err)
+                        }
+                        else {
+                            winston.info("Twitter data cached.")
+                            supercallback(data)
+                        }
+                    })
                 }
-                winston.debug(sql)
-                connection.query(sql, function(err, response) {
-                    if(err) {
-                        winston.info("Error caching Twitter follower data.")
-                        winston.error(err)
-                        supercallback(err)
-                    }
-                    else {
-                        winston.info("Twitter data cached.")
-                        supercallback(data)
+            )
+        }   
+    },
+    searchForLinks: function(data, supercallback) {
+        // Get rid of elements (Artists) in the array that have NULL twitter links
+        data = _.filter(data, function(artist) {
+            if(!artist.artist_id) {
+                artist['artist_id'] = artist.id
+            }
+            // Fetch twitter links from Echonest
+            if(artist.twitter_link == null) {
+                winston.info("Finding twitter link for artist " + artist.artist)
+                echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
+                    if(twitterLink) {
+                        artist.twitter_link = twitterLink
+                        // Run artist recursively through top-level social media function to cache data
+                        socialmedia.twitter([artist], function(data) {
+                            winston.info("Twitter Data for artist '" + artist.artist + "' cached")
+                        })
+                        // Cache artist link
+                        artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
+                            winston.info("Twitter Link for artist '" + artistName + "' cached")
+                        })
                     }
                 })
+            } else {
+                return artist.twitter_link
             }
-        )
+        })
+    },
+    getImages: function(data, supercallback) {
+        
     }
-    
 }
 
 socialmedia.facebook = function(data, supercallback) {
@@ -494,7 +500,6 @@ socialmedia.youtube = function(data, supercallback) {
             }
         )
     }
-    
 }
 
 module.exports = socialmedia;
