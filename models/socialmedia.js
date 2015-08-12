@@ -32,6 +32,11 @@ socialmedia.twitter = {
             return
         }
         var count = 0
+        data = _.filter(data, function(artist) {
+            if(!artist.artist_id) {
+                artist['artist_id'] = artist.id
+            }
+        })
         if(data.length == 0) {
             supercallback(data)
         } else {
@@ -77,35 +82,36 @@ socialmedia.twitter = {
             )
         }   
     },
-    searchForLinks: function(data, supercallback) {
-        // Get rid of elements (Artists) in the array that have NULL twitter links
-        data = _.filter(data, function(artist) {
-            if(!artist.artist_id) {
-                artist['artist_id'] = artist.id
-            }
-            // Fetch twitter links from Echonest
+    searchForLinks: function(artists, supercallback) {
+        async.map(artists, getTwitterLinkFromEchonest, function(artistsWithTwitterLinks) {
+            supercallback(artistsWithTwitterLinks)
+        })
+
+        function getTwitterLinkFromEchonest(artist, callback) {
             if(artist.twitter_link == null) {
                 winston.info("Finding twitter link for artist " + artist.artist)
                 echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
                     if(twitterLink) {
-                        artist.twitter_link = twitterLink
-                        // Run artist recursively through top-level social media function to cache data
-                        socialmedia.twitter([artist], function(data) {
-                            winston.info("Twitter Data for artist '" + artist.artist + "' cached")
-                        })
+                        console.log("Twitter Link for artist '" + artist.artist + "' found.")
                         // Cache artist link
                         artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
                             winston.info("Twitter Link for artist '" + artistName + "' cached")
+                            artist.twitter_link = twitterLink
+                            callback(true)
                         })
+                    } else {
+                        callback(false)
                     }
                 })
             } else {
-                return artist.twitter_link
+                winston.info("Artist " + artist.artist + "' already has a twitter link.")
+                callback(true)
             }
-        })
+            
+        }
     },
     getImages: function(data, supercallback) {
-        
+
     }
 }
 
