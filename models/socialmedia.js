@@ -57,7 +57,7 @@ socialmedia.twitter = {
                             data.splice(count, 1)
                             callback()
                         }
-                        
+
                     })
                 },
                 function(err) {
@@ -80,7 +80,7 @@ socialmedia.twitter = {
                     })
                 }
             )
-        }   
+        }
     },
     searchForLinks: function(artists, supercallback) {
         async.map(artists, getTwitterLinkFromEchonest, function(artistsWithTwitterLinks) {
@@ -111,7 +111,10 @@ socialmedia.twitter = {
         }
     },
     getImages: function(data, supercallback) {
-
+        console.log(data);
+        twitter.getTwitterImageLinks(twitterlink,function(data) {
+            supercallback(data);
+        });
     }
 }
 
@@ -201,7 +204,7 @@ socialmedia.facebook = function(data, supercallback) {
                     winston.info("No facebook data to cache.")
                     supercallback(data)
                 }
-                
+
             }
         )
     }
@@ -273,7 +276,7 @@ socialmedia.instagram = function(data, supercallback) {
                         }
                     })
                 }
-                
+
             },
             function(err) {
                 if(data.length == 0) {
@@ -421,7 +424,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                     supercallback(data)
                 })
 
-                
+
             }
         )
     }
