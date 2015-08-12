@@ -26,6 +26,7 @@ var winston = require('winston');
 
 socialmedia.twitter = {
     getFollowers: function(data, supercallback) {
+        console.log("getFollowers")
         if(data.length > 200) {
             winston.warn("Rate limited at 200 objects with twitter links.")
             supercallback(data)
@@ -36,7 +37,9 @@ socialmedia.twitter = {
             if(!artist.artist_id) {
                 artist['artist_id'] = artist.id
             }
+            return artist
         })
+
         if(data.length == 0) {
             supercallback(data)
         } else {
@@ -82,8 +85,8 @@ socialmedia.twitter = {
             )
         }
     },
-    searchForLinks: function(artists, supercallback) {
-        async.map(artists, getTwitterLinkFromEchonest, function(artistsWithTwitterLinks) {
+    findArtistLinks: function(artists, supercallback) {
+        async.filter(artists, getTwitterLinkFromEchonest, function(artistsWithTwitterLinks) {
             supercallback(artistsWithTwitterLinks)
         })
 
@@ -92,9 +95,9 @@ socialmedia.twitter = {
                 winston.info("Finding twitter link for artist " + artist.artist)
                 echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
                     if(twitterLink) {
-                        console.log("Twitter Link for artist '" + artist.artist + "' found.")
+                        winston.info("Twitter Link for artist '" + artist.artist + "' found.")
                         // Cache artist link
-                        artists.updateTwitterLink(artist.artist, artist.twitter_link, function(response, artistName) {
+                        artists.updateTwitterLink(artist.artist, twitterLink, function(response, artistName) {
                             winston.info("Twitter Link for artist '" + artistName + "' cached")
                             artist.twitter_link = twitterLink
                             callback(true)
