@@ -65,21 +65,8 @@ socialmedia.twitter = {
                 },
                 function(err) {
                     winston.info("Twitter data received. Caching...")
-                    var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].twitter_followers + ")"
-                    for(var i = 1; i < data.length; i++) {
-                        sql += ",(" + data[i].artist_id + "," + data[i].twitter_followers + ")"
-                    }
-                    winston.debug(sql)
-                    connection.query(sql, function(err, response) {
-                        if(err) {
-                            winston.info("Error caching Twitter follower data.")
-                            winston.error(err)
-                            supercallback(err)
-                        }
-                        else {
-                            winston.info("Twitter data cached.")
-                            supercallback(data)
-                        }
+                    socialmedia.twitter.saveFollowers(data, function(saveResponse) {
+                        supercallback(saveResponse)
                     })
                 }
             )
@@ -123,9 +110,28 @@ socialmedia.twitter = {
             // After you have the twitter image link, save it to the database
             // After youve saved it to the database, run callback(null)
         }
+    },
+    saveFollowers: function(artists, supercallback) {
+        var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + artists[0].artist_id + "," + artists[0].twitter_followers + ")"
+        for(var i = 1; i < artists.length; i++) {
+            sql += ",(" + artists[i].artist_id + "," + artists[i].twitter_followers + ")"
+        }
+        winston.debug(sql)
+        connection.query(sql, function(err, response) {
+            if(err) {
+                winston.info("Error caching Twitter follower data.")
+                winston.error(err)
+                supercallback(err)
+            }
+            else {
+                winston.info("Twitter data cached.")
+                supercallback(data)
+            }
+        })
     }
 }
 
+// Refactor to model socialmedia.twitter object
 socialmedia.facebook = function(data, supercallback) {
     if(data.length > 200) {
         winston.warn("Rate limited at 200 objects with facebook links.")
@@ -218,6 +224,7 @@ socialmedia.facebook = function(data, supercallback) {
     }
 }
 
+// Refactor to model socialmedia.twitter object
 socialmedia.instagram = function(data, supercallback) {
 
     if(data.length > 200) {
@@ -312,6 +319,7 @@ socialmedia.instagram = function(data, supercallback) {
     }
 }
 
+// Refactor to model socialmedia.twitter object
 socialmedia.soundcloud = function(data, supercallback) {
 
     if(data.length > 200) {
@@ -438,6 +446,7 @@ socialmedia.soundcloud = function(data, supercallback) {
     }
 }
 
+// Refactor to model socialmedia.twitter object
 socialmedia.youtube = function(data, supercallback) {
     if(data.length > 200) {
         winston.warn("Rate limited at 200 objects with youtube ids.")

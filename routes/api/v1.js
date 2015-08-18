@@ -14,7 +14,6 @@ var stubhub = require('../apiHandlers/stubhub')
 var echonest = require('../apiHandlers/echonest')
 var artist_social_media = require('../controllers/artist_social_media');
 var artist_media_plays = require('../controllers/artist_media_plays');
-var scripts = require('../controllers/scripts')
 var winston = require('winston');
 var ava;
 var eva;
@@ -26,35 +25,29 @@ setmine.init(function() {
     winston.info("setmine models stored.")
     ava = require('../controllers/ava')
     eva = require('../controllers/eva')
-
 })
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-});
-
-router.get('/api/artist/social_media', function(req, res, next){
+router.get('/artist/social_media', function(req, res, next){
   artist_social_media.getArtist(req.query.id, req.query.id_type, function(data){
     res.json(data);
   })
 });
 
 /* Get plays data for an artist (Returns an array of data in order */
-router.get('/api/artist/media_plays', function(req, res, next){
+router.get('/artist/media_plays', function(req, res, next){
     artist_media_plays.getArtist(req.query.id, req.query.id_type, function(data){
         res.json(data);
     })
 });
 
 /* Endpoint so we can update artists by hitting a url.  Probably shouldn't be on prod. */
-router.get('/api/artist/social_media/updateById', function(req, res, next){
+router.get('/artist/social_media/updateById', function(req, res, next){
     artist_social_media.updateArtistById(req.query.id, function(data){
         res.json(data);
     })
 })
 
-router.get('/api/artist/social_media/:artistName', function(req, res, next){
+router.get('/artist/social_media/:artistName', function(req, res, next){
     /* TODO: Get MBID from artists table once it's populated - this should always work but often requires two calls to openaura. */
     // openaura.getMBID(req.params.artistName, function(musicbrainz_id) {
     //     artist_social_media.getArtist(musicbrainz_id, 'musicbrainz_id', function(data){
@@ -66,7 +59,7 @@ router.get('/api/artist/social_media/:artistName', function(req, res, next){
     })
 })
 
-router.get('/api/artist/getMBID', function(req, res, next){
+router.get('/artist/getMBID', function(req, res, next){
     if(!req.query.artist_name){
         res.send("Please include artist_name query parameter");
     }
@@ -81,7 +74,7 @@ router.get('/api/artist/getMBID', function(req, res, next){
 
 // Get any sourceAPI's Artist object by artist name
 
-router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
+router.get('/artist/info/:sourceAPI/:name', function(req, res, next) {
     if(req.params.sourceAPI == "setmine") {
         var result = [];
         var artists = setmine.artists
@@ -100,7 +93,7 @@ router.get('/api/artist/info/:sourceAPI/:name', function(req, res, next) {
 });
 
 // Get AVA booking
-router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
+router.get('/artist/ava/bookingvalue/:artist', function(req, res, next){
     ava.calculateBookingValue(req.params.artist, function(data) {
         res.json({"response": data})
     })
@@ -108,7 +101,7 @@ router.get('/api/artist/ava/bookingvalue/:artist', function(req, res, next){
 
 // Get :models names of Artists or events by matching :name
 
-router.get('/api/autocomplete/:models/:name', function(req, res, next) {
+router.get('/autocomplete/:models/:name', function(req, res, next) {
 
     var result = [];
 
@@ -140,13 +133,13 @@ router.get('/api/autocomplete/:models/:name', function(req, res, next) {
     res.json(result)
 });
 
-router.get('/api/getArtistPic/:artistName', function(req, res, next){
+router.get('/getArtistPic/:artistName', function(req, res, next){
     openaura.getArtistImage(req.params.artistName, function(data){
         res.json(data);
     })
 })
 
-router.get('/api/genres/:artistName', function(req, res, next){
+router.get('/genres/:artistName', function(req, res, next){
     try{
         decibel.getArtistGenres(req.params.artistName, function(data){
             res.json(data);
@@ -157,51 +150,45 @@ router.get('/api/genres/:artistName', function(req, res, next){
     }
 });
 
-router.get('/api/songInfo', function(req, res, next){
+router.get('/songInfo', function(req, res, next){
     musicgraph.getSongInfo(req.query.artist,req.query.title, function(data){
         res.json(data);
     })
 });
 
-router.get('/api/gigs/:artistName', function(req, res, next){
+router.get('/gigs/:artistName', function(req, res, next){
     setlistFM.getArtistGigs(req.params.artistName, function(data){
         res.json(data);
     })
 });
 
-router.get('/api/getSocialMedia', function(req, res, next) {
+router.get('/getSocialMedia', function(req, res, next) {
     openaura.getSocialFeed(req.query.artist,req.query.limit ,req.query.offset,function(data){
         res.json(data);
     })
 })
 
-router.get('/api/story/:artistName', function(req, res, next){
+router.get('/story/:artistName', function(req, res, next){
     unified.story(req.params.artistName, function(data) {
         res.json(data);
     })
 })
 
-router.get('/api/popularity/track/:trackTitle', function(req, res, next){
+router.get('/popularity/track/:trackTitle', function(req, res, next){
     echonest.getTrackPopularity(req.params.trackTitle, function(data) {
         res.json(data);
     })
 })
 
-router.get('/api/popularity/artist/:artistName', function(req,res,next){
+router.get('/popularity/artist/:artistName', function(req,res,next){
     echonest.getArtistPopularity(req.params.artistName, function(data){
         res.json(data);
     })
 })
 
-router.get('/api/scripts/startTimedSocialMedia', function(req,res,next){
-    scripts.startTimedSocialMedia(function() {
-        res.json({"response": "Script finished."});
-    })
-})
-
 // Fetch social metrics for all setrecords artists
 
-router.get('/api/socialmedia/setrecords', function(req,res,next){
+router.get('/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
         winston.debug(data)
         winston.info("Setrecords artists updated.")
@@ -211,7 +198,7 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
 
 // Fetch
 
-router.get('/api/images/twitter', function(req,res,next){
+router.get('/images/twitter', function(req,res,next){
   artist_social_media.getMissingArtistImagesFromTwitter(function(data){
     winston.debug(data);
     winston.info("Artists missing Images gathered.");
@@ -221,43 +208,43 @@ router.get('/api/images/twitter', function(req,res,next){
 
 // Fetch social metrics for all demo lineup artists (EDC Las Vegas 2015)
 
-router.get('/api/socialmedia/demolineup', function(req,res,next){
+router.get('/socialmedia/demolineup', function(req,res,next){
     artist_social_media.updateDemoLineupArtists(function(data) {
         res.json({"response": data});
     })
 })
 
-router.get('/api/socialmedia/links/demolineup', function(req,res,next){
+router.get('/socialmedia/links/demolineup', function(req,res,next){
     artist_social_media.findDemoLineupSocialMediaLinks(function(data) {
         res.json({"response": data});
     })
 })
 
-router.get('/api/musicbrainz/demolineup', function(req,res,next){
+router.get('/musicbrainz/demolineup', function(req,res,next){
     setmine.getDemoLineupBookingValues(function(data) {
         res.json({"response": data});
     })
 })
 
-router.get('/api/lineup/event/:eventName', function(req,res,next){
+router.get('/lineup/event/:eventName', function(req,res,next){
     setmine.getEventLineupByName(req.params.eventName, function(data) {
         res.json({"response": data});
     })
 })
 
-router.get('/api/lineup/social/:eventID', function(req,res,next){
+router.get('/lineup/social/:eventID', function(req,res,next){
     eva.getLineupSocialMedia(req.params.eventID, function(data) {
         res.json({"response": data});
     })
 })
 
-router.get('/api/artist/social/:artistName', function(req,res,next){
+router.get('/artist/social/:artistName', function(req,res,next){
     ava.getSocialMedia(req.params.artistName, function(data) {
         res.json({"response": data});
     })
 })
 
-router.post('/api/lineup/social/:eventID', function(req,res,next){
+router.post('/lineup/social/:eventID', function(req,res,next){
     var lineup = req.body.new_lineup
     eva.calculateLineupSocialMedia(lineup, function(data) {
         res.json({"response": data});
@@ -266,7 +253,7 @@ router.post('/api/lineup/social/:eventID', function(req,res,next){
 
 // Ticket Prices Route (incomplete)
 
-// router.get('/api/ticket/event/:eventName', function(req,res,next){
+// router.get('/ticket/event/:eventName', function(req,res,next){
 //     stubhub.getTicketInfoByName(req.params.eventName, function(data) {
 //         res.json({"response": data});
 //     })
