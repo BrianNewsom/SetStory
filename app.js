@@ -25,10 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Pass app into routes function to configure app routes
-// (See '/routes/index.js')
-
-routes(app)
+app.use('/', routes)
 
 // Set up logging throughout project
 var now = moment();
