@@ -13,7 +13,6 @@ var stubhub = require('../../apiHandlers/stubhub')
 var echonest = require('../../apiHandlers/echonest')
 var artist_social_media = require('../../controllers/artist_social_media')
 var artist_media_plays = require('../../controllers/artist_media_plays')
-var scripts = require('../../controllers/scripts')
 var winston = require('winston')
 
 
