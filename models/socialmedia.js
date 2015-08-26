@@ -26,76 +26,75 @@ var winston = require('winston');
 
 socialmedia.twitter = {
     getFollowers: function(data, supercallback) {
-        console.log("getFollowers")
         if(data.length > 200) {
-            winston.warn("Rate limited at 200 objects with twitter links.")
-            supercallback(data)
-            return
+            winston.warn("Rate limited at 200 objects with twitter links.");
+            supercallback(data);
+            return;
         }
-        var count = 0
+        var count = 0;
         data = _.filter(data, function(artist) {
             if(!artist.artist_id) {
-                artist['artist_id'] = artist.id
+                artist['artist_id'] = artist.id;
             }
-            return artist
-        })
+            return artist;
+        });
 
-        if(data.length == 0) {
-            supercallback(data)
+        if(data.length === 0) {
+            supercallback(data);
         } else {
-            winston.info("Fetching Twitter data for " + data.length + " artists...")
+            winston.info("Fetching Twitter data for " + data.length + " artists...");
             async.whilst(
-                function() { return count < data.length },
+                function() { return count < data.length; },
                 function(callback) {
-                    winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...")
+                    winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...");
                     twitter.getTwitterFollowers(data[count].twitter_link, function(followers) {
                         // winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
                         if(followers) {
-                            var followerCount = followers.substring(0, followers.indexOf("Followers") - 1)
-                            var parsedFollowerCount = followerCount.replace(/\,/g,'')
-                            data[count]['twitter_followers'] = parsedFollowerCount
-                            count++
-                            callback()
+                            var followerCount = followers.substring(0, followers.indexOf("Followers") - 1);
+                            var parsedFollowerCount = followerCount.replace(/\,/g,'');
+                            data[count]['twitter_followers'] = parsedFollowerCount;
+                            count++;
+                            callback();
                         } else {
-                            data.splice(count, 1)
-                            callback()
+                            data.splice(count, 1);
+                            callback();
                         }
 
-                    })
+                    });
                 },
                 function(err) {
-                    winston.info("Twitter data received. Caching...")
+                    winston.info("Twitter data received. Caching...");
                     socialmedia.twitter.saveFollowers(data, function(saveResponse) {
-                        supercallback(saveResponse)
-                    })
+                        supercallback(saveResponse);
+                    });
                 }
-            )
+            );
         }
     },
     findArtistLinks: function(artists, supercallback) {
         async.filter(artists, getTwitterLinkFromEchonest, function(artistsWithTwitterLinks) {
-            supercallback(artistsWithTwitterLinks)
-        })
+            supercallback(artistsWithTwitterLinks);
+        });
 
         function getTwitterLinkFromEchonest(artist, callback) {
-            if(artist.twitter_link == null) {
-                winston.info("Finding twitter link for artist " + artist.artist)
+            if(artist.twitter_link === null) {
+                // winston.info("Finding twitter link for artist " + artist.artist)
                 echonest.getTwitterLinkByArtist(artist.artist, function(twitterLink) {
                     if(twitterLink) {
-                        winston.info("Twitter Link for artist '" + artist.artist + "' found.")
+                        winston.info("Twitter Link for artist '" + artist.artist + "' found.");
                         // Cache artist link
                         artists.updateTwitterLink(artist.artist, twitterLink, function(response, artistName) {
-                            winston.info("Twitter Link for artist '" + artistName + "' cached")
-                            artist.twitter_link = twitterLink
-                            callback(true)
-                        })
+                            winston.info("Twitter Link for artist '" + artistName + "' cached");
+                            artist.twitter_link = twitterLink;
+                            callback(true);
+                        });
                     } else {
-                        callback(false)
+                        callback(false);
                     }
-                })
+                });
             } else {
-                winston.info("Artist " + artist.artist + "' already has a twitter link.")
-                callback(true)
+                // winston.info("Artist " + artist.artist + "' already has a twitter link.")
+                callback(true);
             }
             
         }
@@ -125,7 +124,7 @@ socialmedia.twitter = {
             }
             else {
                 winston.info("Twitter data cached.")
-                supercallback(data)
+                supercallback(response)
             }
         })
     }
@@ -134,190 +133,193 @@ socialmedia.twitter = {
 // Refactor to model socialmedia.twitter object
 socialmedia.facebook = function(data, supercallback) {
     if(data.length > 200) {
-        winston.warn("Rate limited at 200 objects with facebook links.")
-        supercallback(data)
-        return
+        winston.warn("Rate limited at 200 objects with facebook links.");
+        supercallback(data);
+        return;
     }
 
     // Get rid of elements (Artists) in the array that have NULL facebook links
     data = _.filter(data, function(artist) {
         if(!artist.artist_id) {
-            artist['artist_id'] = artist.id
+            artist['artist_id'] = artist.id;
         }
         // Fetch twitter links from Echonest
-        if(artist.fb_link == null) {
+        if(artist.fb_link === null) {
             echonest.getFacebookLinkByArtist(artist.artist, function(facebookLink) {
 
                 if(facebookLink) {
-                    artist.fb_link = facebookLink
+                    artist.fb_link = facebookLink;
 
                     // Run artist recursively through top-level social media function to cache data
                     socialmedia.facebook([artist], function(data) {
-                        winston.info("Facebook Data for artist '" + artist.artist + "' cached")
-                    })
+                        winston.info("Facebook Data for artist '" + artist.artist + "' cached");
+                    });
                     // Cache artist link
                     artists.updateFacebookLink(artist.artist, artist.fb_link, function(response, artistName) {
-                        winston.info("Facebook Link for artist '" + artistName + "' cached")
-                    })
+                        winston.info("Facebook Link for artist '" + artistName + "' cached");
+                    });
                 } else {
-                    winston.info("Facebook Link for artist '" + artist.artist + "' not found.")
+                    winston.info("Facebook Link for artist '" + artist.artist + "' not found.");
                 }
 
-            })
+            });
         } else {
-            return artist.fb_link
+            return artist.fb_link;
         }
-    })
+    });
 
-    var count = 0
-    if(data.length == 0) {
-        supercallback(data)
+    var count = 0;
+    if(data.length === 0) {
+        supercallback(data);
     } else {
-        winston.info("Fetching Facebook data for " + data.length + " artists...")
+        winston.info("Fetching Facebook data for " + data.length + " artists...");
         async.whilst(
-            function() { return count < data.length },
+            function() { return count < data.length; },
             function(callback) {
                 if(data[count].fb_link.lastIndexOf("/") == data[count].fb_link.length - 1) {
-                    data[count].fb_link = data[count].fb_link.substring(0, data[count].fb_link.length - 1)
+                    data[count].fb_link = data[count].fb_link.substring(0, data[count].fb_link.length - 1);
                 }
-                var fb_user_id = data[count].fb_link.substring(data[count].fb_link.lastIndexOf("/") + 1, data[count].fb_link.length)
+                var fb_user_id = data[count].fb_link.substring(data[count].fb_link.lastIndexOf("/") + 1, data[count].fb_link.length);
+                console.log(fb_user_id);
+
                 facebook.getLikesFromUserId(fb_user_id, function(likes) {
+                    console.log(likes);
                     if(likes) {
-                        data[count]['facebook_followers'] = likes
-                        count++
-                        callback()
+                        data[count]['facebook_followers'] = likes;
+                        count++;
+                        callback();
                     } else {
-                        winston.debug(data[count].artist_id)
-                        data.splice(count, 1)
-                        callback()
+                        winston.debug(data[count].artist_id);
+                        data.splice(count, 1);
+                        callback();
                     }
-                })
+                });
             },
             function(err) {
-                winston.debug(data.length)
+                winston.debug(data.length);
 
                 if(data.length > 0) {
-                    winston.info("Facebook data received. Caching...")
-                    var sql = "INSERT INTO facebook_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].facebook_followers + ")"
+                    winston.info("Facebook data received. Caching...");
+                    var sql = "INSERT INTO facebook_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].facebook_followers + ")";
                     for(var i = 1; i < data.length; i++) {
-                        sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")"
+                        sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")";
                     }
-                    winston.debug(sql)
+                    winston.debug(sql);
                     connection.query(sql, function(err, response) {
                         if(err) {
-                            winston.info("Error caching Facebook likes data.")
-                            winston.error(err)
-                            supercallback(err)
+                            winston.info("Error caching Facebook likes data.");
+                            winston.error(err);
+                            supercallback(err);
                         }
                         else {
-                            winston.info("Facebook likes data cached.")
-                            supercallback(data)
+                            winston.info("Facebook likes data cached.");
+                            supercallback(data);
                         }
-                    })
+                    });
                 } else {
-                    winston.info("No facebook data to cache.")
-                    supercallback(data)
+                    winston.info("No facebook data to cache.");
+                    supercallback(data);
                 }
 
             }
-        )
+        );
     }
-}
+};
 
 // Refactor to model socialmedia.twitter object
 socialmedia.instagram = function(data, supercallback) {
 
     if(data.length > 200) {
-        winston.warn("Rate limited at 200 objects with instagram links.")
-        supercallback(data)
-        return
+        winston.warn("Rate limited at 200 objects with instagram links.");
+        supercallback(data);
+        return;
     }
     data = _.filter(data, function(artist) {
         if(!artist.artist_id) {
-            artist['artist_id'] = artist.id
+            artist['artist_id'] = artist.id;
         }
-        return artist.instagram_link != null
-    })
-    var count = 0
-    if(data.length == 0) {
-        supercallback(data)
+        return artist.instagram_link !== null;
+    });
+    var count = 0;
+    if(data.length === 0) {
+        supercallback(data);
     } else {
-        winston.info(data.length + " artists to fetch instagram data for...")
+        winston.info(data.length + " artists to fetch instagram data for...");
         async.whilst(
-            function() { return count < data.length },
+            function() { return count < data.length; },
             function(callback) {
-                winston.info("Fetching instagram data for " + data[count].artist)
+                winston.info("Fetching instagram data for " + data[count].artist);
                 // winston.log("Fetching instagram data for ", data[count])
 
-                if(data[count].instagram_id != null) {
+                if(data[count].instagram_id !== null) {
                     instagram.getFollowersByUserId(data[count].instagram_id, function(followers) {
                         if(followers) {
-                            data[count]['instagram_followers'] = followers
-                            count++
-                            callback()
+                            data[count]['instagram_followers'] = followers;
+                            count++;
+                            callback();
                         } else {
-                            data.splice(count, 1)
-                            callback()
+                            data.splice(count, 1);
+                            callback();
                         }
-                    })
+                    });
                 } else {
 
                     // Get name from instagram_link to search Instagram API for instagram_id
                     if(data[count].instagram_link.lastIndexOf("/") == data[count].instagram_link.length - 1) {
-                        data[count].instagram_link = data[count].instagram_link.substring(0, data[count].instagram_link.length - 1)
+                        data[count].instagram_link = data[count].instagram_link.substring(0, data[count].instagram_link.length - 1);
                     }
-                    var instagram_name = data[count].instagram_link.substring(data[count].instagram_link.lastIndexOf("/") + 1, data[count].instagram_link.length)
+                    var instagram_name = data[count].instagram_link.substring(data[count].instagram_link.lastIndexOf("/") + 1, data[count].instagram_link.length);
 
                     instagram.getIdFromName(instagram_name, function(id) {
                         // winston.log("IG ID: ", id)
                         if(id) {
-                            winston.info("Instagram ID: "+id+" found. Caching and fetching followers.")
-                            data[count].instagram_id = id
+                            winston.info("Instagram ID: "+id+" found. Caching and fetching followers.");
+                            data[count].instagram_id = id;
                             // Run artist recursively through top-level social media function to cache data
                             socialmedia.instagram([data[count]], function(response) {
-                                // winston.log("socialmedia.instagram response", response)
-                                winston.info("Instagram Data for artist cached")
-                            })
+                                // winston.log("socialmedia.instagram response", response);
+                                winston.info("Instagram Data for artist cached");
+                            });
                             artists.updateInstagramID(data[count].artist, data[count].instagram_id, function(rows, artistName) {
-                                // winston.log("artists.updateInstagramID response", rows)
-                                winston.info("Instagram ID for artist '" + artistName + "' cached")
-                            })
-                            data.splice(count, 1)
-                            callback()
+                                // winston.log("artists.updateInstagramID response", rows);
+                                winston.info("Instagram ID for artist '" + artistName + "' cached");
+                            });
+                            data.splice(count, 1);
+                            callback();
                         } else {
                             // Remove artist if no instagram ID can be found
-                            data.splice(count, 1)
-                            callback()
+                            data.splice(count, 1);
+                            callback();
                         }
-                    })
+                    });
                 }
 
             },
             function(err) {
-                if(data.length == 0) {
-                    winston.info("No instagram data to cache.")
-                    supercallback(data)
+                if(data.length === 0) {
+                    winston.info("No instagram data to cache.");
+                    supercallback(data);
                 } else {
-                    var insertSQL = "INSERT INTO instagram_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].instagram_followers + ")"
+                    var insertSQL = "INSERT INTO instagram_followers(artist_id, followers) VALUES (" + data[0].artist_id + "," + data[0].instagram_followers + ")";
                     for(var i = 1; i < data.length; i++) {
-                      insertSQL += ",(" + data[i].artist_id + "," + data[i].instagram_followers + ")"
+                      insertSQL += ",(" + data[i].artist_id + "," + data[i].instagram_followers + ")";
                     }
-                    winston.debug(insertSQL)
+                    winston.debug(insertSQL);
                     connection.query(insertSQL, function(err, response) {
                         if(err) {
-                            winston.info("Error caching Instagram followers data.")
-                            winston.error(err)
+                            winston.info("Error caching Instagram followers data.");
+                            winston.error(err);
                         }
                         else {
-                            winston.info("Instagram followers data cached.")
+                            winston.info("Instagram followers data cached.");
                         }
-                        supercallback(data)
-                    })
+                        supercallback(data);
+                    });
                 }
             }
-        )
+        );
     }
-}
+};
 
 // Refactor to model socialmedia.twitter object
 socialmedia.soundcloud = function(data, supercallback) {
@@ -390,6 +392,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                     }
                 }
                 followerSQL = followerSQL.slice(0, -1)
+                console.log(followerSQL)
 
                 winston.debug(followerSQL)
 
@@ -405,6 +408,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                 }
                 playsSQL = playsSQL.slice(0, -1)
 
+                console.log(playsSQL)
 
                 winston.debug(playsSQL)
 

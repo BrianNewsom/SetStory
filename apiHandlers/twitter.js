@@ -8,14 +8,14 @@ twitter.getTwitterFollowers = function(twitterlink, callback) {
     request(twitterlink, function(err, resp, body) {
         if (err) {
             winston.error(err);
-            callback()
+            callback();
         } else {
             var $ = cheerio.load(body);
             var twitterFollowersString = $(".ProfileNav-item--followers a.ProfileNav-stat").attr("title");
-            callback(twitterFollowersString)
+            callback(twitterFollowersString);
         }
-    })
-}
+    });
+};
 
 //change the code above to search thru 'artists' table in db and findWhere
 //twitter_link IS NULL ; then search ECHONEST for correct links
