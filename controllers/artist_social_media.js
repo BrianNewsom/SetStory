@@ -81,7 +81,7 @@ artist_social_media.getTwitterLink = function(artist, cb) {
 }
 
 artist_social_media.updateSetrecordsArtists = function(supercallback) {
-  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id", function(err, artists) {
+  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id WHERE su.id < 7800", function(err, artists) {
     async.parallel({
       twitter: function(callback) {
         setmine.socialmedia.twitter.findArtistLinks(artists, function(artistsWithLinks) {

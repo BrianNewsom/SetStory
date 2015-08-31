@@ -180,10 +180,8 @@ socialmedia.facebook = function(data, supercallback) {
                     data[count].fb_link = data[count].fb_link.substring(0, data[count].fb_link.length - 1);
                 }
                 var fb_user_id = data[count].fb_link.substring(data[count].fb_link.lastIndexOf("/") + 1, data[count].fb_link.length);
-                console.log(fb_user_id);
 
                 facebook.getLikesFromUserId(fb_user_id, function(likes) {
-                    console.log(likes);
                     if(likes) {
                         data[count]['facebook_followers'] = likes;
                         count++;
