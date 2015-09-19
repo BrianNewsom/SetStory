@@ -96,22 +96,36 @@ socialmedia.twitter = {
                 // winston.info("Artist " + artist.artist + "' already has a twitter link.")
                 callback(true);
             }
-            
+
         }
     },
     saveImageLinks: function(artists, supercallback) {
         async.each(artists, saveImageLinkFromTwitter, function(err) {
-            supercallback(err)
-        })
+            supercallback(err);
+        });
 
         function saveImageLinkFromTwitter(artist, callback) {
             // Make call to twitter.getTwitterImageLink
+            twitter.getTwitterImageLink = function(twitterLink, callback) {
+                request(twitterlink, function(err, resp, body) {
+                    if (err) {
+                        winston.error(err);
+                        callback();
+                    } else {
+                        var $ = cheerio.load(body);
+                        var twitterImageLink = $(".ProfileAvatar-image").attr("src");
+                        callback(twitterImageLink);
+                    };
+                });
+            };
+
             // After you have the twitter image link, save it to the database
+            connection.query("INSERT INTO artists(twitter_image_link) VALUES ("+ twitterImageLink + ")");
             // After youve saved it to the database, run callback(null)
         }
     },
     saveFollowers: function(artists, supercallback) {
-        var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + artists[0].artist_id + "," + artists[0].twitter_followers + ")"
+        var sql = "INSERT INTO twitter_followers(artist_id, followers) VALUES (" + artists[0].artist_id + "," + artists[0].twitter_followers + ")";
         for(var i = 1; i < artists.length; i++) {
             sql += ",(" + artists[i].artist_id + "," + artists[i].twitter_followers + ")"
         }
