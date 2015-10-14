@@ -26,7 +26,7 @@ var winston = require('winston');
 
 socialmedia.twitter = {
     getFollowers: function(data, supercallback) {
-        if(data.length > 200) {
+        if(data.length > 400) {
             winston.warn("Rate limited at 200 objects with twitter links.");
             supercallback(data);
             return;
@@ -146,7 +146,7 @@ socialmedia.twitter = {
 
 // Refactor to model socialmedia.twitter object
 socialmedia.facebook = function(data, supercallback) {
-    if(data.length > 200) {
+    if(data.length > 400) {
         winston.warn("Rate limited at 200 objects with facebook links.");
         supercallback(data);
         return;
@@ -241,7 +241,7 @@ socialmedia.facebook = function(data, supercallback) {
 // Refactor to model socialmedia.twitter object
 socialmedia.instagram = function(data, supercallback) {
 
-    if(data.length > 200) {
+    if(data.length > 400) {
         winston.warn("Rate limited at 200 objects with instagram links.");
         supercallback(data);
         return;
@@ -336,7 +336,7 @@ socialmedia.instagram = function(data, supercallback) {
 // Refactor to model socialmedia.twitter object
 socialmedia.soundcloud = function(data, supercallback) {
 
-    if(data.length > 200) {
+    if(data.length > 400) {
         winston.warn("Rate limited at 200 objects with soundcloud links.")
         supercallback(data)
         return
@@ -464,7 +464,7 @@ socialmedia.soundcloud = function(data, supercallback) {
 
 // Refactor to model socialmedia.twitter object
 socialmedia.youtube = function(data, supercallback) {
-    if(data.length > 200) {
+    if(data.length > 400) {
         winston.warn("Rate limited at 200 objects with youtube ids.")
         supercallback(data)
         return
