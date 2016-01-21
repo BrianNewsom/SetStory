@@ -3,14 +3,14 @@ var request = require( 'request' );
 var async = require( 'async' );
 var _ = require('lodash');
 
-var twitter = require('../apiHandlers/twitter')
-var facebook = require('../apiHandlers/facebook')
-var soundcloud = require('../apiHandlers/soundcloud')
-var youtube = require('../apiHandlers/youtube')
-var instagram = require('../apiHandlers/instagram')
-var echonest = require('../apiHandlers/echonest')
+var twitter = require('../apiHandlers/twitter');
+var facebook = require('../apiHandlers/facebook');
+var soundcloud = require('../apiHandlers/soundcloud');
+var youtube = require('../apiHandlers/youtube');
+var instagram = require('../apiHandlers/instagram');
+var echonest = require('../apiHandlers/echonest');
 
-var artists = require('../models/artists')
+var artistModels = require('../models/artists');
 
 var settings = require('../config/settings');
 var mysql = require('mysql');
@@ -48,7 +48,7 @@ socialmedia.twitter = {
                 function(callback) {
                     winston.info("Fetching Twitter data for artist '" + data[count].artist + "'...");
                     twitter.getTwitterFollowers(data[count].twitter_link, function(followers) {
-                        // winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
+                        winston.info("Artist '" + data[count].artist + "' has " + followers + " followers...")
                         if(followers) {
                             var followerCount = followers.substring(0, followers.indexOf("Followers") - 1);
                             var parsedFollowerCount = followerCount.replace(/\,/g,'');
@@ -83,7 +83,7 @@ socialmedia.twitter = {
                     if(twitterLink) {
                         winston.info("Twitter Link for artist '" + artist.artist + "' found.");
                         // Cache artist link
-                        artists.updateTwitterLink(artist.artist, twitterLink, function(response, artistName) {
+                        artistModels.updateTwitterLink(artist.artist, twitterLink, function(response, artistName) {
                             winston.info("Twitter Link for artist '" + artistName + "' cached");
                             artist.twitter_link = twitterLink;
                             callback(true);
@@ -129,7 +129,6 @@ socialmedia.twitter = {
         for(var i = 1; i < artists.length; i++) {
             sql += ",(" + artists[i].artist_id + "," + artists[i].twitter_followers + ")"
         }
-        winston.debug(sql)
         connection.query(sql, function(err, response) {
             if(err) {
                 winston.info("Error caching Twitter follower data.")
@@ -169,7 +168,7 @@ socialmedia.facebook = function(data, supercallback) {
                         winston.info("Facebook Data for artist '" + artist.artist + "' cached");
                     });
                     // Cache artist link
-                    artists.updateFacebookLink(artist.artist, artist.fb_link, function(response, artistName) {
+                    artistModels.updateFacebookLink(artist.artist, artist.fb_link, function(response, artistName) {
                         winston.info("Facebook Link for artist '" + artistName + "' cached");
                     });
                 } else {
@@ -201,14 +200,12 @@ socialmedia.facebook = function(data, supercallback) {
                         count++;
                         callback();
                     } else {
-                        winston.debug(data[count].artist_id);
                         data.splice(count, 1);
                         callback();
                     }
                 });
             },
             function(err) {
-                winston.debug(data.length);
 
                 if(data.length > 0) {
                     winston.info("Facebook data received. Caching...");
@@ -216,7 +213,6 @@ socialmedia.facebook = function(data, supercallback) {
                     for(var i = 1; i < data.length; i++) {
                         sql += ",(" + data[i].artist_id + "," + data[i].facebook_followers + ")";
                     }
-                    winston.debug(sql);
                     connection.query(sql, function(err, response) {
                         if(err) {
                             winston.info("Error caching Facebook likes data.");
@@ -292,7 +288,7 @@ socialmedia.instagram = function(data, supercallback) {
                                 // winston.log("socialmedia.instagram response", response);
                                 winston.info("Instagram Data for artist cached");
                             });
-                            artists.updateInstagramID(data[count].artist, data[count].instagram_id, function(rows, artistName) {
+                            artistModels.updateInstagramID(data[count].artist, data[count].instagram_id, function(rows, artistName) {
                                 // winston.log("artists.updateInstagramID response", rows);
                                 winston.info("Instagram ID for artist '" + artistName + "' cached");
                             });
@@ -316,7 +312,6 @@ socialmedia.instagram = function(data, supercallback) {
                     for(var i = 1; i < data.length; i++) {
                       insertSQL += ",(" + data[i].artist_id + "," + data[i].instagram_followers + ")";
                     }
-                    winston.debug(insertSQL);
                     connection.query(insertSQL, function(err, response) {
                         if(err) {
                             winston.info("Error caching Instagram followers data.");
@@ -357,7 +352,7 @@ socialmedia.soundcloud = function(data, supercallback) {
                         winston.info("Soundcloud Data for artist '" + artist.artist + "' cached")
                     })
                     // Cache artist link
-                    artists.updateSoundcloudLink(artist.artist, artist.soundcloud_link, function(response, artistName) {
+                    artistModels.updateSoundcloudLink(artist.artist, artist.soundcloud_link, function(response, artistName) {
                         winston.info("Soundcloud Link for artist '" + artistName + "' cached")
                     })
                 } else {
@@ -404,9 +399,6 @@ socialmedia.soundcloud = function(data, supercallback) {
                     }
                 }
                 followerSQL = followerSQL.slice(0, -1)
-                console.log(followerSQL)
-
-                winston.debug(followerSQL)
 
                 var playsSQL = "INSERT INTO soundcloud_media_plays(artist_id, plays, tracks) VALUES "
 
@@ -419,11 +411,6 @@ socialmedia.soundcloud = function(data, supercallback) {
                     }
                 }
                 playsSQL = playsSQL.slice(0, -1)
-
-                console.log(playsSQL)
-
-                winston.debug(playsSQL)
-
 
                 async.parallel([
                     function(callback) {

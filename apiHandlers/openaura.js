@@ -26,7 +26,6 @@ openaura.getArtistImage = function(artist, cb){
 openaura.getSocialFeed = function(artist, limit, offset, cb){
     rest.get('http://api.openaura.com/v1/search/artists', {
         query : {'q' : artist, 'limit' : 1, 'api_key': api_key}}).on('complete', function(data){
-            winston.debug(data)
         if(!data[0]){
             winston.info('no artist found');
             cb(null);
@@ -50,7 +49,6 @@ openaura.getMBID = function( artist, cb ) {
   } ).on( 'complete', function( res ) {
     try {
       // Found matching artist
-      winston.debug(res)
       var musicbrainz_id = res[0].musicbrainz_id;
       cb(musicbrainz_id);
     }

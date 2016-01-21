@@ -13,13 +13,11 @@ instagram.access_token = settings.auth_tokens.instagram
 instagram.getFollowersByUserId = function(user_id, cb) {
     // Return follower count of a user given their id.
 
-    winston.debug(user_id)
 
     instagram.getAccessToken(function(token) {
         if(token) {
             rest.get('https://api.instagram.com/v1/users/' + user_id + '/?access_token=' + token)
                 .on('complete', function(data){
-                    winston.debug("FollowerByID: " + user_id)
                     if(data.data) {
                         cb(data.data.counts.followed_by);
                     } else {
@@ -43,7 +41,6 @@ instagram.getIdFromName = function(name, cb){
             console.log(name)
             rest.get('https://api.instagram.com/v1/users/search?q=' + name + '&access_token=' + instagram.access_token)
                 .on('complete', function(data) {
-                    winston.debug("getIdFromName: " + name, data)
                     if(data.data && data.data.length > 0) {
                         cb(data.data[0].id);
                     } else {

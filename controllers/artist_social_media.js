@@ -81,7 +81,8 @@ artist_social_media.getTwitterLink = function(artist, cb) {
 };
 
 artist_social_media.updateSetrecordsArtists = function(supercallback) {
-  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id WHERE hashed != \"\"", function(err, artists) {
+  mainConnection.query("SELECT su.*, a.artist, a.twitter_link, a.fb_link, a.instagram_link, a.soundcloud_link, a.youtube_id, a.instagram_id, s.id, s.datetime FROM setrecords_users AS su INNER JOIN artists AS a ON a.id = su.artist_id INNER JOIN sets_to_artists AS sa ON sa.artist_id = a.id INNER JOIN sets AS s ON s.id = sa.set_id WHERE su.date_created > \"2015-06-04 06:02:10\" AND (a.twitter_link IS NOT NULL OR a.fb_link IS NOT NULL OR a.instagram_link IS NOT NULL OR a.soundcloud_link IS NOT NULL) AND s.datetime > \"2015-10-04 06:02:10\"", function(err, artists) {
+    console.log(artists.length);
     async.parallel({
       twitter: function(callback) {
         setmine.socialmedia.twitter.findArtistLinks(artists, function(artistsWithLinks) {
@@ -107,14 +108,14 @@ artist_social_media.updateSetrecordsArtists = function(supercallback) {
       },
       youtube: function(callback) {
         setmine.socialmedia.youtube(artists, function(data) {
-            callback(null, data);
-          });
+          callback(null, data);
+        });
       },
-      //function(err, results) {
-        //supercallback(results);
-      //});
+      function(err, results) {
+        supercallback(results);
+      }
+    });
   });
-});
 },
 
 artist_social_media.getMissingArtistImagesFromTwitter = function(supercallback){

@@ -15,11 +15,8 @@ facebook.getUser = function(user_id, cb){
 };
 
 facebook.getLikesFromUserId = function(user_id, cb){
-    winston.debug(user_id);
-
     rest.get('https://graph.facebook.com/v2.3/' + user_id + "?access_token=" + access_token)
             .on('complete', function(data){
-                console.log(data);
                 if(data.likes) {
                     cb(data.likes);
                 } else {

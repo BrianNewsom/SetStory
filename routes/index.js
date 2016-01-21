@@ -198,7 +198,7 @@ router.get('/api/socialmedia/setrecords', function(req,res,next){
     artist_social_media.updateSetrecordsArtists(function(data) {
         winston.debug(data)
         winston.info("Setrecords artists updated.")
-    })
+    });
     res.json({"response": "Updating setrecords artists"});
 })
 
